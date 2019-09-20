@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "@sendgrid/mail": "^6.4.0",
+    "@types/jest": "^24.0.18",
+    "jest": "^24.9.0",
+    "mailslurp-client": "^6.3.0",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.6.3"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
+  }
+}
