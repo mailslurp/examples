@@ -2,4 +2,4 @@ node_modules:
 	npm install
 
 test: node_modules
-	API_KEY=test npm run test
+	API_KEY=$(API_KEY) npm run test

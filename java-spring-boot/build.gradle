@@ -1,0 +1,51 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.7.RELEASE'
+    id 'java'
+}
+apply plugin: 'maven'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.mailslurp'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    maven { url 'https://jitpack.io' }
+    mavenCentral()
+}
+dependencies {
+    // Annotation processors
+    annotationProcessor('org.projectlombok:lombok')
+    compileOnly('org.projectlombok:lombok')
+    testAnnotationProcessor('org.projectlombok:lombok')
+    testCompileOnly('org.projectlombok:lombok')
+
+    // spring
+    implementation 'org.springframework.boot:spring-boot-starter:2.1.4.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.1.4.RELEASE'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.1.4.RELEASE'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa:2.1.4.RELEASE'
+    runtime 'com.h2database:h2:1.4.199'
+
+    // mailslurp
+    compile 'com.github.mailslurp:swagger-sdk-java:900a94e754'
+}
+
+task createPom {
+    pom {
+        project {
+            groupId 'org.example'
+            artifactId 'test'
+            version '1.0.0'
+
+            inceptionYear '2008'
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }
+        }
+    }.writeTo("pom.xml")
+}
