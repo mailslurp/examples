@@ -1,0 +1,7 @@
+gecko*
+.env
+build
+target
+bin
+.gradle
+*.tar.gz

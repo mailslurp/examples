@@ -31,7 +31,7 @@ describe("my apps email action", () => {
     }, false, (err, res) => {
       if(err) {
         console.log(`SendGrid Error : ${err}`)
-      }
+      }  
     });
   }
 
