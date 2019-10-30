@@ -1,7 +1,9 @@
 # Webdriver.io MailSlurp Example
-This example demonstrates use of [MailSlurp](https://www.mailslurp.com) with NodeJS, Webdriver.io (wdio), Selenium and Chrome.
+This example demonstrates use of [MailSlurp](https://www.mailslurp.com) with NodeJS, Webdriver.io (wdio), Selenium and Chrome to test user processes that depend on email.
 
-It tests user sign-up, email confirmation, login, and password reset using the [MailSlurp OAuth2 Playground](https://playground.mailslurp.com) as a dummy application. Each test run generates a real, randomized email address using MailSlurp, signs up with it and then captures the email confirmation code to enter in the confirmation step. 
+It tests user sign-up, email confirmation, login, and password reset using the [MailSlurp OAuth2 Playground](https://playground.mailslurp.com) as a dummy application. 
+
+Each test run **generates a real, randomized email address using MailSlurp**, signs up with it and then captures the email confirmation code to enter in the confirmation step. MailSlurp is free for personal use so [sign up](https://www.mailslurp.com) to run the example yourself.
 
 ### Run
 `npm install`
