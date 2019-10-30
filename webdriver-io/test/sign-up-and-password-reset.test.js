@@ -3,7 +3,11 @@ const MailSlurp = require('mailslurp-client').default;
 const apiKey = process.env.API_KEY;
 const mailslurp = new MailSlurp({ apiKey });
 
-describe('sign up page', () => {
+/**
+ * An end-to-end test of a user signing up with a MailSlurp generated email address,
+ * confirming their account, logging in and the reseting their password.
+ */
+describe('sign up, confirm, login and reset', () => {
 
   let inbox;
   let password = "test-password";
@@ -52,6 +56,30 @@ describe('sign up page', () => {
       .then(e => e.setValue(code));
     await $('[data-test="confirm-sign-up-confirm-button"]')
       .then(e => e.click());
+  });
+
+  it('can log in with confirmed account', async () => {
+    // assert we see the sign in form
+    await $('[data-test="sign-in-header-section"]')
+      .then(e => e.getText())
+      .then(text => assert.strictEqual(text, 'Sign in to your account'));
+
+    // fill out username (email) and password
+    await $('[name="username"]')
+      .then(e => e.setValue(inbox.emailAddress));
+    await $('[name="password"]')
+      .then(e => e.setValue(password));
+   
+    // submit
+    await $('[data-test="sign-in-sign-in-button"]')
+      .then(e => e.click());
+
+  });
+
+  it('shows the successful greeting', async () => {
+    await $('[data-test="greetings-nav-bar"]')
+      .then(e => e.getText())
+      .then(text => assert.strictEqual(/Hello/.test(text), true));
   });
 
 });
