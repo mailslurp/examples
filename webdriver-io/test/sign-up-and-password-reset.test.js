@@ -82,4 +82,7 @@ describe('sign up, confirm, login and reset', () => {
       .then(text => assert.strictEqual(/Hello/.test(text), true));
   });
 
+  // TODO add test for password reset. will follow a similar approach
+  // and use mailslurp to capture the reset code
+
 });
