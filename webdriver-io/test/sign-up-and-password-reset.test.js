@@ -73,7 +73,6 @@ describe('sign up, confirm, login and reset', () => {
     // submit
     await $('[data-test="sign-in-sign-in-button"]')
       .then(e => e.click());
-
   });
 
   it('shows the successful greeting', async () => {

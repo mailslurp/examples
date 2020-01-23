@@ -1,0 +1,18 @@
+{
+  "name": "mailslurp-jest-puppeteer-example",
+  "version": "1.0.0",
+  "description": "Example use of MailSlurp and Jest Puppeteer",
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "jest-puppeteer",
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.[jt]sx?$"
+  },
+  "devDependencies": {
+    "jest": "^25.1.0",
+    "jest-puppeteer": "^4.4.0",
+    "mailslurp-client": "^6.7.4",
+    "puppeteer": "^2.0.0"
+  }
+}
