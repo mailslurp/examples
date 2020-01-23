@@ -62,7 +62,6 @@ describe('sign-up process', () => {
   });
 
   it('shows the successful greeting', async () => {
-    await page.screenshot({path: 'buddy-screenshot.png'});
     await page.waitForFunction('document.body.innerText.includes("Welcome")');
     await expect(page).toMatchElement('h1', { text: 'Welcome' })
   });
