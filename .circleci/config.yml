@@ -1,0 +1,14 @@
+version: 2
+jobs:
+  php:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Test
+          command: make php
+workflows:
+  version: 2
+  test:
+    jobs:
+      - php

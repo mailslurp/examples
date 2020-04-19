@@ -1,7 +1,6 @@
-FROM composer as builder
+FROM composer
+ARG API_KEY
+ENV API_KEY=$API_KEY
 COPY . .
 RUN ["composer", "install"]
-
-FROM php as tester
-COPY --from=builder . . 
-RUN ["./vendor/bin/phpunit", "test"]
+CMD ["./vendor/bin/phpunit", "test"]
