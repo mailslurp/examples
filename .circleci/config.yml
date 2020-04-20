@@ -1,14 +1,20 @@
 version: 2
 jobs:
-  php:
+  php-composer-phpunit:
     machine: true
     steps:
       - checkout
       - run:
-          name: Test
-          command: make php
+          command: make php-composer-phpunit
+  php-no-libraries:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          command: make php-no-libraries
 workflows:
   version: 2
   test:
     jobs:
-      - php
+      - php-composer-phpunit
+      - php-no-libraries
