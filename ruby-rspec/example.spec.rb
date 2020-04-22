@@ -15,7 +15,26 @@ RSpec.describe 'client' do
     expect(inbox.email_address).to include("mailslurp.com")
   end
 
-  it 'can send and receive emails' do
+  it 'can send an email' do
+    # create an inbox
+    inbox_controller = MailSlurpClient::InboxControllerApi.new
+    inbox = inbox_controller.create_inbox
+
+    # send an email from the inbox (to the inbox's own address)
+    inbox_controller.send_email(inbox.id, {
+        send_email_options: {
+            to: [inbox.email_address],
+            subject: "Test",
+            isHTML: true,
+            body: <<-HEREDOC
+              <h1>Hello!</h1>
+              <p>MailSlurp supports HTML</p>
+            HEREDOC
+        }
+    })
+  end
+
+  it 'can receive emails and extract content' do
     # create two inboxes
     inbox_controller = MailSlurpClient::InboxControllerApi.new
     inbox_1 = inbox_controller.create_inbox
@@ -26,19 +45,16 @@ RSpec.describe 'client' do
         send_email_options: {
             to: [inbox_2.email_address],
             subject: "Test",
-            body: "Hello",
+            body: "Your code is 123",
         }
     })
 
     # get emails from inbox2
     waitfor_controller = MailSlurpClient::WaitForControllerApi.new
-    email = waitfor_controller.wait_for_latest_email({
-         inbox_id: inbox_2.id,
-         unread_only: true
-     })
+    email = waitfor_controller.wait_for_latest_email({ inbox_id: inbox_2.id, unread_only: true })
 
     # verify email contents
     expect(email.subject).to include("Test")
-    expect(email.body).to include("Hello")
+    expect(email.body).to include("Your code is")
   end
 end
