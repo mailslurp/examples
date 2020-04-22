@@ -7,10 +7,10 @@ javascript-axios:
 	cd javascript-axios && $(MAKE) docker
 
 javascript-jest-puppeteer:
-	cd javascript-jest-puppeteer && $(MAKE) docker
+	cd javascript-jest-puppeteer && $(MAKE) test
 
 javascript-cypress-js:
-	cd javascript-cypress-js && $(MAKE) docker
+	cd javascript-cypress-js && $(MAKE) test
 
 ruby-rspec:
 	cd ruby-rspec && $(MAKE) docker

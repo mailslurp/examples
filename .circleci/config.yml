@@ -13,13 +13,15 @@ jobs:
       - run: echo "API_KEY=$API_KEY" > .env
       - run: make javascript-axios
   javascript-jest-puppeteer:
-    machine: true
+    docker:
+      - image: circleci/node:10-browsers
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
       - run: make javascript-jest-puppeteer
   javascript-cypress-js:
-    machine: true
+    docker:
+      - image: circleci/node:10-browsers
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
