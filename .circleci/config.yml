@@ -29,13 +29,13 @@ jobs:
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
-      - run:: make ruby-rspec
+      - run: make ruby-rspec
   ruby-cucumber-test:
     machine: true
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
-      - run:: make ruby-cucumber-test
+      - run: make ruby-cucumber-test
 workflows:
   version: 2
   test:

@@ -19,4 +19,4 @@ ruby-cucumber-test:
 	cd ruby-cucumber-test && $(MAKE) docker
 
 deploy:
-	git push origin ci
+	git push ci master
