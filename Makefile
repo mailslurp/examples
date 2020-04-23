@@ -18,5 +18,8 @@ ruby-rspec:
 ruby-cucumber-test:
 	cd ruby-cucumber-test && $(MAKE) docker
 
+python2-pytest:
+	cd python2-pytest && $(MAKE) test
+
 deploy:
 	git push ci master

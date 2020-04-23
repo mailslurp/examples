@@ -38,6 +38,12 @@ jobs:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
       - run: make ruby-cucumber-test
+  python2-pytest:
+    machine: true
+    steps:
+      - checkout
+      - run: echo "API_KEY=$API_KEY" > .env
+      - run: make python2-pytest
 workflows:
   version: 2
   test:
