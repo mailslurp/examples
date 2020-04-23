@@ -39,7 +39,8 @@ jobs:
       - run: echo "API_KEY=$API_KEY" > .env
       - run: make ruby-cucumber-test
   python2-pytest:
-    machine: true
+    docker:
+      - image: circleci/python:2.7
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
@@ -54,3 +55,4 @@ workflows:
       - javascript-cypress-js
       - ruby-cucumber-test
       - ruby-rspec
+      - python2-pytest
