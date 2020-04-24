@@ -12,6 +12,9 @@ javascript-jest-puppeteer:
 javascript-cypress-js:
 	cd javascript-cypress-js && $(MAKE) test
 
+javascript-webdriver-io:
+	cd javascript-webdriver-io && $(MAKE) test
+
 ruby-rspec:
 	cd ruby-rspec && $(MAKE) docker
 

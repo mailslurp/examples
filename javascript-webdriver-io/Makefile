@@ -1,3 +1,5 @@
+-include ../.env
+
 .PHONY: test
 
 node_modules:

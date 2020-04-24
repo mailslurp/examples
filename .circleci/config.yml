@@ -26,6 +26,13 @@ jobs:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
       - run: make javascript-cypress-js
+  javascript-webdriver-io:
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - checkout
+      - run: echo "API_KEY=$API_KEY" > .env
+      - run: make javascript-webdriver-io
   ruby-rspec:
     machine: true
     steps:
@@ -53,6 +60,7 @@ workflows:
       - javascript-axios
       - javascript-jest-puppeteer
       - javascript-cypress-js
+      - javascript-webdriver-io
       - ruby-cucumber-test
       - ruby-rspec
       - python2-pytest
