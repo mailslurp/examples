@@ -5,11 +5,6 @@
  */
 describe('Sign up', () => {
 
-  const password = "test-password";
-  let inboxId;
-  let emailAddress;
-  let code;
-
   it('can load oauth demo site', () => {
     cy.visit('https://playground.mailslurp.com');
     cy.contains('Sign in to your account');
@@ -19,6 +14,11 @@ describe('Sign up', () => {
     cy.get('[data-test="sign-in-create-account-link"]').click();
     cy.contains('Testable Sign Up Form');
   });
+
+  const password = "test-password";
+  let inboxId;
+  let emailAddress;
+  let code;
 
   it('can generate a new email address and sign up', () => {
     // see commands.js custom commands
