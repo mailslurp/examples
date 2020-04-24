@@ -69,7 +69,7 @@ describe('sign up, confirm, login and reset', () => {
       .then(e => e.setValue(inbox.emailAddress));
     await $('[name="password"]')
       .then(e => e.setValue(password));
-   
+
     // submit
     await $('[data-test="sign-in-sign-in-button"]')
       .then(e => e.click());
@@ -80,8 +80,5 @@ describe('sign up, confirm, login and reset', () => {
       .then(e => e.getText())
       .then(text => assert.strictEqual(/Hello/.test(text), true));
   });
-
-  // TODO add test for password reset. will follow a similar approach
-  // and use mailslurp to capture the reset code
 
 });
