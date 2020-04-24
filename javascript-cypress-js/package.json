@@ -1,10 +1,12 @@
 {
   "description": "Example of using emails with Cypress JS",
   "scripts": {
-    "test": "cypress run"
+    "test": "cypress run",
+    "dev": "cypress open",
+    "postinstall": "cypress install"
   },
   "dependencies": {
-    "cypress": "^3.4.1",
-    "mailslurp-client": "^6.3.0"
+    "cypress": "^4.4.1",
+    "mailslurp-client": "^8.7.8"
   }
 }

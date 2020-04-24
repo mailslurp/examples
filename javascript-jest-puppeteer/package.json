@@ -12,7 +12,9 @@
   "devDependencies": {
     "jest": "^25.1.0",
     "jest-puppeteer": "^4.4.0",
-    "mailslurp-client": "^6.7.4",
     "puppeteer": "^2.0.0"
+  },
+  "dependencies": {
+    "mailslurp-client": "^8.7.6"
   }
 }
