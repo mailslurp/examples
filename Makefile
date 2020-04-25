@@ -24,5 +24,9 @@ ruby-cucumber-test:
 python2-pytest:
 	cd python2-pytest && $(MAKE) test
 
+
+golang:
+	cd golang-email-test $(MAKE) test
+
 deploy:
 	git push ci master

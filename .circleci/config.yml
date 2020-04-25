@@ -52,6 +52,13 @@ jobs:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
       - run: make python2-pytest
+  golang:
+    docker:
+      - image: cimg/go:1.13
+    steps:
+      - checkout
+      - run: echo "API_KEY=$API_KEY" > .env
+      - run: make golang
 workflows:
   version: 2
   test:
@@ -64,3 +71,4 @@ workflows:
       - ruby-cucumber-test
       - ruby-rspec
       - python2-pytest
+      - golang
