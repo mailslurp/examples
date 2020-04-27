@@ -19,6 +19,13 @@ jobs:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
       - run: make javascript-jest-puppeteer
+  java-maven-junit4:
+    docker:
+      - image: circleci/openjdk:8-jdk-stretch
+    steps:
+      - checkout
+      - run: echo "API_KEY=$API_KEY" > .env
+      - run: make java-maven-junit4
   javascript-cypress-js:
     docker:
       - image: circleci/node:10-browsers
@@ -72,3 +79,4 @@ workflows:
       - ruby-rspec
       - python2-pytest
       - golang
+      - java-maven-junit4

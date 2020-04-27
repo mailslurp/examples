@@ -1,3 +1,5 @@
+# ensure you have created a .env file containing API_KEY=your-api-key
+
 .PHONY: *
 
 php-composer-phpunit:
@@ -27,6 +29,9 @@ python2-pytest:
 
 golang:
 	cd golang-email-test $(MAKE) test
+
+java-maven-junit4:
+	cd java-maven-junit4 $(MAKE) test
 
 deploy:
 	git push ci master
