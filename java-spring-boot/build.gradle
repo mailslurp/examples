@@ -28,7 +28,7 @@ dependencies {
     runtime 'com.h2database:h2:1.4.199'
 
     // mailslurp
-    compile 'com.github.mailslurp:swagger-sdk-java:900a94e754'
+    implementation 'com.github.mailslurp:mailslurp-client-java:7.0.11-RELEASE'
 }
 
 task createPom {
