@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mailslurp.examples.ExampleUsageTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2020-04-28T10:28:54" hostname="jbuntu" time="4.48">
+  <properties/>
+  <testcase name="CanSendEmails()" classname="com.mailslurp.examples.ExampleUsageTest" time="2.245"/>
+  <testcase name="CanCreateInboxes()" classname="com.mailslurp.examples.ExampleUsageTest" time="0.214"/>
+  <testcase name="CanReceiveEmail()" classname="com.mailslurp.examples.ExampleUsageTest" time="2.015"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
