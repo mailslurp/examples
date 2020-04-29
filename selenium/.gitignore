@@ -1,8 +1,0 @@
-gecko*
-.env
-build
-target
-bin
-.gradle
-gradle/wrapper
-*.tar.gz
