@@ -1,13 +1,7 @@
 -include ../.env
 
-
 DRIVER_LOCATION=geckodriver
-PLATFORM_ID != uname -s
-DRIVER_URL != if [ $(PLATFORM_ID) = Linux ]; then \
-        echo https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz; \
-    else \
-        echo https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-macos.tar.gz; \
-    fi
+DRIVER_URL=https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-linux64.tar.gz
 
 clean:
 	rm $(DRIVER_LOCATION)
