@@ -33,5 +33,8 @@ golang:
 java-maven-junit4:
 	cd java-maven-junit4 $(MAKE) test
 
+java-maven-selenium:
+	cd java-maven-selenium $(MAKE) test
+
 deploy:
 	git push ci master

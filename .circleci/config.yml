@@ -26,6 +26,13 @@ jobs:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
       - run: make java-maven-junit4
+  java-maven-selenium:
+    docker:
+      - image: circleci/openjdk:8-jdk-stretch-browsers
+    steps:
+      - checkout
+      - run: echo "API_KEY=$API_KEY" > .env
+      - run: make java-maven-selenium
   javascript-cypress-js:
     docker:
       - image: circleci/node:10-browsers
@@ -80,3 +87,4 @@ workflows:
       - python2-pytest
       - golang
       - java-maven-junit4
+      - java-maven-selenium
