@@ -79,7 +79,7 @@ jobs:
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
-      - run: make csharp-dotnet-core2
+      - run: cd csharp-dotnet-core3 && dotnet restore && dotnet build && dotnet test
 workflows:
   version: 2
   test:
