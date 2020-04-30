@@ -26,7 +26,6 @@ ruby-cucumber-test:
 python2-pytest:
 	cd python2-pytest && $(MAKE) test
 
-
 golang:
 	cd golang-email-test && $(MAKE) test
 
@@ -35,6 +34,9 @@ java-maven-junit4:
 
 java-maven-selenium:
 	cd java-maven-selenium && $(MAKE) test
+
+csharp-dotnet-core3:
+	cd csharp-dotnet-core3 && $(MAKE) test
 
 deploy:
 	git push ci master

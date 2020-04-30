@@ -73,6 +73,13 @@ jobs:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
       - run: make golang
+  csharp-dotnet-core2:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+    steps:
+      - checkout
+      - run: echo "API_KEY=$API_KEY" > .env
+      - run: make csharp-dotnet-core2
 workflows:
   version: 2
   test:
@@ -88,3 +95,4 @@ workflows:
       - golang
       - java-maven-junit4
       - java-maven-selenium
+      - csharp-dotnet-core3
