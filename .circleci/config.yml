@@ -73,7 +73,7 @@ jobs:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
       - run: make golang
-  csharp-dotnet-core2:
+  csharp-dotnet-core3:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:3.1
     steps:
