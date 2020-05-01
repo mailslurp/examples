@@ -89,7 +89,6 @@ jobs:
     steps:
       - checkout
       - run: cd csharp-dotnet-core2-selenium; dotnet.exe restore
-      - run: cd csharp-dotnet-core2-selenium; dotnet.exe install
       - run: cd csharp-dotnet-core2-selenium; dotnet.exe test
 workflows:
   version: 2
