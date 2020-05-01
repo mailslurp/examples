@@ -8,8 +8,8 @@
     "@wdio/mocha-framework": "^5.13.2",
     "@wdio/selenium-standalone-service": "^5.13.2",
     "@wdio/spec-reporter": "^5.13.2",
-    "chromedriver": "^76.0.0",
+    "geckodriver": "^1.19.1",
     "mailslurp-client": "^8.7.8",
-    "wdio-chromedriver-service": "^5.0.2"
+    "wdio-geckodriver-service": "^1.0.3"
   }
 }

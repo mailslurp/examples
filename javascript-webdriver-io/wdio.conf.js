@@ -7,7 +7,7 @@ const config = {
   capabilities: [
     {
       maxInstances: 5,
-      browserName: 'chrome'
+      browserName: 'firefox'
     }
   ],
   logLevel: 'info',
@@ -17,7 +17,7 @@ const config = {
   connectionRetryTimeout: 90000,
   connectionRetryCount: 3,
   framework: 'mocha',
-  services: ['chromedriver'],
+  services: ['geckodriver'],
   reporters: ['spec'],
   mochaOpts: {
     ui: 'bdd',
