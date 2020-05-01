@@ -7,88 +7,94 @@ jobs:
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
-      - run: make php-composer-phpunit
+      - run: cd php-composer-phpunit && make docker
   javascript-axios:
     machine: true
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
-      - run: make javascript-axios
+      - run: cd javascript-axios && make docker
   javascript-jest-puppeteer:
     docker:
       - image: circleci/node:10-browsers
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
-      - run: make javascript-jest-puppeteer
+      - run: cd javascript-jest-puppeteer && make test
   java-maven-junit4:
     docker:
       - image: circleci/openjdk:8-jdk-stretch
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
-      - run: make java-maven-junit4
+      - run: cd java-maven-junit4 && make test
   java-maven-selenium:
     docker:
       - image: circleci/openjdk:8-jdk-stretch-browsers
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
-      - run: make java-maven-selenium
+      - run: cd java-maven-selenium && make test
   javascript-cypress-js:
     docker:
       - image: circleci/node:10-browsers
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
-      - run: make javascript-cypress-js
+      - run: cd javascript-cypress-js && make test
   javascript-webdriver-io:
     docker:
       - image: circleci/node:10-browsers
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
-      - run: make javascript-webdriver-io
+      - run: cd javascript-webdriver-io && make test
   ruby-rspec:
     machine: true
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
-      - run: make ruby-rspec
+      - run: cd ruby-rspec && make docker
   ruby-cucumber-test:
     machine: true
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
-      - run: make ruby-cucumber-test
+      - run: cd ruby-cucumber-test && make docker
   python2-pytest:
     docker:
       - image: circleci/python:2.7
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
-      - run: make python2-pytest
+      - run: cd python2-pytest && make test
   golang:
     docker:
       - image: cimg/go:1.13
     steps:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
-      - run: make golang
-  csharp-dotnet-core3:
+      - run: cd golang-email-test && make test
+  csharp-dotnet-core2-selenium:
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+      - image: mcr.microsoft.com/dotnet/core/sdk:2.1
     steps:
       - checkout
-      - run: echo "API_KEY=$API_KEY" > .env
-      - run: cd csharp-dotnet-core3 && dotnet restore && dotnet build && dotnet test
-  csharp-dotnet-core2-selenium:
+      - run: |
+          cd csharp-dotnet-core2-selenium
+          dotnet restore
+          dotnet build
+          dotnet test
+  csharp-dotnet-core3:
     executor:
       name: win/default
       shell: powershell.exe
     steps:
       - checkout
-      - run: cd csharp-dotnet-core2-selenium; dotnet.exe restore; dotnet.exe test;
+      - run: |
+          cd csharp-dotnet-core3-selenium
+          dotnet.exe restore
+          dotnet.exe test
 workflows:
   version: 2
   test:
@@ -104,5 +110,5 @@ workflows:
       - golang
       - java-maven-junit4
       - java-maven-selenium
-      - csharp-dotnet-core3
       - csharp-dotnet-core2-selenium
+      - csharp-dotnet-core3
