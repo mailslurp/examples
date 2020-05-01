@@ -88,7 +88,7 @@ jobs:
       shell: powershell.exe
     steps:
       - checkout
-      - run: cd csharp-dotnet-core2-selenium; cdotnet.exe restore
+      - run: cd csharp-dotnet-core2-selenium; dotnet.exe restore
       - run: cd csharp-dotnet-core2-selenium; dotnet.exe install
       - run: cd csharp-dotnet-core2-selenium; dotnet.exe test
 workflows:
