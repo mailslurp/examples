@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using mailslurp.Api;
 using mailslurp.Client;
@@ -39,7 +38,9 @@ namespace ExampleService.Tests
             {
                 // set up the webdriver for selenium
                 var timespan = TimeSpan.FromMilliseconds(TimeoutMillis);
-                var service = FirefoxDriverService.CreateDefaultService(DriverPath);
+                var service = DriverPath == null 
+                    ? FirefoxDriverService.CreateDefaultService()
+                    : FirefoxDriverService.CreateDefaultService(DriverPath);
                 _webdriver = new FirefoxDriver(service, new FirefoxOptions(), timespan);
                 _webdriver.Manage().Timeouts().ImplicitWait = timespan;
                 
