@@ -125,7 +125,6 @@ public class ExampleUsageTest {
         assertTrue(email.getSubject().contains("Please confirm your email address"));
     }
 
-
     /**
      * Extract the confirmation code from email body using regex pattern
      */

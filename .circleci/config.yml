@@ -80,6 +80,15 @@ jobs:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
       - run: cd csharp-dotnet-core3 && dotnet restore && dotnet build && dotnet test
+  csharp-dotnet-core2-selenium:
+    executor:
+      name: win/vs2019
+      shell: powershell.exe
+    steps:
+      - checkout
+      - run: cd csharp-dotnet-core2-selenium; cdotnet.exe restore
+      - run: cd csharp-dotnet-core2-selenium; dotnet.exe install
+      - run: cd csharp-dotnet-core2-selenium; dotnet.exe test
 workflows:
   version: 2
   test:
@@ -96,3 +105,4 @@ workflows:
       - java-maven-junit4
       - java-maven-selenium
       - csharp-dotnet-core3
+      - csharp-dotnet-core2-selenium
