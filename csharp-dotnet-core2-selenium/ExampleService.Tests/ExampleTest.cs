@@ -38,7 +38,7 @@ namespace ExampleService.Tests
             {
                 // set up the webdriver for selenium
                 var timespan = TimeSpan.FromMilliseconds(TimeoutMillis);
-                var service = DriverPath == null 
+                var service = DriverPath == null || DriverPath?.Length == 0 
                     ? FirefoxDriverService.CreateDefaultService()
                     : FirefoxDriverService.CreateDefaultService(DriverPath);
                 _webdriver = new FirefoxDriver(service, new FirefoxOptions(), timespan);
