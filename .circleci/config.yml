@@ -88,7 +88,7 @@ jobs:
           cd csharp-dotnet-core2-selenium;
           dotnet.exe restore;
           dotnet.exe test;
-          exit;
+          exit
   csharp-dotnet-core3:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:3.1
