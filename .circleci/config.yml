@@ -76,25 +76,31 @@ jobs:
       - run: echo "API_KEY=$API_KEY" > .env
       - run: cd golang-email-test && make test
   csharp-dotnet-core2-selenium:
-    docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:2.1
-    steps:
-      - checkout
-      - run: |
-          cd csharp-dotnet-core2-selenium
-          dotnet restore
-          dotnet build
-          dotnet test
-  csharp-dotnet-core3:
     executor:
       name: win/default
       shell: powershell.exe
     steps:
       - checkout
       - run: |
-          cd csharp-dotnet-core3-selenium
-          dotnet.exe restore
-          dotnet.exe test
+          $SourceURL = "https://download.mozilla.org/?product=firefox-msi-latest-ssl&os=win64&lang=en-US";
+          $Installer = $env:TEMP + "\firefox.exe";
+          Invoke-WebRequest $SourceURL -OutFile $Installer;
+          Start-Process -FilePath $Installer -Args "/s" -Verb RunAs -Wait;
+          Remove-Item $Installer;
+          cd csharp-dotnet-core2-selenium;
+          dotnet.exe restore;
+          dotnet.exe test;
+  csharp-dotnet-core3:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+    steps:
+      - checkout
+      - run: |
+          cd csharp-dotnet-core3
+          dotnet restore
+          dotnet build
+          dotnet test
+
 workflows:
   version: 2
   test:
