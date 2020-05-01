@@ -21,6 +21,7 @@ namespace ExampleService.Tests
         
         // get a MailSlurp API Key free at https://app.mailslurp.com
         private static readonly string YourApiKey = Environment.GetEnvironmentVariable("API_KEY", EnvironmentVariableTarget.Process);
+        private static readonly string DriverPath = Environment.GetEnvironmentVariable("DRIVER_PATH", EnvironmentVariableTarget.Process);
         
         private static readonly long TimeoutMillis = 30_000L;
         private static readonly string Password = "test-password";
@@ -37,8 +38,10 @@ namespace ExampleService.Tests
             public void SetUp()
             {
                 // set up the webdriver for selenium
-                _webdriver = new FirefoxDriver();
-                _webdriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(TimeoutMillis);
+                var timespan = TimeSpan.FromMilliseconds(TimeoutMillis);
+                var service = FirefoxDriverService.CreateDefaultService(DriverPath);
+                _webdriver = new FirefoxDriver(service, new FirefoxOptions(), timespan);
+                _webdriver.Manage().Timeouts().ImplicitWait = timespan;
                 
                 // configure mailslurp with API Key
                 Assert.NotNull(YourApiKey);
