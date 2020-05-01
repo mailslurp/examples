@@ -84,6 +84,7 @@ jobs:
       - run: |
           $ErrorActionPreference = "Stop";
           choco install firefox;
+          choco install selenium-gecko-driver;
           cd csharp-dotnet-core2-selenium;
           dotnet.exe restore;
           dotnet.exe test;
