@@ -84,7 +84,7 @@ jobs:
       - run: cd csharp-dotnet-core3 && dotnet restore && dotnet build && dotnet test
   csharp-dotnet-core2-selenium:
     executor:
-      name: win/vs2019
+      name: win/default
       shell: powershell.exe
     steps:
       - checkout
