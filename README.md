@@ -8,4 +8,7 @@ See the `README.md` in each module for more information.
 See developer page for [more guides and documentation](https://www.mailslurp.com/developers/).
 
 ## Running
-If you wish to run these examples yourself clone the repository. Create an `.env` file in the riit directory containing `API_KEY=your-mailslurp-api-key`. Then to run each example `cd` into the directory and run `make test`.
+If you wish to run these examples yourself:
+- clone the repository. 
+- create an `.env` file in the root directory containing `API_KEY=your-mailslurp-api-key`. 
+- to run an example `cd` into the directory and run `make test`.
