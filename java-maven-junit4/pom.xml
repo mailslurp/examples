@@ -7,20 +7,11 @@
     <groupId>org.example</groupId>
     <artifactId>java-maven-junit4</artifactId>
     <version>1.0-SNAPSHOT</version>
-
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
-
-    <!-- see https://jitpack.io/#mailslurp/mailslurp-client-java/ -->
     <dependencies>
         <dependency>
-            <groupId>com.github.mailslurp</groupId>
+            <groupId>com.mailslurp</groupId>
             <artifactId>mailslurp-client-java</artifactId>
-            <version>7.0.11-RELEASE</version>
+            <version>11.5.10</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

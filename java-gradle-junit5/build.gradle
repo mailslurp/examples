@@ -11,8 +11,7 @@ repositories {
 }
 
 dependencies {
-    // see https://jitpack.io/#mailslurp/mailslurp-client-java/
-    testImplementation 'com.github.mailslurp:mailslurp-client-java:7.0.11-RELEASE'
+    testImplementation 'com.mailslurp:mailslurp-client-java:11.5.10'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 }
