@@ -19,7 +19,13 @@ ${TEST_PASSWORD}        test-password
 *** Keywords ***
 Create Email Address
     ${inbox}    Create Inbox
-    [return]    ${inbox}
+    [Return]    ${inbox}
+
+Wait For Confirmation Code
+    [Arguments]     ${inbox_id}
+    ${email}    Wait For Latest Email   ${inbox_id}
+    ${code}     Extract Email Content   ${email.body}
+    [Return]    ${code}
 
 Open Browser To Home Page
     Open Browser    ${PLAYGROUND URL}    ${BROWSER}
@@ -39,20 +45,36 @@ Go To SignUp Page
     Click Element   //a[@data-test="sign-in-create-account-link"]
     SignUp Page Should Be Open
 
-Input Username
+Input Email
     [Arguments]    ${username}
     Input Text     //*[@name="email"]    ${username}
+
+Input Username
+    [Arguments]    ${username}
+    Input Text     //*[@name="username"]    ${username}
 
 Input Password
     [Arguments]    ${password}
     Input Text    //*[@name="password"]    ${password}
 
+Input Confirmation
+    [Arguments]    ${code}
+    Input Text    //*[@name="code"]    ${code}
+
+Submit Confirmation
+    Click Button    //button[@data-test="confirm-sign-up-confirm-button"]
+
 Submit Credentials
     Click Button    //button[@data-test="sign-up-create-account-button"]
+
+Submit Login
+    Click Button    //button[@data-test="sign-in-sign-in-button"]
 
 Confirm Page Should Be Open
     Wait Until Element Contains     //*[@data-test="confirm-sign-up-header-section"]//span   Confirm
 
-Welcome Page Should Be Open
-    Location Should Be    ${WELCOME URL}
-    Title Should Be    Welcome Page
+SignIn Page Should Be Open
+    Wait Until Element Contains     //*[@data-test="sign-in-header-section"]//span   Sign in to your account
+
+User Page Should Be Open
+    Wait Until Page Contains    Welcome
