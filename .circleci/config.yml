@@ -21,6 +21,13 @@ jobs:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
       - run: cd javascript-jest-puppeteer && make test
+  java-serenity-jbehave:
+    docker:
+      - image: circleci/openjdk:8-jdk-stretch
+    steps:
+      - checkout
+      - run: echo "API_KEY=$API_KEY" > .env
+      - run: cd java-serenity-jbehave && make test
   java-maven-junit4:
     docker:
       - image: circleci/openjdk:8-jdk-stretch
@@ -68,6 +75,13 @@ jobs:
       - checkout
       - run: echo "API_KEY=$API_KEY" > .env
       - run: cd python2-pytest && make test
+  python3-robotframework:
+    docker:
+      - image: cimg/python:3.9.2
+    steps:
+      - checkout
+      - run: echo "API_KEY=$API_KEY" > .env
+      - run: cd python3-robotframework && make test
   golang:
     docker:
       - image: cimg/go:1.13
@@ -112,8 +126,10 @@ workflows:
       - ruby-cucumber-test
       - ruby-rspec
       - python2-pytest
+      - python3-robotframework
       - golang
       - java-maven-junit4
       - java-maven-selenium
+      - java-serenity-jbehave
       - csharp-dotnet-core2-selenium
       - csharp-dotnet-core3

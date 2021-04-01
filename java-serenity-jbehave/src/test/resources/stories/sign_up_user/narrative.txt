@@ -1,0 +1,4 @@
+Sign up a user
+To sign up for a web application
+As a user
+I want to be able to sign up for an application using my email address, verify the address, and log in
