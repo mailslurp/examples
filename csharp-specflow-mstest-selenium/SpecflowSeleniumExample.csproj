@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="mailslurp" Version="11.5.12" />
+    <PackageReference Include="mailslurp" Version="11.5.20" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="Selenium.WebDriver.GeckoDriver" Version="0.26.0.1" />
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
