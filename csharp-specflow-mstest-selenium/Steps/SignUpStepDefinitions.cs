@@ -67,9 +67,7 @@ namespace SpecflowSeleniumExample.Steps
             
             // first create a test email account
             var inboxControllerApi = new InboxControllerApi(_mailslurpConfig);
-            var response= inboxControllerApi.CreateInboxWithHttpInfo();
-            response.StatusCode.Should().Be(HttpStatusCode.Created);
-            var inbox = response.Data;
+            var inbox = inboxControllerApi.CreateInbox();
             
             // inbox has a real email address
             _scenarioContext.Add("emailAddress", inbox.EmailAddress);
