@@ -62,9 +62,6 @@
           <suiteXmlFiles>
             <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
           </suiteXmlFiles>
-          <systemPropertyVariables>
-            <application.properties>/application.properties</application.properties>
-          </systemPropertyVariables>
         </configuration>
       </plugin>
       <plugin>
@@ -77,85 +74,4 @@
       </plugin>
     </plugins>
   </build>
-  <!-- profiles -->
-  <profiles>
-    <!-- browsers -->
-    <profile>
-      <id>firefox</id>
-      <properties>
-        <capabilities>/firefox.capabilities</capabilities>
-      </properties>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-    </profile>
-    <profile>
-      <id>chrome</id>
-      <properties>
-        <capabilities>/chrome.capabilities</capabilities>
-      </properties>
-    </profile>
-    <profile>
-      <id>ie</id>
-      <properties>
-        <capabilities>/ie.capabilities</capabilities>
-      </properties>
-    </profile>
-    <profile>
-      <id>safari</id>
-      <properties>
-        <capabilities>/safari.capabilities</capabilities>
-      </properties>
-    </profile>
-    <profile>
-      <id>opera</id>
-      <properties>
-        <capabilities>/opera.capabilities</capabilities>
-      </properties>
-    </profile>
-    <!-- environments -->
-    <profile>
-      <id>localhost</id>
-      <properties>
-        <site.url>http://localhost/</site.url>
-      </properties>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-    </profile>
-    <profile>
-      <id>devhost</id>
-      <properties>
-        <site.url>http://devhost/</site.url>
-      </properties>
-    </profile>
-    <profile>
-      <id>testhost</id>
-      <properties>
-        <site.url>http://testhost/</site.url>
-      </properties>
-    </profile>
-    <profile>
-      <id>prodhost</id>
-      <properties>
-        <site.url>http://prodhost.com/</site.url>
-      </properties>
-    </profile>
-    <!-- grid -->
-    <profile>
-      <id>nogrid</id>
-      <properties>
-        <grid.url></grid.url>
-      </properties>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-    </profile>
-    <profile>
-      <id>grid</id>
-      <properties>
-        <grid.url>http://localhost:4444/wd/hub/</grid.url>
-      </properties>
-    </profile>
-  </profiles>
 </project>
