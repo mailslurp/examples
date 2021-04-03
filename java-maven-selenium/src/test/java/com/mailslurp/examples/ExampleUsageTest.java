@@ -1,10 +1,10 @@
 package com.mailslurp.examples;
 
-import com.mailslurp.api.api.InboxControllerApi;
-import com.mailslurp.api.api.WaitForControllerApi;
-import com.mailslurp.client.ApiClient;
-import com.mailslurp.client.ApiException;
-import com.mailslurp.client.Configuration;
+import com.mailslurp.apis.InboxControllerApi;
+import com.mailslurp.apis.WaitForControllerApi;
+import com.mailslurp.clients.ApiClient;
+import com.mailslurp.clients.ApiException;
+import com.mailslurp.clients.Configuration;
 import com.mailslurp.models.Email;
 import com.mailslurp.models.Inbox;
 import java.io.File;
@@ -96,7 +96,7 @@ public class ExampleUsageTest {
     public void test3_canCreateEmailAddressAndSignUp() throws ApiException {
         // create a real, randomized email address with MailSlurp to represent a user
         InboxControllerApi inboxControllerApi = new InboxControllerApi(mailslurpClient);
-        inbox = inboxControllerApi.createInbox(null,null,null,null, null, null);
+        inbox = inboxControllerApi.createInbox(null,null,null,null,null,null,null, null, null);
 
         // check the inbox was created
         assertNotNull(inbox.getId());
