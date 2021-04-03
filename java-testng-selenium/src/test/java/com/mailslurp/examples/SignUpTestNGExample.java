@@ -153,6 +153,6 @@ public class SignUpTestNGExample {
 
   @AfterSuite(alwaysRun = true)
   public void tearDown() {
-    WebDriverPool.DEFAULT.dismissAll();
+      driver.close();
   }
 }
