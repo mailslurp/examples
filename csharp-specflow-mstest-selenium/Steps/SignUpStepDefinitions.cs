@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Net;
 using System.Text.RegularExpressions;
 using FluentAssertions;
 using mailslurp.Api;
 using mailslurp.Client;
-using mailslurp.Model;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using TechTalk.SpecFlow;

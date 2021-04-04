@@ -13,7 +13,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
-import ru.stqa.selenium.factory.WebDriverPool;
 import java.io.File;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
