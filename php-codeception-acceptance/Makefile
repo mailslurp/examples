@@ -10,4 +10,4 @@ install:
 	php composer.phar install
 
 test:
-	API_KEY=$(API_KEY) ./vendor/bin/phpunit test
+	API_KEY=$(API_KEY) php ./vendor/bin/codecept run --steps
