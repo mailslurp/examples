@@ -1,0 +1,20 @@
+# Codeception Test Suite Configuration
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WebDriver or PhpBrowser.
+# If you need both WebDriver and PHPBrowser tests - create a separate suite.
+
+actor: AcceptanceTester
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed
+        - Codeception\Extension\RunProcess:
+            - java -Dwebdriver.gecko.driver=./geckodriver -jar selenium-server.jar
+            - "timeout 300 bash -c 'while [[ \"$(curl -s -o /dev/null -w ''%{http_code}'' localhost:4444)\" != '200' ]]; do sleep 5; done' || false"
+modules:
+    enabled:
+        - WebDriver:
+           url: "https://playground.mailslurp.com"
+           browser: firefox
+        - \Helper\Acceptance
+step_decorators: ~        

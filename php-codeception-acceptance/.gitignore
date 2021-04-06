@@ -1,2 +1,4 @@
 composer.phar
+geckodriver
+selenium-server.jar
 vendor

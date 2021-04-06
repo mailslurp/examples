@@ -1,0 +1,8 @@
+{
+    "require": {
+        "mailslurp/mailslurp-client-php": "dev-master",
+        "codeception/codeception": "4.1.x-dev",
+        "codeception/module-webdriver": "^1.2.0",
+        "codeception/module-asserts": "^1.0.0"
+    }
+}
