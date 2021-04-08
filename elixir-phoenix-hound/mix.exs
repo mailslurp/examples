@@ -21,8 +21,8 @@ defmodule Hound.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:hound, "~> 1.1"}
-#      {:mailslurp, "~> 11.6.0"}
+      {:hound, "~> 1.1"},
+      {:mailslurp, "~> 11.6.1"}
     ]
   end
 end
