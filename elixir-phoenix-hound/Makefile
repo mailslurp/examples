@@ -14,6 +14,9 @@ SELENIUM_URL=https://selenium-release.storage.googleapis.com/3.141/selenium-serv
 $(SELENIUM_LOCATION):
 	curl -L --output $(SELENIUM_LOCATION) $(SELENIUM_URL)
 
+fmt:
+	mix format mix.exs "lib/**/*.{ex,exs}" "test/**/*.{ex,exs}"
+
 clean:
 	rm -rf deps _build
 
