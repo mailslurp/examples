@@ -1,0 +1,12 @@
+[package]
+name = "rust-selenium-email-testing"
+version = "0.1.0"
+authors = ["Jack <jack@mailslurp.com>"]
+edition = "2018"
+
+[dependencies]
+color-eyre = "0.5.10"
+mailslurp = "11.6.9"
+thirtyfour = "0.23.0"
+tokio = { version = "1.4.0", features = ["full"] }
+reqwest = { version = "0.11", features = ["json", "multipart"] }
