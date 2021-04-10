@@ -1,5 +1,5 @@
 .idea
 target
-*.kar
+*.jar
 geckodriver
 *.iml
