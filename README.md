@@ -8,9 +8,10 @@ See the `README.md` in each module for more information.
 
 See developer page for [more guides and documentation](https://www.mailslurp.com/developers/).
 
-| ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
-| [Javascript Axios](./javascript-axios)                 | ![example workflow](https://github.com/mailslurp/examples/actions/workflows/javascript-axios/badge.svg)  |
-|                                                        |                                                                                                          |   
+
+| Project                                | Test status                                                                                           |
+|----------------------------------------|-------------------------------------------------------------------------------------------------------| 
+| [Javascript Axios](./javascript-axios) |![javascript-axios](https://github.com/mailslurp/examples/actions/workflows/javascript-axios/badge.svg)|         
 
 
 ## Running locally
