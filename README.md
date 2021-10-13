@@ -34,8 +34,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 | Project | Test status |
 | --- | --- | 
 | [.NET 2.1 Selenium](./csharp-dotnet-core2-selenium) | ![csharp-dotnet-core2-selenium](https://github.com/mailslurp/examples/actions/workflows/csharp-dotnet-core2-selenium.yml/badge.svg?branch=master) |
-
-### Ruby
+| [.NET Core 3](./csharp-dotnet-core3) | ![csharp-dotnet-core3](https://github.com/mailslurp/examples/actions/workflows/csharp-dotnet-core3.yml/badge.svg?branch=master) |
 
 ## Running locally
 If you wish to run these examples yourself:
