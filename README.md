@@ -22,6 +22,13 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 
 ## Others
 
+### Golang
+
+| Project | Test status |
+| --- | --- | 
+| [Golang Email Test](./golang-email-test) | ![golang-email-test](https://github.com/mailslurp/examples/actions/workflows/golang-email-test.yml/badge.svg?branch=master) |
+
+
 ### C\# (DotNet)
 
 | Project | Test status |
