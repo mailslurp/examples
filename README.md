@@ -22,6 +22,12 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 
 ## Others
 
+### C\# (DotNet)
+
+| Project | Test status |
+| --- | --- | 
+| [.NET 2.1 Selenium](./csharp-dotnet-core2-selenium) | ![csharp-dotnet-core2-selenium](https://github.com/mailslurp/examples/actions/workflows/csharp-dotnet-core2-selenium.yml/badge.svg?branch=master) |
+
 ### Ruby
 
 ## Running locally
