@@ -51,6 +51,12 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 | --- | --- | 
 | [PHP Composer PHPUnit](./php-composer-phpunit) | ![php-composer-phpunit](https://github.com/mailslurp/examples/actions/workflows/php-composer-phpunit.yml/badge.svg?branch=master) |         
 
+### Ruby
+
+| Project | Test status |
+| --- | --- | 
+| [Ruby RSpec email test](./ruby-rspec) | ![ruby-rspec](https://github.com/mailslurp/examples/actions/workflows/ruby-rspec.yml/badge.svg?branch=master) |         
+
 ## Running locally
 If you wish to run these examples yourself:
 - clone the repository. 
