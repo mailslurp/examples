@@ -14,5 +14,5 @@ jobs:
         with:
           node-version: '14'
       - run: API_KEY=${{ secrets.API_KEY }} make ci-env
-      - run: cd javascript-cypress-mailslurp && make test
+      - run: cd javascript-cypress-mailslurp-plugin && make test
 
