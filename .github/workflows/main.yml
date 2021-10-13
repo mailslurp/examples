@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: '14'
       - name: Setup ci
-        run: make ci-env
+        run: API_KEY=${{ secrets.API_KEY }} make ci-env
       - name: Setup ci
         run: |
           for f in ./javascript* do;
