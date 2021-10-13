@@ -12,3 +12,7 @@ If you wish to run these examples yourself:
 - clone the repository. 
 - create an `.env` file in the root directory containing `API_KEY=your-mailslurp-api-key`. 
 - to run an example `cd` into the directory and run `make test` or `API_KEY=your-api-key make test`.
+
+
+## CI
+Examples are tested using Github actions and CircleCI.
