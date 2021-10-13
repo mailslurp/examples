@@ -1,0 +1,18 @@
+name: javascript-cypress-mailslurp
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - run: API_KEY=${{ secrets.API_KEY }} make ci-env
+      - run: cd javascript-cypress-mailslurp && make test
+
