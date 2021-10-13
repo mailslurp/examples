@@ -18,10 +18,13 @@ jobs:
           node-version: '14'
       - name: Setup ci
         run: API_KEY=${{ secrets.API_KEY }} make ci-env
-      - name: Setup ci
+      - name: Run Javascript examples
         run: |
           for f in ./javascript*
           do
-            echo $f
+            echo "Run $f tests"
+            cd "$f"
+            make test
+            cd -
           done
 
