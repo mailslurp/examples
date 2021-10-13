@@ -1,10 +1,13 @@
 /// <reference types="cypress-mailslurp" />
+
 describe("user sign up test with mailslurp plugin", function () {
     // use cypress-mailslurp plugin to create an email address before test
     before(function () {
+        cy.log("Wrap inbox before test")
         return cy.mailslurp()
             .then(mailslurp => mailslurp.createInbox())
             .then(inbox => {
+                cy.log(`Inbox id ${inbox.id}`)
                 // save inbox id and email address to this (make sure you use function and not arrow syntax)
                 cy.wrap(inbox.id).as('inboxId')
                 cy.wrap(inbox.emailAddress).as('emailAddress')
