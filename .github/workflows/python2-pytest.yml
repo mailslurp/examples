@@ -14,5 +14,5 @@ jobs:
         with:
           python-version: 2.7
       - run: API_KEY=${{ secrets.API_KEY }} make ci-env
-      - run: cd python2-pytest && make test
+      - run: cd python2-pytest && make test-ci
 

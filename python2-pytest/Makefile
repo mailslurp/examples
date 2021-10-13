@@ -7,6 +7,10 @@ venv/bin/active:
 		pip install -r requirements.txt;\
 	)
 
+test-ci:
+		pip install -r requirements.txt;
+		API_KEY=$(API_KEY) pytest;
+
 test: venv/bin/active
 	( \
 		. venv/bin/activate;\
