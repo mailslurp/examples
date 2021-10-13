@@ -16,7 +16,7 @@ fixture`mfa sign-up test`.page`https://playground.mailslurp.com`.before(
 
 test("Can sign-up and verify account", async (t) => {
   // create email address for a test user
-  const inbox = await mailslurp.inboxController.createInbox();
+  const inbox = await mailslurp.createInbox();
   // load the page and click sign up
   await t
     .expect(Selector("title").innerText)
@@ -29,7 +29,7 @@ test("Can sign-up and verify account", async (t) => {
     .typeText(Selector('[name="password"]'), password)
     .click(Selector("[data-test=sign-up-create-account-button]"));
   // wait for verification code to arrive to email then extract code
-  const email = await mailslurp.waitController.waitForLatestEmail(
+  const email = await mailslurp.waitForLatestEmail(
     inbox.id,
     30000,
     true

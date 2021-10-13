@@ -2,15 +2,15 @@
   "name": "javascript-testcafe",
   "description": "Email test MFA user sign up using TestCafe and MailSlurp",
   "scripts": {
-    "test": "testcafe firefox mfa-test.js --video artifacts/videos",
+    "test": "testcafe chromium:headless mfa-test.js --video artifacts/videos",
     "fmt": "prettier --write ."
   },
   "dependencies": {
-    "mailslurp-client": "^11.3.1",
-    "prettier": "^2.2.1",
-    "testcafe": "^1.13.0"
+    "mailslurp-client": "^15.0.1",
+    "prettier": "^2.4.1",
+    "testcafe": "^1.16.1"
   },
   "devDependencies": {
-    "@ffmpeg-installer/ffmpeg": "^1.0.20"
+    "@ffmpeg-installer/ffmpeg": "^1.1.0"
   }
 }

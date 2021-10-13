@@ -1,5 +1,6 @@
 const config = {
   runner: 'local',
+  headless: true,
   path: '/',
   specs: ['test/*.test.js'],
   exclude: [],
