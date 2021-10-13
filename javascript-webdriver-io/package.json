@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "wdio wdio.conf.js"
+    "test": "wdio run wdio.conf.js"
   },
   "dependencies": {
     "@wdio/cli": "^7.14.1",
@@ -8,8 +8,11 @@
     "@wdio/mocha-framework": "^7.14.1",
     "@wdio/selenium-standalone-service": "^7.14.1",
     "@wdio/spec-reporter": "^7.14.1",
-    "geckodriver": "^2.0.3",
+    "geckodriver": "^2.0.4",
     "mailslurp-client": "^15.0.1",
     "wdio-geckodriver-service": "^2.0.3"
+  },
+  "devDependencies": {
+    "debug": "^4.3.2"
   }
 }

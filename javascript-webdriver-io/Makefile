@@ -6,4 +6,4 @@ node_modules:
 	npm install
 
 test: node_modules
-	API_KEY=$(API_KEY) npm run test
+	API_KEY=$(API_KEY) DEBUG='ms*' npm run test

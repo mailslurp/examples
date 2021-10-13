@@ -1,3 +1,4 @@
+const log = require('debug')('ms-wdio')
 const assert = require('assert');
 const MailSlurp = require('mailslurp-client').default;
 const apiKey = process.env.API_KEY;
@@ -13,7 +14,8 @@ describe('sign up, confirm, login and reset', () => {
   let password = "test-password";
   let code;
 
-  it('can load playground app', async () => {
+  before('can load playground app', async () => {
+    log("Setup browser")
     await browser.url('/');
     await browser.setWindowSize(1200, 1200);
   });
@@ -42,7 +44,7 @@ describe('sign up, confirm, login and reset', () => {
 
   it('can fetch confirmation code', async () => {
     // fetch the email from mailslurp
-    const email = await mailslurp.waitForLatestEmail(inbox.id)
+    const email = await mailslurp.waitForLatestEmail(inbox.id, 30000)
 
     // verify that it contains the code
     assert.strictEqual(/verification code is/.test(email.body), true);

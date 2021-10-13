@@ -8,7 +8,10 @@ const config = {
   capabilities: [
     {
       maxInstances: 5,
-      browserName: 'firefox'
+      browserName: 'firefox',
+       'moz:firefoxOptions': {
+          args: ['-headless'],
+        },
     }
   ],
   logLevel: 'info',
@@ -22,7 +25,7 @@ const config = {
   reporters: ['spec'],
   mochaOpts: {
     ui: 'bdd',
-    timeout: 60000
+    timeout: 60000,
   }
 };
 
