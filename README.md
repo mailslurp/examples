@@ -1,4 +1,4 @@
-# MailSlurp Examples
+# MailSlurp Examples 📨
 
 > Create email addresses on demand then send and receive emails in code and tests. Test apps end-to-end with *real* email addresses
 
@@ -6,21 +6,17 @@ This repository contains examples of [MailSlurp](https://www.mailslurp.com) usag
 
 See developer page for [more guides and documentation](https://www.mailslurp.com/developers/). If you notice an issue in the examples please open an issue, pull request, or [contact support](https://www.mailslurp.com/support/).
 
-## Common
-
-### Javascript
+### Featured projects
 
 | Project | Test status |
 | --- | --- | 
-| [Axios Email Test](./javascript-axios) | ![javascript-axios](https://github.com/mailslurp/examples/actions/workflows/javascript-axios.yml/badge.svg?branch=master) |         
-| [Codecept JS Email Test](./javascript-codecept-js) | ![javascript-codecept-js](https://github.com/mailslurp/examples/actions/workflows/javascript-codecept-js.yml/badge.svg?branch=master) |         
 | [Cypress JS Email Test](./javascript-cypress-js) | ![javascript-cypress-js](https://github.com/mailslurp/examples/actions/workflows/javascript-cypress-js.yml/badge.svg?branch=master) |         
 | [Cypress Mailslurp Plugin Email Test](./javascript-cypress-mailslurp-plugin) | ![javascript-cypress-mailslurp](https://github.com/mailslurp/examples/actions/workflows/javascript-cypress-mailslurp.yml/badge.svg?branch=master) |         
 | [Jest Puppeteer Email Test](./javascript-jest-puppeteer) | ![javascript-jest-puppeteer](https://github.com/mailslurp/examples/actions/workflows/javascript-jest-puppeteer.yml/badge.svg?branch=master) |         
 | [Testcafe Email Test](./javascript-testcafe) | ![javascript-testcafe](https://github.com/mailslurp/examples/actions/workflows/javascript-testcafe.yml/badge.svg?branch=master) |         
 | [Webdriver WDIO Email Test](./javascript-webdriver-io) | ![javascript-webdriver-io](https://github.com/mailslurp/examples/actions/workflows/javascript-webdriver-io.yml/badge.svg?branch=master) |         
 
-## Others
+## Example projects
 
 ### Golang
 
@@ -35,6 +31,21 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 | --- | --- | 
 | [.NET 2.1 Selenium](./csharp-dotnet-core2-selenium) | ![csharp-dotnet-core2-selenium](https://github.com/mailslurp/examples/actions/workflows/csharp-dotnet-core2-selenium.yml/badge.svg?branch=master) |
 | [.NET Core 3](./csharp-dotnet-core3) | ![csharp-dotnet-core3](https://github.com/mailslurp/examples/actions/workflows/csharp-dotnet-core3.yml/badge.svg?branch=master) |
+| [.NET Core 5 Specflow Selenium](./csharp-specflow-mstest-selenium) | ![csharp-specflow-mstest-selenium](https://github.com/mailslurp/examples/actions/workflows/csharp-specflow-mstest-selenium.yml/badge.svg?branch=master) |
+
+### Javascript / Typescript
+
+| Project | Test status |
+| --- | --- | 
+| [Axios Email Test](./javascript-axios) | ![javascript-axios](https://github.com/mailslurp/examples/actions/workflows/javascript-axios.yml/badge.svg?branch=master) |         
+| [Codecept JS Email Test](./javascript-codecept-js) | ![javascript-codecept-js](https://github.com/mailslurp/examples/actions/workflows/javascript-codecept-js.yml/badge.svg?branch=master) |         
+| [Cypress JS Email Test](./javascript-cypress-js) | ![javascript-cypress-js](https://github.com/mailslurp/examples/actions/workflows/javascript-cypress-js.yml/badge.svg?branch=master) |         
+| [Cypress Mailslurp Plugin Email Test](./javascript-cypress-mailslurp-plugin) | ![javascript-cypress-mailslurp](https://github.com/mailslurp/examples/actions/workflows/javascript-cypress-mailslurp.yml/badge.svg?branch=master) |         
+| [Jest Puppeteer Email Test](./javascript-jest-puppeteer) | ![javascript-jest-puppeteer](https://github.com/mailslurp/examples/actions/workflows/javascript-jest-puppeteer.yml/badge.svg?branch=master) |         
+| [Testcafe Email Test](./javascript-testcafe) | ![javascript-testcafe](https://github.com/mailslurp/examples/actions/workflows/javascript-testcafe.yml/badge.svg?branch=master) |         
+| [Webdriver WDIO Email Test](./javascript-webdriver-io) | ![javascript-webdriver-io](https://github.com/mailslurp/examples/actions/workflows/javascript-webdriver-io.yml/badge.svg?branch=master) |         
+
+      
 
 ## Running locally
 If you wish to run these examples yourself:
