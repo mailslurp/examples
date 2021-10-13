@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "test": "npx codeceptjs run"
+  },
+  "dependencies": {
+    "@codeceptjs/mailslurp-helper": "^1.0.5",
+    "codeceptjs": "^2.3.0",
+    "mailslurp-client": "^15.0.1"
+  }
+}
