@@ -1,4 +1,4 @@
-name: javascript
+name: test-examples
 on:
   push:
     branches: [ master ]
