@@ -51,6 +51,13 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 | --- | --- | 
 | [PHP Composer PHPUnit](./php-composer-phpunit) | ![php-composer-phpunit](https://github.com/mailslurp/examples/actions/workflows/php-composer-phpunit.yml/badge.svg?branch=master) |         
 
+### Python
+
+| Project | Test status |
+| --- | --- | 
+| [Python2 PyTest](./python2-pytest) | ![python2-pytest](https://github.com/mailslurp/examples/actions/workflows/python2-pytest.yml/badge.svg?branch=master) |         
+| [Python3 Robot Framework](./python3-robotframework) | ![python3-robotframework](https://github.com/mailslurp/examples/actions/workflows/python3-robotframework.yml/badge.svg?branch=master) |         
+
 ### Ruby
 
 | Project | Test status |
