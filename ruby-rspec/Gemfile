@@ -1,4 +1,4 @@
 source "https://rubygems.org"
 
 gem 'rspec', '~> 3.8'
-gem 'mailslurp_client', '~> 7.0', '>= 7.0.8'
+gem 'mailslurp_client', '~> 15.0', '>= 15.0.2'
