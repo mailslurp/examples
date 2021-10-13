@@ -6,7 +6,7 @@ This repository contains examples of [MailSlurp](https://www.mailslurp.com) usag
 
 See the `README.md` in each module for more information.
 
-See developer page for [more guides and documentation](https://www.mailslurp.com/developers/).
+See developer page for [more guides and documentation](https://www.mailslurp.com/developers/). If you notice an issue in the examples please open an issue, pull request, or [contact support](https://www.mailslurp.com/support/).
 
 ## Javascript
 
@@ -29,4 +29,4 @@ If you wish to run these examples yourself:
 - to run an example `cd` into the directory and run `make test` or `API_KEY=your-api-key make test`.
 
 ## CI
-Examples are tested using Github actions and CircleCI.
+Examples are tested with each major release and on a schedule using Github actions and CircleCI.
