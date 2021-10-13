@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"github.com/antihax/optional"
-	"github.com/mailslurp/mailslurp-client-go"
+	mailslurp "github.com/mailslurp/mailslurp-client-go"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"regexp"
