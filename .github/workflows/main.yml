@@ -20,7 +20,8 @@ jobs:
         run: API_KEY=${{ secrets.API_KEY }} make ci-env
       - name: Setup ci
         run: |
-          for f in ./javascript* do;
-            echo $f;
-          done;
+          for f in ./javascript*
+          do
+            echo $f
+          done
 
