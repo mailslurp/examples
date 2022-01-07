@@ -1,5 +1,7 @@
-build:
-	python3 .build.py
+build: build-manifest
+
+build-manifest:
+	ROOT=$(PWD) MANIFEST_PATH=$(PWD)/.manifest.json python3 .build/build-manifest.py
 
 ci-env:
 	echo "API_KEY=$$API_KEY" > .env
