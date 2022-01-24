@@ -1,0 +1,17 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+#
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmtpService.Tests", "SmtpService.Tests\SmtpService.Tests.csproj", "{8D9AA216-A769-4921-A814-6D330B92B31D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8D9AA216-A769-4921-A814-6D330B92B31D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D9AA216-A769-4921-A814-6D330B92B31D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D9AA216-A769-4921-A814-6D330B92B31D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D9AA216-A769-4921-A814-6D330B92B31D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
