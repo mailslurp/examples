@@ -22,8 +22,4 @@
         </PackageReference>
     </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\SmtpService\SmtpService.csproj"/>
-    </ItemGroup>
-
 </Project>
