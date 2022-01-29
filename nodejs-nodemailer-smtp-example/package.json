@@ -1,0 +1,17 @@
+{
+  "name": "nodejs-nodemailer-smtp-example",
+  "version": "1.0.0",
+  "description": "NodeMailer SMTP test",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine"
+  },
+  "author": "mailslurp",
+  "license": "MIT",
+  "dependencies": {
+    "isomorphic-fetch": "^3.0.0",
+    "jasmine": "^4.0.2",
+    "mailslurp-client": "^15.4.4",
+    "nodemailer": "^6.7.2"
+  }
+}
