@@ -1,0 +1,17 @@
+{
+  "name": "nodejs-smtp-email-attachments-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "qunit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "isomorphic-fetch": "^3.0.0",
+    "mailslurp-client": "^15.4.5",
+    "qunit": "^2.17.2"
+  }
+}
