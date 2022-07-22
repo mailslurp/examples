@@ -55,6 +55,11 @@
               "target": "Package",
               "version": "[1.2.0, )",
               "generatePathProperty": true
+            },
+            "mailslurp": {
+              "target": "Package",
+              "version": "[15.12.17, )",
+              "generatePathProperty": true
             }
           },
           "imports": [
