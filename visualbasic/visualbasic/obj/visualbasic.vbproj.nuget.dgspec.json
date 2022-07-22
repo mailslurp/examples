@@ -1,0 +1,72 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/jackmahoney/projects/ms2/examples/visualbasic/visualbasic/visualbasic.vbproj": {}
+  },
+  "projects": {
+    "/Users/jackmahoney/projects/ms2/examples/visualbasic/visualbasic/visualbasic.vbproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/jackmahoney/projects/ms2/examples/visualbasic/visualbasic/visualbasic.vbproj",
+        "projectName": "visualbasic",
+        "projectPath": "/Users/jackmahoney/projects/ms2/examples/visualbasic/visualbasic/visualbasic.vbproj",
+        "packagesPath": "/Users/jackmahoney/.nuget/packages/",
+        "outputPath": "/Users/jackmahoney/projects/ms2/examples/visualbasic/visualbasic/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/jackmahoney/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.5.0, )"
+            },
+            "NUnit": {
+              "target": "Package",
+              "version": "[3.12.0, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[3.16.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/x64/sdk/3.1.420/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
