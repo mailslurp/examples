@@ -13,4 +13,4 @@ type TestClass () =
         Assert.IsNotNull(apiKey)
         let config = Configuration()
         config.ApiKey.Add("x-api-key", apiKey);
-        Assert.IsTrue(true)
+        Assert.IsTrue(true)b
