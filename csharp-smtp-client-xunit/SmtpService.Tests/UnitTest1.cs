@@ -13,8 +13,7 @@ namespace SmtpService.Tests
         [Fact]
         public void CanSendEmailWithMailSlurpSmtp()
         {
-            var apiKey = Environment.GetEnvironmentVariable("API_KEY")
-                         ?? throw new ArgumentNullException("Missing API_KEY environment variable containing MailSlurp key");
+            var apiKey = "wus_test";
 
             // configure client
             var config = new Configuration();

@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "AnyCodable",
+        "repositoryURL": "https://github.com/Flight-School/AnyCodable",
+        "state": {
+          "branch": null,
+          "revision": "38b05fc9f86501ef8018aa90cf3d83bd97f74067",
+          "version": "0.4.0"
+        }
+      },
+      {
+        "package": "mailslurp",
+        "repositoryURL": "https://github.com/mailslurp/mailslurp-client-swift",
+        "state": {
+          "branch": "15.12.9",
+          "revision": "203230305b32c4f33ba7bbca3ee8674c956d57de",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
