@@ -20,6 +20,7 @@ const config: PlaywrightTestConfig = {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
+        headless: !!process.env.CI,
         video: 'on'
       },
     }

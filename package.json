@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "debug": "^4.3.4",
+    "fast-glob": "^3.2.11",
+    "ts-node": "^10.9.1"
+  },
+  "scripts": {
+    "shortcodes": "node --loader ts-node/esm shortcodes.ts"
+  }
+}
