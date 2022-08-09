@@ -10,12 +10,13 @@ Namespace visualbasic
         <Test>
         Public Sub Test1()
             Dim webClient As New Net.WebClient
-            Dim apiKey As String = "wus_test"
+            Dim apiKey As String = Environment.GetEnvironmentVariable("API_KEY")
             Assert.IsNotEmpty(apiKey)
             webClient.Headers.Add("x-api-key", apiKey)
-            Dim result = webClient.DownloadString("https://api.mailslurp.com/inboxes/imap-smtp-access")
-            Dim Json As Object
-            Assert.AreEqual(result, 1)
+            Dim username = webClient.DownloadString("https://api.mailslurp.com/user/smtp/username")
+            Dim password = webClient.DownloadString("https://api.mailslurp.com/user/smtp/password")
+            Dim port = webClient.DownloadString("https://api.mailslurp.com/user/smtp/port")
+            Dim host = webClient.DownloadString("https://api.mailslurp.com/user/smtp/host")
         End Sub
     End Class
 End Namespace
