@@ -94,6 +94,12 @@ async function getGenBlocks(content: string, commentStart:string, commentEnd:str
             commentEnd: "//</gen>",
             highlight: "typescript",
         },
+        {
+            paths:  await glob([join(__dirname, "/visualbasic/visualbasic/*.vb")]),
+            commentStart: "'<gen>",
+            commentEnd: "'</gen>",
+            highlight: "vba",
+        },
     ];
     const blockMap: {[key:string]: { body: string; highlight: string} } = {};
     for (const useCase of useCases) {

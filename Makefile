@@ -17,3 +17,5 @@ build-shortcodes:
 
 sync-shortcodes:
 	aws s3 sync shortcodes/ s3://api-spec.mailslurp.com/shortcodes-github --exact-timestamps
+
+publish: build-shortcodes sync-shortcodes
