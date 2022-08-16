@@ -6,5 +6,8 @@
   },
   "scripts": {
     "shortcodes": "node --loader ts-node/esm shortcodes.ts"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.7"
   }
 }

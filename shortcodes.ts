@@ -10,10 +10,6 @@
  * ```
  * Creates a shortcode in themes/ms/layouts/shortcodes that can be used in content
  */
-import {fileURLToPath} from "url";
-import {dirname} from "path";
-
-// @ts-ignore
 import debug from "debug";
 import * as fs from "fs";
 import {join} from "path";
@@ -43,7 +39,7 @@ function stripIndent(inp: string) {
     return inp.replace(regex, "");
 }
 
-async function getFileContent(path: string, commentStart: string, commentEnd: string): Promise<string> {
+async function getFileContent(path: string): Promise<string> {
     const content = await fs.promises.readFile(path, {encoding: "utf-8"});
     return content.toString();
 }
@@ -80,22 +76,41 @@ async function getGenBlocks(content: string, commentStart:string, commentEnd:str
     return ([] as Block[]).concat(...matches);
 }
 
+async function files(p: string) {
+    return glob([join(__dirname, p)])
+}
 
 (async () => {
     await fs.promises.mkdir(join(__dirname, "/shortcodes"), {
         recursive: true,
     });
+    const fullFiles :{ id: string; path: string, highlight: string }[] = [
+        { id: 'cypress_plugin_package_json', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/package.json'), highlight: 'json'},
+        {id: 'cypress_plugin_full', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/cypress/e2e/integration-test.cy.ts'), highlight: 'typescript'}
+    ]
     // *.use.ts test classes have a special comment -> //<gen>inbox_send ----> //</gen>
     const useCases: { paths: string[], commentStart: string, commentEnd: string, highlight: string }[] = [
         // add
         {
-            paths:  await glob([join(__dirname, "/playwright-sms-testing/tests/*.spec.ts")]),
+            paths:  await files("/playwright-sms-testing/tests/*.spec.ts"),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "typescript",
         },
         {
-            paths:  await glob([join(__dirname, "/visualbasic/visualbasic/*.vb")]),
+            paths:  await files("/javascript-cypress-mailslurp-plugin/cypress/support/e2e.js"),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "javascript",
+        },
+        {
+            paths:  await files("/javascript-cypress-mailslurp-plugin/cypress/e2e/*.ts"),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "typescript",
+        },
+        {
+            paths:  await files("/visualbasic/visualbasic/*.vb"),
             commentStart: "'<gen>",
             commentEnd: "'</gen>",
             highlight: "vba",
@@ -105,7 +120,7 @@ async function getGenBlocks(content: string, commentStart:string, commentEnd:str
     for (const useCase of useCases) {
         for (const filePath of useCase.paths) {
             log(`Get content for ${useCase.highlight}`);
-            const content = await getFileContent(filePath, useCase.commentStart, useCase.commentEnd);
+            const content = await getFileContent(filePath);
             log(`Check file ${filePath}`);
             await checkFile(content, useCase.commentStart, useCase.commentEnd);
             log(`Generate blocks ${filePath}`);
@@ -116,6 +131,11 @@ async function getGenBlocks(content: string, commentStart:string, commentEnd:str
                 blockMap[useCase.highlight + "_" + block.id] = {body: block.body, highlight: useCase.highlight};
             }
         }
+    }
+    for( const fullFile of fullFiles) {
+        log('Full file ' + fullFile.id)
+        const body = await getFileContent(fullFile.path)
+        blockMap[fullFile.highlight + "_" + fullFile.id] = { body , highlight: fullFile.highlight }
     }
 
     for (const [key, value] of Object.entries(blockMap)) {

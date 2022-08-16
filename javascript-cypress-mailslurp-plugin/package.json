@@ -9,8 +9,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "cypress": "^8.6.0",
-    "cypress-mailslurp": "1.3.0",
+    "cypress": "^10.5.0",
+    "cypress-mailslurp": "^1.5.0",
     "typescript": "^4.4.4"
   },
   "devDependencies": {
