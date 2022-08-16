@@ -9,7 +9,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 ## Projects
 
 {{#topLevelDirs}}
-- [{{.}}](/{{.}})
+- [{{.}}](./{{.}})
 {{/topLevelDirs}}
 
 ## Running locally
