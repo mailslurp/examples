@@ -1,3 +1,4 @@
+//<gen>cypress_client_add_command
 const { MailSlurp } = require('mailslurp-client');
 // set your api key with an environment variable CYPRESS_API_KEY
 // (cypress prefixes environment variables with CYPRESS)
@@ -11,3 +12,4 @@ Cypress.Commands.add("createInbox", () => {
 Cypress.Commands.add("waitForLatestEmail", (inboxId) => {
   return mailslurp.waitForLatestEmail(inboxId)
 });
+//</gen>

@@ -86,11 +86,20 @@ async function files(p: string) {
     });
     const fullFiles :{ id: string; path: string, highlight: string }[] = [
         { id: 'cypress_plugin_package_json', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/package.json'), highlight: 'json'},
+        {id: 'cypress_client_full', path: join(__dirname, '/javascript-cypress-js/cypress/e2e/example.cy.js'), highlight: 'javascript'},
+        {id: 'cypress_client_package_json', path: join(__dirname, '/javascript-cypress-js/package.json'), highlight: 'json'},
+        {id: 'cypress_client_config', path: join(__dirname, '/javascript-cypress-js/cypress.config.js'), highlight: 'json'},
         {id: 'cypress_plugin_full', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/cypress/e2e/integration-test.cy.ts'), highlight: 'typescript'}
     ]
     // *.use.ts test classes have a special comment -> //<gen>inbox_send ----> //</gen>
     const useCases: { paths: string[], commentStart: string, commentEnd: string, highlight: string }[] = [
         // add
+        {
+            paths:  await files("/javascript-cypress-js/**/*.js"),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "javascript",
+        },
         {
             paths:  await files("/playwright-sms-testing/tests/*.spec.ts"),
             commentStart: "//<gen>",
