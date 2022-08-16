@@ -5,9 +5,12 @@
     "ts-node": "^10.9.1"
   },
   "scripts": {
-    "shortcodes": "node --loader ts-node/esm shortcodes.ts"
+    "shortcodes": "node --loader ts-node/esm shortcodes.ts",
+    "readme": "node --loader ts-node/esm readme.ts"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.7"
+    "@types/debug": "^4.1.7",
+    "@types/mustache": "^4.2.1",
+    "mustache": "^4.2.0"
   }
 }

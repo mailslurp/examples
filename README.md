@@ -6,69 +6,49 @@ This repository contains examples of [MailSlurp](https://www.mailslurp.com) usag
 
 See developer page for [more guides and documentation](https://www.mailslurp.com/developers/). If you notice an issue in the examples please open an issue, pull request, or [contact support](https://www.mailslurp.com/support/).
 
-### Featured projects
+## Projects
 
-| Project |
-| --- |
-| [Cypress JS Email Test](./javascript-cypress-js) | 
-| [Cypress Mailslurp Plugin Email Test](./javascript-cypress-mailslurp-plugin) | 
-| [Jest Puppeteer Email Test](./javascript-jest-puppeteer) | 
-| [Testcafe Email Test](./javascript-testcafe) | 
-| [Webdriver WDIO Email Test](./javascript-webdriver-io) | 
-
-## Example projects
-
-### Golang
-
-|---------|
-| Project | 
-| --- | 
-| [Golang Email Test](./golang-email-test) |
-
-
-### C\# (DotNet)
-
-|---------|
-| Project | 
-| --- | 
-| [.NET 2.1 Selenium](./csharp-dotnet-core2-selenium) | 
-| [.NET Core 3](./csharp-dotnet-core3) | 
-| [.NET Core 5 Specflow Selenium](./csharp-specflow-mstest-selenium) | 
-
-### Javascript / Typescript
-
-|---------|
-| Project | 
-| --- | 
-| [Axios Email Test](./javascript-axios) | 
-| [Codecept JS Email Test](./javascript-codecept-js) |
-| [Cypress JS Email Test](./javascript-cypress-js) | 
-| [Cypress Mailslurp Plugin Email Test](./javascript-cypress-mailslurp-plugin) | 
-| [Jest Puppeteer Email Test](./javascript-jest-puppeteer) |
-| [Testcafe Email Test](./javascript-testcafe) | 
-| [Webdriver WDIO Email Test](./javascript-webdriver-io) |
-
-### PHP 
-
-|---------|
-| Project | Test status |
-| --- | --- | 
-| [PHP Composer PHPUnit](./php-composer-phpunit) | ![php-composer-phpunit](https://github.com/mailslurp/examples/actions/workflows/php-composer-phpunit.yml/badge.svg?branch=master) |         
-
-### Python
-
-|---------|
-| Project | 
-| --- | 
-| [Python2 PyTest](./python2-pytest) | 
-| [Python3 Robot Framework](./python3-robotframework) | 
-
-### Ruby
-
-|---------|
-| Project | 
-| --- | 
-| [Ruby RSpec email test](./ruby-rspec) |
+- [csharp-dotnet-core2-selenium](/csharp-dotnet-core2-selenium)
+- [csharp-dotnet-core3](/csharp-dotnet-core3)
+- [csharp-smtp-client-xunit](/csharp-smtp-client-xunit)
+- [csharp-specflow-mstest-selenium](/csharp-specflow-mstest-selenium)
+- [dart-email-testing](/dart-email-testing)
+- [deno-email-api](/deno-email-api)
+- [elixir-phoenix-hound](/elixir-phoenix-hound)
+- [fsharp-email-mstest](/fsharp-email-mstest)
+- [golang-email-test](/golang-email-test)
+- [java-gradle-junit5](/java-gradle-junit5)
+- [java-maven-junit4](/java-maven-junit4)
+- [java-maven-selenium](/java-maven-selenium)
+- [java-serenity-jbehave](/java-serenity-jbehave)
+- [java-spring-boot](/java-spring-boot)
+- [java-testng-selenium](/java-testng-selenium)
+- [javascript-axios](/javascript-axios)
+- [javascript-codecept-js](/javascript-codecept-js)
+- [javascript-cypress-js](/javascript-cypress-js)
+- [javascript-cypress-mailslurp-plugin](/javascript-cypress-mailslurp-plugin)
+- [javascript-jest-puppeteer](/javascript-jest-puppeteer)
+- [javascript-testcafe](/javascript-testcafe)
+- [javascript-webdriver-io](/javascript-webdriver-io)
+- [kotlin-email-test-example](/kotlin-email-test-example)
+- [nim-unittests](/nim-unittests)
+- [nodejs-nodemailer-smtp-example](/nodejs-nodemailer-smtp-example)
+- [nodejs-smtp-email-attachments-test](/nodejs-smtp-email-attachments-test)
+- [php-codeception-acceptance](/php-codeception-acceptance)
+- [php-composer-phpunit](/php-composer-phpunit)
+- [php-laravel-email-examples](/php-laravel-email-examples)
+- [playwright-email-testing](/playwright-email-testing)
+- [playwright-sms-testing](/playwright-sms-testing)
+- [python2-pytest](/python2-pytest)
+- [python3-robotframework](/python3-robotframework)
+- [ruby-capybara-cucumber-selenium](/ruby-capybara-cucumber-selenium)
+- [ruby-cucumber-test](/ruby-cucumber-test)
+- [ruby-rspec](/ruby-rspec)
+- [rust-selenium-email-testing](/rust-selenium-email-testing)
+- [sendgrid](/sendgrid)
+- [shortcodes](/shortcodes)
+- [swift-email-smtp-examples](/swift-email-smtp-examples)
+- [visualbasic](/visualbasic)
 
 ## Running locally
 If you wish to run these examples yourself:
