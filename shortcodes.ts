@@ -88,7 +88,8 @@ async function files(p: string) {
         { id: 'cypress_plugin_package_json', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/package.json'), highlight: 'json'},
         {id: 'cypress_client_full', path: join(__dirname, '/javascript-cypress-js/cypress/e2e/example.cy.js'), highlight: 'javascript'},
         {id: 'cypress_client_package_json', path: join(__dirname, '/javascript-cypress-js/package.json'), highlight: 'json'},
-        {id: 'cypress_client_config', path: join(__dirname, '/javascript-cypress-js/cypress.config.js'), highlight: 'json'},
+        {id: 'cypress_client_config', path: join(__dirname, '/javascript-cypress-js/cypress.config.js'), highlight: 'javascript'},
+        {id: 'cypress_plugin_config', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/cypress.config.ts'), highlight: 'typescript'},
         {id: 'cypress_plugin_full', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/cypress/e2e/integration-test.cy.ts'), highlight: 'typescript'}
     ]
     // *.use.ts test classes have a special comment -> //<gen>inbox_send ----> //</gen>
