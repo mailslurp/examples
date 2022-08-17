@@ -14,9 +14,11 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
+//<gen>add_cypress_commands
+// add to cypress/support/custom.js
 import './commands'
-
 import "cypress-mailslurp";
+//</gen>
 
 
 // Alternatively you can use CommonJS syntax:

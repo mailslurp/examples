@@ -11,3 +11,14 @@ copy:
 
 deploy: build copy
 	git push ci master
+
+template-readme:
+	DEBUG=script* npm run readme
+
+build-shortcodes:
+	DEBUG=script* npm run shortcodes
+
+sync-shortcodes:
+	aws s3 sync shortcodes/ s3://api-spec.mailslurp.com/shortcodes-github --exact-timestamps
+
+publish: build-shortcodes sync-shortcodes template-readme
