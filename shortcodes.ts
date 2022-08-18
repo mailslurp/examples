@@ -102,6 +102,12 @@ async function files(p: string) {
             highlight: "javascript",
         },
         {
+            paths:  await files("/rlang-email-sending-in-r/*.r"),
+            commentStart: "#<gen>",
+            commentEnd: "#</gen>",
+            highlight: "r",
+        },
+        {
             paths:  await files("/playwright-sms-testing/tests/*.spec.ts"),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",

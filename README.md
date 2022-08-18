@@ -41,6 +41,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [playwright-sms-testing](./playwright-sms-testing)
 - [python2-pytest](./python2-pytest)
 - [python3-robotframework](./python3-robotframework)
+- [rlang-email-sending-in-r](./rlang-email-sending-in-r)
 - [ruby-capybara-cucumber-selenium](./ruby-capybara-cucumber-selenium)
 - [ruby-cucumber-test](./ruby-cucumber-test)
 - [ruby-rspec](./ruby-rspec)
