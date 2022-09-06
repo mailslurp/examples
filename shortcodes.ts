@@ -14,7 +14,9 @@ import debug from "debug";
 import * as fs from "fs";
 import {join} from "path";
 import glob from "fast-glob";
-
+import util from 'util';
+import { exec} from 'child_process';
+const execAsync = util.promisify(exec);
 const log = debug("scripts/shortcodes");
 
 function minIndent(inp: string) {
@@ -80,17 +82,32 @@ async function files(p: string) {
     return glob([join(__dirname, p)])
 }
 
+const treeCommand = (path:string) => `tree --gitignore --charset utf-8 --prune ${path} | sed '1d' | sed '$d'`;
+async function getFileTree(path:string): Promise<string> {
+    const {stdout,stderr} = await execAsync(treeCommand(path))
+    if (stderr) {
+        throw stderr;
+    }
+    return stdout
+}
 (async () => {
     await fs.promises.mkdir(join(__dirname, "/shortcodes"), {
         recursive: true,
     });
+    const fileTrees: {
+        id: string,
+        path: string
+    }[] = [
+        { id: 'java_jakarta_mail_tree', path:join(__dirname, '/java-jakarta-mail') }
+    ];
     const fullFiles :{ id: string; path: string, highlight: string }[] = [
         { id: 'cypress_plugin_package_json', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/package.json'), highlight: 'json'},
         {id: 'cypress_client_full', path: join(__dirname, '/javascript-cypress-js/cypress/e2e/example.cy.js'), highlight: 'javascript'},
         {id: 'cypress_client_package_json', path: join(__dirname, '/javascript-cypress-js/package.json'), highlight: 'json'},
         {id: 'cypress_client_config', path: join(__dirname, '/javascript-cypress-js/cypress.config.js'), highlight: 'javascript'},
         {id: 'cypress_plugin_config', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/cypress.config.ts'), highlight: 'typescript'},
-        {id: 'cypress_plugin_full', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/cypress/e2e/integration-test.cy.ts'), highlight: 'typescript'}
+        {id: 'cypress_plugin_full', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/cypress/e2e/integration-test.cy.ts'), highlight: 'typescript'},
+        {id: 'java_jakarta_mail_pom', path: join(__dirname, '/java-jakarta-mail/pom.xml'), highlight: 'xml'}
     ]
     // *.use.ts test classes have a special comment -> //<gen>inbox_send ----> //</gen>
     const useCases: { paths: string[], commentStart: string, commentEnd: string, highlight: string }[] = [
@@ -152,6 +169,11 @@ async function files(p: string) {
         log('Full file ' + fullFile.id)
         const body = await getFileContent(fullFile.path)
         blockMap[fullFile.highlight + "_" + fullFile.id] = { body , highlight: fullFile.highlight }
+    }
+    for (const fileTree of fileTrees) {
+        log('Run tree ' + fileTree.id)
+        const body = await getFileTree(fileTree.path)
+        blockMap["tree_" + fileTree.id] = { body , highlight: 'text' }
     }
 
     for (const [key, value] of Object.entries(blockMap)) {
