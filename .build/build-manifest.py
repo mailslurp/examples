@@ -7,14 +7,14 @@ import json
 
 # covert example directory into a line item
 def example_item(path):
-    return {"name": path.replace("-", " ").title(), "url": github + path, "directory": path}
+    return {"name": path.replace("-", " ").title(), "url": github + path, "directory": path, "language": path.split("-")[0]}
 
 
 # get a list of directories in the example project
 manifest_path = os.environ["MANIFEST_PATH"]
 github = "https://www.github.com/mailslurp/examples/tree/master/"
 directories = next(os.walk(os.environ["ROOT"]))[1]
-directories = [path for path in directories if "." not in path]
+directories = [path for path in directories if "." not in path and "node_modules" not in path and "shortcodes" not in path]
 
 # map each directory and save the json
 links = list(map(example_item, directories))

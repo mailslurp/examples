@@ -78,8 +78,8 @@ async function getGenBlocks(content: string, commentStart:string, commentEnd:str
     return ([] as Block[]).concat(...matches);
 }
 
-async function files(p: string) {
-    return glob([join(__dirname, p)])
+async function files(...p: string[]) {
+    return glob(p.map(pp => join(__dirname, pp)))
 }
 
 const treeCommand = (path:string) => `tree --gitignore --charset utf-8 --prune ${path} | sed '1d' | sed '$d'`;
@@ -100,6 +100,9 @@ async function getFileTree(path:string): Promise<string> {
     }[] = [
         { id: 'java_jakarta_mail_tree', path:join(__dirname, '/java-jakarta-mail') }
     ];
+    /**
+     * Full files to be included in the shortcodes export
+     */
     const fullFiles :{ id: string; path: string, highlight: string }[] = [
         { id: 'cypress_plugin_package_json', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/package.json'), highlight: 'json'},
         {id: 'cypress_client_full', path: join(__dirname, '/javascript-cypress-js/cypress/e2e/example.cy.js'), highlight: 'javascript'},
@@ -113,7 +116,10 @@ async function getFileTree(path:string): Promise<string> {
     const useCases: { paths: string[], commentStart: string, commentEnd: string, highlight: string }[] = [
         // add
         {
-            paths:  await files("/javascript-cypress-js/**/*.js"),
+            paths:  await files(
+                "/javascript-cypress-js/**/*.js",
+            "/javascript-cypress-mailslurp-plugin/cypress/support/e2e.js"
+            ),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "javascript",
@@ -124,20 +130,18 @@ async function getFileTree(path:string): Promise<string> {
             commentEnd: "#</gen>",
             highlight: "r",
         },
-        {
-            paths:  await files("/playwright-sms-testing/tests/*.spec.ts"),
+        { paths:  await files(
+                "/java-maven-selenium/src/**/*.java",
+            ),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
-            highlight: "typescript",
+            highlight: "java",
         },
         {
-            paths:  await files("/javascript-cypress-mailslurp-plugin/cypress/support/e2e.js"),
-            commentStart: "//<gen>",
-            commentEnd: "//</gen>",
-            highlight: "javascript",
-        },
-        {
-            paths:  await files("/javascript-cypress-mailslurp-plugin/cypress/e2e/*.ts"),
+            paths:  await files("/playwright-sms-testing/tests/*.spec.ts",
+                "/javascript-cypress-mailslurp-plugin/cypress/e2e/*.ts",
+                "/playwright-email-testing/tests/*.ts",
+                ),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "typescript",
@@ -165,7 +169,8 @@ async function getFileTree(path:string): Promise<string> {
             }
         }
     }
-    for( const fullFile of fullFiles) {
+
+    for(const fullFile of fullFiles) {
         log('Full file ' + fullFile.id)
         const body = await getFileContent(fullFile.path)
         blockMap[fullFile.highlight + "_" + fullFile.id] = { body , highlight: fullFile.highlight }

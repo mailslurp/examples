@@ -1,3 +1,4 @@
+//<gen>playwright_email_testing_full
 import { test, expect, Page } from '@playwright/test';
 import MailSlurp from "mailslurp-client";
 
@@ -39,3 +40,4 @@ test.describe('test email login with playwright', () => {
   });
 
 });
+//</gen>

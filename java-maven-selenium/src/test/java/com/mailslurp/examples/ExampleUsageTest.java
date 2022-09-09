@@ -89,6 +89,7 @@ public class ExampleUsageTest {
         driver.findElement(By.cssSelector("[data-test=sign-in-create-account-link]")).click();
     }
 
+    //<gen>selenium_maven_inbox
     /**
      * Create a real email address with MailSlurp and use it to start sign-up on the playground
      */
@@ -111,6 +112,7 @@ public class ExampleUsageTest {
         // we will need to receive the confirmation email and extract a code
         driver.findElement(By.cssSelector("[data-test=sign-up-create-account-button]")).click();
     }
+    //</gen>
 
     /**
      * Use MailSlurp to receive the confirmation email that is sent by playground

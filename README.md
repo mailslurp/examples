@@ -18,6 +18,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [fsharp-email-mstest](./fsharp-email-mstest)
 - [golang-email-test](./golang-email-test)
 - [java-gradle-junit5](./java-gradle-junit5)
+- [java-jakarta-mail](./java-jakarta-mail)
 - [java-maven-junit4](./java-maven-junit4)
 - [java-maven-selenium](./java-maven-selenium)
 - [java-serenity-jbehave](./java-serenity-jbehave)
