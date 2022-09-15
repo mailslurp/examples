@@ -2,3 +2,5 @@ node_modules
 cypress
 !cypress/e2e
 !cypress/support
+!cypress/e2e
+!cypress/support/e2e.js
