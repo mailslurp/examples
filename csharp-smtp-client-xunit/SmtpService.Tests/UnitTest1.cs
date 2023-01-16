@@ -13,7 +13,7 @@ namespace SmtpService.Tests
         [Fact]
         public void CanSendEmailWithMailSlurpSmtp()
         {
-            var apiKey = "wus_test";
+            var apiKey = "your-api-key";
 
             // configure client
             var config = new Configuration();
