@@ -44,25 +44,27 @@ func Test_CanSendEmail_Insecure(t *testing.T) {
 		InboxId: optional.NewInterface(inbox1.Id),
 	})
 	inbox2, _, _ := client.InboxControllerApi.CreateInbox(ctx, opts)
+
+	// create a plain auth client with smtp access details
 	auth := sasl.NewPlainClient("", smtpAccess.SmtpUsername, smtpAccess.SmtpPassword)
 
-	// send email from inbox1 to inbox2
+	// dial connection to the smtp server
 	c, err := smtp.Dial("mx.mailslurp.com:2525")
-	if err != nil {
-		assert.NoError(t, err, "Expect client dial")
-	}
+	assert.NoError(t, err, "Expect client dial")
 	defer c.Close()
 
+	// issue hello smtp command
 	log.Println("Say hello")
 	err = c.Hello("test")
 	assert.NoError(t, err, "Expect hello")
+
+	// issue auth smtp command
 	log.Println("Set auth")
 	err = c.Auth(auth)
 	assert.NoError(t, err, "Expect auth")
 
+	// send the email
 	log.Println("Send email")
-	// Connect to the server, authenticate, set the sender and recipient,
-	// and send the email all in one step.
 	to := []string{inbox2.EmailAddress}
 	msg := strings.NewReader("To: " + inbox2.EmailAddress + "\r\n" +
 		"Subject: Hello Insecure Gophers!\r\n" +
@@ -71,14 +73,16 @@ func Test_CanSendEmail_Insecure(t *testing.T) {
 	err = c.SendMail(inbox1.EmailAddress, to, msg)
 	assert.NoError(t, err, "Expect insecure smtp send to work")
 
-	log.Println("Wait for email to arrive")
 	// fetch the email for inbox2
+	log.Println("Wait for email to arrive")
 	waitOpts := &mailslurp.WaitForLatestEmailOpts{
 		InboxId:    optional.NewInterface(inbox2.Id),
 		Timeout:    optional.NewInt64(30000),
 		UnreadOnly: optional.NewBool(true),
 	}
 	email, _, err := client.WaitForControllerApi.WaitForLatestEmail(ctx, waitOpts)
+
+	// assert email contents
 	log.Println("Email received: " + *email.Subject)
 	assert.NoError(t, err)
 	assert.Contains(t, *email.Subject, "Hello Insecure Gophers")
