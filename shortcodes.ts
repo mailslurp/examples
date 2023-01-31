@@ -153,6 +153,12 @@ async function getFileTree(path:string): Promise<string> {
             commentEnd: "'</gen>",
             highlight: "vba",
         },
+        {
+            paths:  await files("/golang-smtp-client-test/*.go"),
+            commentStart: "<gen>",
+            commentEnd: "</gen>",
+            highlight: "go",
+        },
     ];
     const blockMap: {[key:string]: { body: string; highlight: string} } = {};
     for (const useCase of useCases) {

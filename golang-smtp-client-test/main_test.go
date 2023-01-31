@@ -1,5 +1,6 @@
 package main
 
+//<gen>go_send_email_deps
 import (
 	"context"
 	"github.com/antihax/optional"
@@ -12,7 +13,9 @@ import (
 	"strings"
 	"testing"
 )
+//</gen>
 
+//<gen>go_send_email_get_client
 var apiKey = os.Getenv("API_KEY")
 
 func getMailSlurpClient(t *testing.T) (*mailslurp.APIClient, context.Context) {
@@ -27,8 +30,10 @@ func getMailSlurpClient(t *testing.T) (*mailslurp.APIClient, context.Context) {
 
 	return client, ctx
 }
+//</gen>
 
 // how to send insecurely with mailslurp
+// <gen>go_send_email_insecure
 func Test_CanSendEmail_Insecure(t *testing.T) {
 	// create a context with your api key
 	client, ctx := getMailSlurpClient(t)
@@ -89,7 +94,10 @@ func Test_CanSendEmail_Insecure(t *testing.T) {
 	assert.Contains(t, *email.Body, "This is the email body")
 }
 
-// TODO work in progress
+//</gen>
+
+// send using TLS
+// <gen>go_send_email_tls
 func Test_CanSendEmail_TLS(t *testing.T) {
 	// create a context with your api key
 	client, ctx := getMailSlurpClient(t)
@@ -116,7 +124,8 @@ func Test_CanSendEmail_TLS(t *testing.T) {
 		"Subject: Hello Gophers!\r\n" +
 		"\r\n" +
 		"This is the email body.\r\n")
-	err := smtp.SendMail("mx.mailslurp.com:2587", auth, inbox1.EmailAddress, to, msg)
+	// not TLS mailslurp uses a different host
+	err := smtp.SendMail("mailslurp.mx:587", auth, inbox1.EmailAddress, to, msg)
 	if err != nil {
 		log.Fatal(err)
 		assert.NoError(t, err, "Expect smtp send to work")
@@ -133,3 +142,5 @@ func Test_CanSendEmail_TLS(t *testing.T) {
 	assert.Contains(t, *email.Subject, "Hello Gophers")
 	assert.Contains(t, *email.Body, "This is the email body")
 }
+
+//</gen>
