@@ -1,0 +1,19 @@
+{
+  "name": "javascript-cypress-mailslurp-plugin",
+  "version": "1.0.0",
+  "description": "Example cypress-mailslurp plugin usage",
+  "scripts": {
+    "test": "cypress run",
+    "dev": "cypress open"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cypress": "^12.8.1",
+    "cypress-mailslurp": "^1.6.0",
+    "typescript": "^5.0.2"
+  },
+  "devDependencies": {
+    "debug": "^4.3.4"
+  }
+}

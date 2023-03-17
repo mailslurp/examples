@@ -106,6 +106,8 @@ async function getFileTree(path:string): Promise<string> {
     const fullFiles :{ id: string; path: string, highlight: string }[] = [
         { id: 'cypress_plugin_package_json', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/package.json'), highlight: 'json'},
         {id: 'cypress_client_full', path: join(__dirname, '/javascript-cypress-js/cypress/e2e/example.cy.js'), highlight: 'javascript'},
+        {id: 'cypress_sms_config', path: join(__dirname, '/javascript-cypress-sms-testing/cypress.config.ts'), highlight: 'typescript'},
+        {id: 'cypress_sms_full', path: join(__dirname, '/javascript-cypress-sms-testing/cypress/e2e/integration-test.cy.ts'), highlight: 'typescript'},
         {id: 'cypress_client_package_json', path: join(__dirname, '/javascript-cypress-js/package.json'), highlight: 'json'},
         {id: 'cypress_client_config', path: join(__dirname, '/javascript-cypress-js/cypress.config.js'), highlight: 'javascript'},
         {id: 'cypress_plugin_config', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/cypress.config.ts'), highlight: 'typescript'},
