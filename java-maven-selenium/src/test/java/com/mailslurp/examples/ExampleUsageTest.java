@@ -6,12 +6,15 @@ import com.mailslurp.clients.ApiClient;
 import com.mailslurp.clients.ApiException;
 import com.mailslurp.clients.Configuration;
 import com.mailslurp.models.Email;
-import com.mailslurp.models.Inbox;
+import com.mailslurp.models.InboxDto;
 import java.io.File;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -20,6 +23,11 @@ import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.remote.CapabilityType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -40,6 +48,7 @@ public class ExampleUsageTest {
     private static final String YOUR_API_KEY = System.getenv("API_KEY");
 
     private static final String WEBDRIVER_PATH = System.getenv("PATH_TO_WEBDRIVER");
+    private static final String FIREFOX_PATH = System.getenv("PATH_TO_FIREFOX");
     private static final Boolean UNREAD_ONLY = true;
     private static final Long TIMEOUT_MILLIS = 30000L;
 
@@ -48,17 +57,21 @@ public class ExampleUsageTest {
 
     private static final String TEST_PASSWORD = "password-" + new Random().nextLong();
 
-    private static Inbox inbox;
+    private static InboxDto inbox;
     private static Email email;
     private static String confirmationCode;
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * Setup selenium webdriver and MailSlurp client (for fetching emails)
      */
+    //<gen>selenium_maven_before_all
     @BeforeClass
     public static void beforeAll() {
         assertNotNull(YOUR_API_KEY);
         assertNotNull(WEBDRIVER_PATH);
+        assertNotNull(FIREFOX_PATH);
 
         // setup mailslurp
         mailslurpClient = Configuration.getDefaultApiClient();
@@ -68,15 +81,26 @@ public class ExampleUsageTest {
         // setup webdriver (expects geckodriver binary at WEBDRIVER_PATH)
         assertTrue(new File(WEBDRIVER_PATH).exists());
         System.setProperty("webdriver.gecko.driver", WEBDRIVER_PATH);
-        driver = new FirefoxDriver();
-        driver.manage().timeouts().implicitlyWait(TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+        FirefoxProfile profile = new FirefoxProfile();
+        profile.setAssumeUntrustedCertificateIssuer(true);
+        profile.setAcceptUntrustedCertificates(true);
+        FirefoxOptions options = new FirefoxOptions();
+        // expects firefox binary at FIREFOX_PATH
+        options.setBinary(FIREFOX_PATH);
+        options.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+        options.setProfile(profile);
+        options.setAcceptInsecureCerts(true);
+        driver = new FirefoxDriver(options);
+        driver.manage().timeouts().implicitlyWait(Duration.of(TIMEOUT_MILLIS, ChronoUnit.MILLIS));
     }
+    //</gen>
 
     /**
      * Load the playground site in selenium
      */
     @Test
     public void test1_canLoadAuthenticationPlayground() {
+        logger.info("Load playground");
         driver.get(PLAYGROUND_URL);
         assertEquals(driver.getTitle(), "React App");
     }
@@ -86,6 +110,7 @@ public class ExampleUsageTest {
      */
     @Test
     public void test2_canClickSignUpButton() {
+        logger.info("Click sign up button");
         driver.findElement(By.cssSelector("[data-test=sign-in-create-account-link]")).click();
     }
 
@@ -95,19 +120,23 @@ public class ExampleUsageTest {
      */
     @Test
     public void test3_canCreateEmailAddressAndSignUp() throws ApiException {
+        logger.info("Create email address");
         // create a real, randomized email address with MailSlurp to represent a user
         InboxControllerApi inboxControllerApi = new InboxControllerApi(mailslurpClient);
-        inbox = inboxControllerApi.createInbox(null,null,null,null,null,null,null, null, null);
+        inbox = inboxControllerApi.createInboxWithDefaults();
 
+        logger.info("Assert inbox exists");
         // check the inbox was created
         assertNotNull(inbox.getId());
-        assertTrue(inbox.getEmailAddress().contains("@mailslurp.com"));
+        assertTrue(inbox.getEmailAddress().contains("@mailslurp"));
 
+        logger.info("Fill elements");
         // fill the playground app's sign-up form with the MailSlurp
         // email address and a random password
         driver.findElement(By.name("email")).sendKeys(inbox.getEmailAddress());
         driver.findElement(By.name("password")).sendKeys(TEST_PASSWORD);
 
+        logger.info("Submit sign-up button");
         // submit the form to trigger the playground's email confirmation process
         // we will need to receive the confirmation email and extract a code
         driver.findElement(By.cssSelector("[data-test=sign-up-create-account-button]")).click();
@@ -121,7 +150,7 @@ public class ExampleUsageTest {
     public void test4_canReceiveConfirmationEmail() throws ApiException {
         // receive a verification email from playground using mailslurp
         WaitForControllerApi waitForControllerApi = new WaitForControllerApi(mailslurpClient);
-        email = waitForControllerApi.waitForLatestEmail(inbox.getId(), TIMEOUT_MILLIS, UNREAD_ONLY);
+        email = waitForControllerApi.waitForLatestEmail(inbox.getId(), TIMEOUT_MILLIS, UNREAD_ONLY, null, null, null, null);
 
         // verify the contents
         assertTrue(email.getSubject().contains("Please confirm your email address"));
