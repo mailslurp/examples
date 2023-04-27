@@ -3,7 +3,7 @@ const fetchApi = require("isomorphic-fetch");
 const nodemailer = require("nodemailer");
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
-
+//<gen>nodemailer_full_send
 describe("testing smtp", function () {
     it("can create an mailbox and get email preview urls", async function () {
         const apiKey = process.env.API_KEY;
@@ -43,3 +43,4 @@ describe("testing smtp", function () {
         expect(accessUrls.rawSmtpMessageUrl).toContain("https://api.mailslurp.com")
     });
 });
+//</gen>

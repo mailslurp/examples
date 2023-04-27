@@ -121,7 +121,8 @@ async function getFileTree(path:string): Promise<string> {
         {
             paths:  await files(
                 "/javascript-cypress-sms-testing/**/*.ts",
-                "/javascript-cypress-sms-testing/cypress/support/*.js"
+                "/javascript-cypress-sms-testing/cypress/support/*.js",
+                "/nodejs-nodemailer-smtp-example/spec/*Spec.js"
             ),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
