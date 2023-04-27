@@ -31,11 +31,19 @@ describe("testing smtp", function () {
             from: inbox1.emailAddress,
             to: inbox2.emailAddress,
             subject: "From inbox 1 to inbox 2",
-            text: "Hi there"
+            text: "Hi there",
+            attachments: [
+                {
+                    filename: "example.txt",
+                    content: new Buffer('hello world!','utf-8')
+                }
+            ],
         });
         expect(sent).toBeTruthy()
 
         const email = await mailslurp.waitForLatestEmail(inbox2.id, 30_000, true);
+        expect(email.subject).toEqual("From inbox 1 to inbox 2")
+        expect(email.attachments.length).toEqual(1)
         const accessUrls = await mailslurp.emailController.getEmailPreviewURLs({emailId: email.id})
 
         // access these urls in browser to view email content
