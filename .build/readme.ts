@@ -7,13 +7,13 @@ const log = debug("scripts/readme");
 
 (async function() {
     log("Run readme")
-    const gitignoreLines = (await fs.promises.readFile(join(__dirname, "/.gitignore"))).toString().split("\n").filter(it => it).sort()
-    const topLevelDirs = await glob([join(__dirname,'/*')], {onlyDirectories:true, ignore: gitignoreLines})
-    const readmes = await glob([join(__dirname, "/**/README.tpl.md")])
+    const gitignoreLines = (await fs.promises.readFile(join(__dirname, "../.gitignore"))).toString().split("\n").filter(it => it).sort()
+    const topLevelDirs = await glob([join(__dirname,'../*')], {onlyDirectories:true, ignore: gitignoreLines})
+    const readmes = await glob([join(__dirname, "../**/README.tpl.md")])
     const data: {[key:string]: any} = {
         topLevelDirs: topLevelDirs.map(it => it.split('/').slice(-1)[0])
     }
-    const shortcodes = await glob([join(__dirname, '/shortcodes/gen*.html')])
+    const shortcodes = await glob([join(__dirname, '../shortcodes/gen*.html')])
     for (const shortcode of shortcodes) {
         const endpart = shortcode.split("/").slice(-1)[0]
         const key = '<' + endpart.replace('.html','') + '>';
