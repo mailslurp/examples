@@ -144,6 +144,13 @@ async function getFileTree(path:string): Promise<string> {
             highlight: "r",
         },
         { paths:  await files(
+                "/java-gradle-junit5/src/**/*.java",
+            ),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "java",
+        },
+        { paths:  await files(
                 "/java-maven-selenium/src/**/*.java",
             ),
             commentStart: "//<gen>",
