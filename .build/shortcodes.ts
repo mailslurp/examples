@@ -113,7 +113,7 @@ async function getFileTree(path:string): Promise<string> {
         {id: 'cypress_plugin_config', path: join(__dirname, '../javascript-cypress-mailslurp-plugin/cypress.config.ts'), highlight: 'typescript'},
         {id: 'cypress_plugin_full', path: join(__dirname, '../javascript-cypress-mailslurp-plugin/cypress/e2e/integration-test.cy.ts'), highlight: 'typescript'},
         {id: 'java_jakarta_mail_pom', path: join(__dirname, '../java-jakarta-mail/pom.xml'), highlight: 'xml'},
-        {id: 'powershell_ps1', path: join(__dirname, '../powershell-email-send-ps1/send.ps1'), highlight: 'pwsh'}
+        {id: 'powershell_ps1', path: join(__dirname, '../powershell-email-send-ps1/send.ps1'), highlight: 'pwsh'},
     ]
     // *.use.ts test classes have a special comment -> //<gen>inbox_send ----> //</gen>
     const useCases: { paths: string[], commentStart: string, commentEnd: string, highlight: string }[] = [
@@ -149,6 +149,13 @@ async function getFileTree(path:string): Promise<string> {
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "java",
+        },
+        { paths:  await files(
+                "/csharp-dotnet-core7-nunit/*.cs",
+            ),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "csharp",
         },
         { paths:  await files(
                 "/java-maven-selenium/src/**/*.java",

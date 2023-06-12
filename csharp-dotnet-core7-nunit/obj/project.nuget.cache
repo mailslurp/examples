@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "dgSpecHash": "99GswDlq1gB42Mot15N0Hw8Rjqga6dQ7/Z6xmRhOjMHyMpwaMaNPr9Nc7GNGG2F39XdwQ2p9UQtn6zlFiRVJcw==",
+  "success": true,
+  "projectFilePath": "/home/jackmahoney/projects/examples/csharp-dotnet-core7-nunit/csharp-dotnet-core7-nunit.csproj",
+  "expectedPackageFiles": [
+    "/home/jackmahoney/.nuget/packages/coverlet.collector/3.1.2/coverlet.collector.3.1.2.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/jsonsubtypes/1.9.0/jsonsubtypes.1.9.0.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/mailslurp/15.17.16/mailslurp.15.17.16.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/microsoft.codecoverage/17.3.2/microsoft.codecoverage.17.3.2.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/microsoft.net.test.sdk/17.3.2/microsoft.net.test.sdk.17.3.2.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/microsoft.testplatform.objectmodel/17.3.2/microsoft.testplatform.objectmodel.17.3.2.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/microsoft.testplatform.testhost/17.3.2/microsoft.testplatform.testhost.17.3.2.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/netstandard.library/2.0.0/netstandard.library.2.0.0.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/nuget.frameworks/5.11.0/nuget.frameworks.5.11.0.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/nunit/3.13.3/nunit.3.13.3.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/nunit.analyzers/3.3.0/nunit.analyzers.3.3.0.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/nunit3testadapter/4.2.1/nunit3testadapter.4.2.1.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/polly/7.2.3/polly.7.2.3.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/restsharp/108.0.2/restsharp.108.0.2.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/system.componentmodel.annotations/5.0.0/system.componentmodel.annotations.5.0.0.nupkg.sha512",
+    "/home/jackmahoney/.nuget/packages/system.reflection.metadata/1.6.0/system.reflection.metadata.1.6.0.nupkg.sha512"
+  ],
+  "logs": []
+}
