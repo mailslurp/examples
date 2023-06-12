@@ -1,9 +1,11 @@
 package com.mailslurp.examples;
 
 
-import com.mailslurp.api.api.*;
-import com.mailslurp.client.*;
+//<gen>java_demo_imports
+import com.mailslurp.apis.*;
+import com.mailslurp.clients.*;
 import com.mailslurp.models.*;
+//</gen>
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.BeforeAll;
@@ -16,7 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class ExampleUsageTest {
     private final static String YOUR_API_KEY = System.getenv("API_KEY");
     private static final Boolean UNREAD_ONLY = true;
-    private static final Long TIMEOUT_MILLIS = 30000L;
+//    private static final Long TIMEOUT_MILLIS = 30000L;
+    private static final Integer TIMEOUT_MILLIS = 30000;
 
     @BeforeAll
     public static void Setup() {
@@ -25,15 +28,29 @@ public class ExampleUsageTest {
 
     @Test
     public void CanCreateInboxes() throws Exception {
+
+        //<gen>java_demo_create_client
+        // create a MailSlurp client with your API_KEY
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         defaultClient.setApiKey(YOUR_API_KEY);
+        //</gen>
 
+        //<gen>java_demo_client_timeout
+        defaultClient.setConnectTimeout(TIMEOUT_MILLIS);
+        defaultClient.setWriteTimeout(TIMEOUT_MILLIS);
+        defaultClient.setReadTimeout(TIMEOUT_MILLIS);
+        //</gen>
+
+        //<gen>java_demo_create_controller
         InboxControllerApi inboxControllerApi = new InboxControllerApi(defaultClient);
-        Inbox inbox = inboxControllerApi.createInbox(null, null, null, null, null, null);
+        //</gen>
 
+        //<gen>java_demo_create_inbox
+        InboxDto inbox = inboxControllerApi.createInboxWithDefaults();
         // verify inbox
         assertEquals(inbox.getEmailAddress().contains("@mailslurp.com"), true);
         assertNotNull(inbox.getId());
+        //</gen>
     }
 
     @Test
@@ -42,7 +59,7 @@ public class ExampleUsageTest {
         defaultClient.setApiKey(YOUR_API_KEY);
 
         InboxControllerApi inboxControllerApi = new InboxControllerApi(defaultClient);
-        Inbox inbox = inboxControllerApi.createInbox(null, null, null, null, null, null);
+        InboxDto inbox = inboxControllerApi.createInboxWithDefaults();
 
         SendEmailOptions sendEmailOptions = new SendEmailOptions()
                 .to(singletonList(inbox.getEmailAddress()))
@@ -57,8 +74,8 @@ public class ExampleUsageTest {
         defaultClient.setApiKey(YOUR_API_KEY);
 
         InboxControllerApi inboxControllerApi = new InboxControllerApi(defaultClient);
-        Inbox inbox1 = inboxControllerApi.createInbox(null, null, null, null, null, null);
-        Inbox inbox2 = inboxControllerApi.createInbox(null, null, null, null, null, null);
+        InboxDto inbox1 = inboxControllerApi.createInboxWithDefaults();
+        InboxDto inbox2 = inboxControllerApi.createInboxWithDefaults();
 
         SendEmailOptions sendEmailOptions = new SendEmailOptions()
                 .to(singletonList(inbox2.getEmailAddress()))
@@ -67,7 +84,7 @@ public class ExampleUsageTest {
         inboxControllerApi.sendEmail(inbox1.getId(), sendEmailOptions);
 
         WaitForControllerApi waitForControllerApi = new WaitForControllerApi(defaultClient);
-        Email email = waitForControllerApi.waitForLatestEmail(inbox2.getId(), TIMEOUT_MILLIS, UNREAD_ONLY);
+        Email email = waitForControllerApi.waitForLatestEmailW(inbox2.getId(), TIMEOUT_MILLIS.longValue(), UNREAD_ONLY);
 
         assertEquals(email.getSubject(), "Hello inbox2");
         assertEquals(email.getBody().contains("Your code is:"), true);
