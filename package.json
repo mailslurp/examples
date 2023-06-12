@@ -5,8 +5,8 @@
     "ts-node": "^10.9.1"
   },
   "scripts": {
-    "shortcodes": "node --loader ts-node/esm shortcodes.ts",
-    "readme": "node --loader ts-node/esm readme.ts"
+    "shortcodes": "node --loader ts-node/esm .build/shortcodes.ts",
+    "readme": "node --loader ts-node/esm .build/readme.ts"
   },
   "devDependencies": {
     "@types/debug": "^4.1.7",

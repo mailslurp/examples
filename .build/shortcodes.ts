@@ -79,7 +79,7 @@ async function getGenBlocks(content: string, commentStart:string, commentEnd:str
 }
 
 async function files(...p: string[]) {
-    return glob(p.map(pp => join(__dirname, pp)))
+    return glob(p.map(pp => join(__dirname, '..', pp)))
 }
 
 const treeCommand = (path:string) => `tree --gitignore --charset utf-8 --prune ${path} | sed '1d' | sed '$d'`;
@@ -91,29 +91,29 @@ async function getFileTree(path:string): Promise<string> {
     return stdout
 }
 (async () => {
-    await fs.promises.mkdir(join(__dirname, "/shortcodes"), {
+    await fs.promises.mkdir(join(__dirname, "../shortcodes"), {
         recursive: true,
     });
     const fileTrees: {
         id: string,
         path: string
     }[] = [
-        { id: 'java_jakarta_mail_tree', path:join(__dirname, '/java-jakarta-mail') }
+        { id: 'java_jakarta_mail_tree', path:join(__dirname, '../java-jakarta-mail') }
     ];
     /**
      * Full files to be included in the shortcodes export
      */
     const fullFiles :{ id: string; path: string, highlight: string }[] = [
-        { id: 'cypress_plugin_package_json', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/package.json'), highlight: 'json'},
-        {id: 'cypress_client_full', path: join(__dirname, '/javascript-cypress-js/cypress/e2e/example.cy.js'), highlight: 'javascript'},
-        {id: 'cypress_sms_config', path: join(__dirname, '/javascript-cypress-sms-testing/cypress.config.ts'), highlight: 'typescript'},
-        {id: 'cypress_sms_full', path: join(__dirname, '/javascript-cypress-sms-testing/cypress/e2e/integration-test.cy.ts'), highlight: 'typescript'},
-        {id: 'cypress_client_package_json', path: join(__dirname, '/javascript-cypress-js/package.json'), highlight: 'json'},
-        {id: 'cypress_client_config', path: join(__dirname, '/javascript-cypress-js/cypress.config.js'), highlight: 'javascript'},
-        {id: 'cypress_plugin_config', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/cypress.config.ts'), highlight: 'typescript'},
-        {id: 'cypress_plugin_full', path: join(__dirname, '/javascript-cypress-mailslurp-plugin/cypress/e2e/integration-test.cy.ts'), highlight: 'typescript'},
-        {id: 'java_jakarta_mail_pom', path: join(__dirname, '/java-jakarta-mail/pom.xml'), highlight: 'xml'},
-        {id: 'powershell_ps1', path: join(__dirname, '/powershell-email-send-ps1/send.ps1'), highlight: 'pwsh'}
+        { id: 'cypress_plugin_package_json', path: join(__dirname, '../javascript-cypress-mailslurp-plugin/package.json'), highlight: 'json'},
+        {id: 'cypress_client_full', path: join(__dirname, '../javascript-cypress-js/cypress/e2e/example.cy.js'), highlight: 'javascript'},
+        {id: 'cypress_sms_config', path: join(__dirname, '../javascript-cypress-sms-testing/cypress.config.ts'), highlight: 'typescript'},
+        {id: 'cypress_sms_full', path: join(__dirname, '../javascript-cypress-sms-testing/cypress/e2e/integration-test.cy.ts'), highlight: 'typescript'},
+        {id: 'cypress_client_package_json', path: join(__dirname, '../javascript-cypress-js/package.json'), highlight: 'json'},
+        {id: 'cypress_client_config', path: join(__dirname, '../javascript-cypress-js/cypress.config.js'), highlight: 'javascript'},
+        {id: 'cypress_plugin_config', path: join(__dirname, '../javascript-cypress-mailslurp-plugin/cypress.config.ts'), highlight: 'typescript'},
+        {id: 'cypress_plugin_full', path: join(__dirname, '../javascript-cypress-mailslurp-plugin/cypress/e2e/integration-test.cy.ts'), highlight: 'typescript'},
+        {id: 'java_jakarta_mail_pom', path: join(__dirname, '../java-jakarta-mail/pom.xml'), highlight: 'xml'},
+        {id: 'powershell_ps1', path: join(__dirname, '../powershell-email-send-ps1/send.ps1'), highlight: 'pwsh'}
     ]
     // *.use.ts test classes have a special comment -> //<gen>inbox_send ----> //</gen>
     const useCases: { paths: string[], commentStart: string, commentEnd: string, highlight: string }[] = [
@@ -121,7 +121,8 @@ async function getFileTree(path:string): Promise<string> {
         {
             paths:  await files(
                 "/javascript-cypress-sms-testing/**/*.ts",
-                "/javascript-cypress-sms-testing/cypress/support/*.js"
+                "/javascript-cypress-sms-testing/cypress/support/*.js",
+                "/nodejs-nodemailer-smtp-example/spec/*Spec.js"
             ),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
@@ -200,7 +201,7 @@ async function getFileTree(path:string): Promise<string> {
     }
 
     for (const [key, value] of Object.entries(blockMap)) {
-        const f = join(__dirname, "shortcodes", `gen_${key}.html`);
+        const f = join(__dirname, "..", "shortcodes", `gen_${key}.html`);
         log(`Replace key in template ${f}`);
         await fs.promises.writeFile(
             f,

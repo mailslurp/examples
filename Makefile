@@ -25,9 +25,4 @@ copy-manifest:
 copy-shortcodes:
 	aws s3 sync shortcodes/ s3://api-spec.mailslurp.com/shortcodes-github --exact-timestamps
 
-# for ci deploy
-deploy: build copy
-	git push ci master
-ci-env:
-	echo "API_KEY=$$API_KEY" > .env
 
