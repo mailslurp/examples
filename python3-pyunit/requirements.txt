@@ -1,0 +1,2 @@
+mailslurp-client==15.17.17
+black

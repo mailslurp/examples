@@ -138,6 +138,12 @@ async function getFileTree(path:string): Promise<string> {
             highlight: "javascript",
         },
         {
+            paths:  await files("/python3-pyunit/*.py"),
+            commentStart: "# <gen>",
+            commentEnd: "# </gen>",
+            highlight: "python",
+        },
+        {
             paths:  await files("/rlang-email-sending-in-r/*.r"),
             commentStart: "#<gen>",
             commentEnd: "#</gen>",
