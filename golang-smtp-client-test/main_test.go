@@ -33,7 +33,7 @@ func getMailSlurpClient(t *testing.T) (*mailslurp.APIClient, context.Context) {
 //</gen>
 
 // how to send insecurely with mailslurp
-// <gen>go_send_email_insecure
+//<gen>go_send_email_insecure
 func Test_CanSendEmail_Insecure(t *testing.T) {
 	// create a context with your api key
 	client, ctx := getMailSlurpClient(t)
@@ -97,7 +97,7 @@ func Test_CanSendEmail_Insecure(t *testing.T) {
 //</gen>
 
 // send using TLS
-// <gen>go_send_email_tls
+//<gen>go_send_email_tls
 func Test_CanSendEmail_TLS(t *testing.T) {
 	// create a context with your api key
 	client, ctx := getMailSlurpClient(t)

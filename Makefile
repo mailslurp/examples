@@ -11,6 +11,7 @@ build-manifest:
 ## create shortcodes
 build-shortcodes:
 	DEBUG=script* npm run shortcodes
+	@echo "Now run 'make copy'"
 
 ## template the readme
 build-readme:

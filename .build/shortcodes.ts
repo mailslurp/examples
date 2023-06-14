@@ -51,7 +51,7 @@ async function checkFile(content: string, commentStart:string, commentEnd: strin
     const endCount = (content.match(new RegExp(commentEnd, "gm")) || []).length;
     if (startCount !== endCount) {
         throw Error(
-            `Expected matching start and end comments ${startCount} ${endCount}`
+            `Expected matching start and end comments ${startCount} ${endCount} in content: ${content}`
         );
     }
 }
@@ -104,6 +104,8 @@ async function getFileTree(path:string): Promise<string> {
      * Full files to be included in the shortcodes export
      */
     const fullFiles :{ id: string; path: string, highlight: string }[] = [
+        { id: 'php_laravel_phpunit_view_newsletter_success', path: join(__dirname, '../php-laravel-phpunit/resources/views/newsletter-success.blade.php'), highlight: 'php'},
+        { id: 'php_laravel_phpunit_view_newsletter', path: join(__dirname, '../php-laravel-phpunit/resources/views/newsletter.blade.php'), highlight: 'php'},
         { id: 'cypress_plugin_package_json', path: join(__dirname, '../javascript-cypress-mailslurp-plugin/package.json'), highlight: 'json'},
         {id: 'cypress_client_full', path: join(__dirname, '../javascript-cypress-js/cypress/e2e/example.cy.js'), highlight: 'javascript'},
         {id: 'cypress_sms_config', path: join(__dirname, '../javascript-cypress-sms-testing/cypress.config.ts'), highlight: 'typescript'},
@@ -157,6 +159,13 @@ async function getFileTree(path:string): Promise<string> {
             highlight: "java",
         },
         { paths:  await files(
+                "/php-laravel-phpunit/**/*.php",
+            ),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "php",
+        },
+        { paths:  await files(
                 "/csharp-dotnet-core7-nunit/*.cs",
             ),
             commentStart: "//<gen>",
@@ -187,8 +196,8 @@ async function getFileTree(path:string): Promise<string> {
         },
         {
             paths:  await files("/golang-smtp-client-test/*.go"),
-            commentStart: "<gen>",
-            commentEnd: "</gen>",
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
             highlight: "go",
         },
     ];
