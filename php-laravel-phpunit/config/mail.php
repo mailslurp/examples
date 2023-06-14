@@ -1,5 +1,7 @@
 <?php
+
 $MAILSLURP_API_KEY = env('API_KEY');
+
 //<gen>php_laravel_phpunit_mail_config
 // configure mailslurp client
 $config = MailSlurp\Configuration::getDefaultConfiguration()->setApiKey('x-api-key', $MAILSLURP_API_KEY);
@@ -44,4 +46,4 @@ return [
         ],
     ],
 ];
-//<gen>
+//</gen>

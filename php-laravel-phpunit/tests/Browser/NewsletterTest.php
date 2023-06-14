@@ -6,10 +6,8 @@ use Laravel\Dusk\Browser;
 use MailSlurp;
 use Tests\DuskTestCase;
 
-
 class NewsletterTest extends DuskTestCase
 {
-
     //<gen>php_laravel_phpunit_dusk_test_newsletter_mailable
     public function testNewsletterMailable(): void
     {
@@ -47,8 +45,16 @@ class NewsletterTest extends DuskTestCase
             $waitForController = new MailSlurp\Apis\WaitForControllerApi(null, $config);
             $email = $waitForController->waitForLatestEmail($inbox->getId(), 60_000, true);
             assert($email->getSubject() === 'Welcome to our newsletter');
+
+            // get email content
+            $browser->resize(800, 400);
+            $emailController = new MailSlurp\Apis\EmailControllerApi(null, $config);
+            $previewUrls = $emailController->getEmailPreviewURLs($email->getId());
+            $browser->visit($previewUrls->getPlainHtmlBodyUrl());
+            $browser->screenshot('newsletter-mailable-preview');
         });
     }
+
     //</gen>
     //<gen>php_laravel_phpunit_dusk_test_newsletter_mailable
     public function testNewsletterNotification(): void
@@ -85,7 +91,14 @@ class NewsletterTest extends DuskTestCase
             // now use MailSlurp to await the email sent by our NewsletterController
             $waitForController = new MailSlurp\Apis\WaitForControllerApi(null, $config);
             $email = $waitForController->waitForLatestEmail($inbox->getId(), 60_000, true);
-            $this->assertContains('Welcome to our notifications', $email->getBody());
+            $this->assertStringContainsString('Welcome to our notifications', $email->getBody());
+
+            // get email content
+            $browser->resize(1000, 600);
+            $emailController = new MailSlurp\Apis\EmailControllerApi(null, $config);
+            $previewUrls = $emailController->getEmailPreviewURLs($email->getId());
+            $browser->visit($previewUrls->getPlainHtmlBodyUrl());
+            $browser->screenshot('newsletter-notification-preview');
         });
     }
     //</gen>

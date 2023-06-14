@@ -15,7 +15,8 @@ import * as fs from "fs";
 import {join} from "path";
 import glob from "fast-glob";
 import util from 'util';
-import { exec} from 'child_process';
+import {exec} from 'child_process';
+
 const execAsync = util.promisify(exec);
 const log = debug("scripts/shortcodes");
 
@@ -46,7 +47,7 @@ async function getFileContent(path: string): Promise<string> {
     return content.toString();
 }
 
-async function checkFile(content: string, commentStart:string, commentEnd: string) {
+async function checkFile(content: string, commentStart: string, commentEnd: string) {
     const startCount = (content.match(new RegExp(commentStart, "gm")) || []).length;
     const endCount = (content.match(new RegExp(commentEnd, "gm")) || []).length;
     if (startCount !== endCount) {
@@ -58,7 +59,7 @@ async function checkFile(content: string, commentStart:string, commentEnd: strin
 
 type Block = { id: string; body: string };
 
-async function getGenBlocks(content: string, commentStart:string, commentEnd:string): Promise<Block[]> {
+async function getGenBlocks(content: string, commentStart: string, commentEnd: string): Promise<Block[]> {
     const pKeys = new RegExp(`${commentStart}([0-9a-zA-Z_]*)`, "g");
     const matchKeys = [...content.matchAll(pKeys)];
     const matches: Block[][] = matchKeys.map(([_, key]) => {
@@ -82,14 +83,16 @@ async function files(...p: string[]) {
     return glob(p.map(pp => join(__dirname, '..', pp)))
 }
 
-const treeCommand = (path:string) => `tree --gitignore --charset utf-8 --prune ${path} | sed '1d' | sed '$d'`;
-async function getFileTree(path:string): Promise<string> {
-    const {stdout,stderr} = await execAsync(treeCommand(path))
+const treeCommand = (path: string) => `tree --gitignore --charset utf-8 --prune ${path} | sed '1d' | sed '$d'`;
+
+async function getFileTree(path: string): Promise<string> {
+    const {stdout, stderr} = await execAsync(treeCommand(path))
     if (stderr) {
         throw stderr;
     }
     return stdout
 }
+
 (async () => {
     await fs.promises.mkdir(join(__dirname, "../shortcodes"), {
         recursive: true,
@@ -98,22 +101,77 @@ async function getFileTree(path:string): Promise<string> {
         id: string,
         path: string
     }[] = [
-        { id: 'java_jakarta_mail_tree', path:join(__dirname, '../java-jakarta-mail') }
+        {id: 'java_jakarta_mail_tree', path: join(__dirname, '../java-jakarta-mail')}
     ];
     /**
      * Full files to be included in the shortcodes export
      */
-    const fullFiles :{ id: string; path: string, highlight: string }[] = [
-        { id: 'php_laravel_phpunit_view_newsletter_success', path: join(__dirname, '../php-laravel-phpunit/resources/views/newsletter-success.blade.php'), highlight: 'php'},
-        { id: 'php_laravel_phpunit_view_newsletter', path: join(__dirname, '../php-laravel-phpunit/resources/views/newsletter.blade.php'), highlight: 'php'},
-        { id: 'cypress_plugin_package_json', path: join(__dirname, '../javascript-cypress-mailslurp-plugin/package.json'), highlight: 'json'},
-        {id: 'cypress_client_full', path: join(__dirname, '../javascript-cypress-js/cypress/e2e/example.cy.js'), highlight: 'javascript'},
-        {id: 'cypress_sms_config', path: join(__dirname, '../javascript-cypress-sms-testing/cypress.config.ts'), highlight: 'typescript'},
-        {id: 'cypress_sms_full', path: join(__dirname, '../javascript-cypress-sms-testing/cypress/e2e/integration-test.cy.ts'), highlight: 'typescript'},
-        {id: 'cypress_client_package_json', path: join(__dirname, '../javascript-cypress-js/package.json'), highlight: 'json'},
-        {id: 'cypress_client_config', path: join(__dirname, '../javascript-cypress-js/cypress.config.js'), highlight: 'javascript'},
-        {id: 'cypress_plugin_config', path: join(__dirname, '../javascript-cypress-mailslurp-plugin/cypress.config.ts'), highlight: 'typescript'},
-        {id: 'cypress_plugin_full', path: join(__dirname, '../javascript-cypress-mailslurp-plugin/cypress/e2e/integration-test.cy.ts'), highlight: 'typescript'},
+    const fullFiles: { id: string; path: string, highlight: string }[] = [
+        {
+            id: 'php_laravel_phpunit_view_email',
+            path: join(__dirname, '../php-laravel-phpunit/resources/views/emails/newsletter.blade.php'),
+            highlight: 'php'
+        },
+        {
+            id: 'php_laravel_phpunit_view_notification_success',
+            path: join(__dirname, '../php-laravel-phpunit/resources/views/notification-success.blade.php'),
+            highlight: 'php'
+        },
+        {
+            id: 'php_laravel_phpunit_view_notification',
+            path: join(__dirname, '../php-laravel-phpunit/resources/views/notification.blade.php'),
+            highlight: 'php'
+        },
+        {
+            id: 'php_laravel_phpunit_view_newsletter_success',
+            path: join(__dirname, '../php-laravel-phpunit/resources/views/newsletter-success.blade.php'),
+            highlight: 'php'
+        },
+        {
+            id: 'php_laravel_phpunit_view_newsletter',
+            path: join(__dirname, '../php-laravel-phpunit/resources/views/newsletter.blade.php'),
+            highlight: 'php'
+        },
+        {
+            id: 'cypress_plugin_package_json',
+            path: join(__dirname, '../javascript-cypress-mailslurp-plugin/package.json'),
+            highlight: 'json'
+        },
+        {
+            id: 'cypress_client_full',
+            path: join(__dirname, '../javascript-cypress-js/cypress/e2e/example.cy.js'),
+            highlight: 'javascript'
+        },
+        {
+            id: 'cypress_sms_config',
+            path: join(__dirname, '../javascript-cypress-sms-testing/cypress.config.ts'),
+            highlight: 'typescript'
+        },
+        {
+            id: 'cypress_sms_full',
+            path: join(__dirname, '../javascript-cypress-sms-testing/cypress/e2e/integration-test.cy.ts'),
+            highlight: 'typescript'
+        },
+        {
+            id: 'cypress_client_package_json',
+            path: join(__dirname, '../javascript-cypress-js/package.json'),
+            highlight: 'json'
+        },
+        {
+            id: 'cypress_client_config',
+            path: join(__dirname, '../javascript-cypress-js/cypress.config.js'),
+            highlight: 'javascript'
+        },
+        {
+            id: 'cypress_plugin_config',
+            path: join(__dirname, '../javascript-cypress-mailslurp-plugin/cypress.config.ts'),
+            highlight: 'typescript'
+        },
+        {
+            id: 'cypress_plugin_full',
+            path: join(__dirname, '../javascript-cypress-mailslurp-plugin/cypress/e2e/integration-test.cy.ts'),
+            highlight: 'typescript'
+        },
         {id: 'java_jakarta_mail_pom', path: join(__dirname, '../java-jakarta-mail/pom.xml'), highlight: 'xml'},
         {id: 'powershell_ps1', path: join(__dirname, '../powershell-email-send-ps1/send.ps1'), highlight: 'pwsh'},
     ]
@@ -121,7 +179,7 @@ async function getFileTree(path:string): Promise<string> {
     const useCases: { paths: string[], commentStart: string, commentEnd: string, highlight: string }[] = [
         // add
         {
-            paths:  await files(
+            paths: await files(
                 "/javascript-cypress-sms-testing/**/*.ts",
                 "/javascript-cypress-sms-testing/cypress/support/*.js",
                 "/nodejs-nodemailer-smtp-example/spec/*Spec.js"
@@ -131,48 +189,52 @@ async function getFileTree(path:string): Promise<string> {
             highlight: "typescript",
         },
         {
-            paths:  await files(
+            paths: await files(
                 "/javascript-cypress-js/**/*.js",
-            "/javascript-cypress-mailslurp-plugin/cypress/support/e2e.js"
+                "/javascript-cypress-mailslurp-plugin/cypress/support/e2e.js"
             ),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "javascript",
         },
         {
-            paths:  await files("/python3-pyunit/*.py"),
+            paths: await files("/python3-pyunit/*.py"),
             commentStart: "# <gen>",
             commentEnd: "# </gen>",
             highlight: "python",
         },
         {
-            paths:  await files("/rlang-email-sending-in-r/*.r"),
+            paths: await files("/rlang-email-sending-in-r/*.r"),
             commentStart: "#<gen>",
             commentEnd: "#</gen>",
             highlight: "r",
         },
-        { paths:  await files(
+        {
+            paths: await files(
                 "/java-gradle-junit5/src/**/*.java",
             ),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "java",
         },
-        { paths:  await files(
+        {
+            paths: await files(
                 "/php-laravel-phpunit/**/*.php",
             ),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "php",
         },
-        { paths:  await files(
+        {
+            paths: await files(
                 "/csharp-dotnet-core7-nunit/*.cs",
             ),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "csharp",
         },
-        { paths:  await files(
+        {
+            paths: await files(
                 "/java-maven-selenium/src/**/*.java",
             ),
             commentStart: "//<gen>",
@@ -180,28 +242,28 @@ async function getFileTree(path:string): Promise<string> {
             highlight: "java",
         },
         {
-            paths:  await files("/playwright-sms-testing/tests/*.spec.ts",
+            paths: await files("/playwright-sms-testing/tests/*.spec.ts",
                 "/javascript-cypress-mailslurp-plugin/cypress/e2e/*.ts",
                 "/playwright-email-testing/tests/*.ts",
-                ),
+            ),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "typescript",
         },
         {
-            paths:  await files("/visualbasic/visualbasic/*.vb"),
+            paths: await files("/visualbasic/visualbasic/*.vb"),
             commentStart: "'<gen>",
             commentEnd: "'</gen>",
             highlight: "vba",
         },
         {
-            paths:  await files("/golang-smtp-client-test/*.go"),
+            paths: await files("/golang-smtp-client-test/*.go"),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "go",
         },
     ];
-    const blockMap: {[key:string]: { body: string; highlight: string} } = {};
+    const blockMap: { [key: string]: { body: string; highlight: string } } = {};
     for (const useCase of useCases) {
         for (const filePath of useCase.paths) {
             log(`Get content for ${useCase.highlight}`);
@@ -218,15 +280,15 @@ async function getFileTree(path:string): Promise<string> {
         }
     }
 
-    for(const fullFile of fullFiles) {
+    for (const fullFile of fullFiles) {
         log('Full file ' + fullFile.id)
         const body = await getFileContent(fullFile.path)
-        blockMap[fullFile.highlight + "_" + fullFile.id] = { body , highlight: fullFile.highlight }
+        blockMap[fullFile.highlight + "_" + fullFile.id] = {body, highlight: fullFile.highlight}
     }
     for (const fileTree of fileTrees) {
         log('Run tree ' + fileTree.id)
         const body = await getFileTree(fileTree.path)
-        blockMap["tree_" + fileTree.id] = { body , highlight: 'text' }
+        blockMap["tree_" + fileTree.id] = {body, highlight: 'text'}
     }
 
     for (const [key, value] of Object.entries(blockMap)) {
@@ -235,7 +297,7 @@ async function getFileTree(path:string): Promise<string> {
         await fs.promises.writeFile(
             f,
             "```" + value.highlight + "\n" +
-            (value.body as string).replace(/\n+$/, "")+
+            (value.body as string).replace(/\n+$/, "") +
             "\n```"
         );
     }

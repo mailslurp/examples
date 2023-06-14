@@ -15,7 +15,7 @@ build-assets:
 
 dev: build-assets
 	API_KEY=$(API_KEY) php artisan config:cache
-	php artisan serve
+	API_KEY=$(API_KEY) php artisan serve
 
 fmt:
 	./vendor/bin/pint
@@ -25,8 +25,9 @@ test: test-unit test-browser
 test-unit:
 	API_KEY=$(API_KEY) php artisan test
 
+# DUSK_HEADLESS_DISABLED=1
 test-browser:
-	API_KEY=$(API_KEY) DUSK_HEADLESS_DISABLED=1 php artisan dusk
+	API_KEY=$(API_KEY) php artisan dusk
 
 
 test-ci: composer install test

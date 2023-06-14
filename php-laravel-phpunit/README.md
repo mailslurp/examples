@@ -1,6 +1,21 @@
 # PHP Laravel MailSlurp examples using PHPUnit
+This example project demonstrates how to configure MailSlurp with PHP Laravel and PHPUnit.
 
-## Install PHP and composer
+You can use MailSlurp to send emails (Mailable/Notification) in your application and also to test that emails are received during Dusk tests.
+
+## Run the tests
+Set `API_KEY` to your MailSlurp API Key and run the tests:
+
+```shell
+make dev && make test
+```
+
+## Setup 
+To setup the project locally:
+
+### Install PHP and composer
+
+Use the following script to install composer:
 
 ```shell
 #!/bin/sh
@@ -28,21 +43,21 @@ Configure PHP extensions:
 sudo apt-get install php-curl php-mbstring php-xml php-zip
 ```
 
-## Create a project
+### Create a project
 
 ```shell
 php composer.phar create-project laravel/laravel php-laravel-phpunit
 ```
 
-## Install MailSlurp
+### Install MailSlurp
 
 ```shell
 php composer.phar require --dev mailslurp/mailslurp-client-php
 ```
 
-Config `config/mail.php`
+Configure `config/mail.php`. See the example file.
 
-## Install Dusk
+### Install Dusk
 
 ```shell
 php composer.phar require --dev laravel/dusk
@@ -50,8 +65,9 @@ php artisan dusk:install
 php artisan dusk:chrome-driver --detect
 ```
 
-## Create a mailable
+### Create a mailable
 
 ```shell
 php artisan make:mail Newsletter
+php artisan make:notification NewsletterNotification
 ```

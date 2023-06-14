@@ -18,7 +18,7 @@ build-readme:
 	DEBUG=script* npm run readme
 
 # copy files to s3
-copy: copy-shortcodes copy-manifest
+copy: copy-shortcodes copy-manifest copy-screenshots
 
 copy-manifest:
 	aws s3 cp .manifest.json s3://assets.mailslurp.com/examples/manifest.json
@@ -26,4 +26,5 @@ copy-manifest:
 copy-shortcodes:
 	aws s3 sync shortcodes/ s3://api-spec.mailslurp.com/shortcodes-github --exact-timestamps
 
-
+copy-screenshots:
+	aws s3 sync php-laravel-phpunit/tests/Browser/screenshots/ s3://api-spec.mailslurp.com/test-screenshots/examples/php-laravel-phpunit --exact-timestamps

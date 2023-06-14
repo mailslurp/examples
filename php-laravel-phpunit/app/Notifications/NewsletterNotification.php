@@ -1,17 +1,16 @@
 <?php
+
 //<gen>php_laravel_phpunit_newsletter_notification
 
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class NewsletterNotification extends Notification
 {
     use Queueable;
-
 
     public function __construct()
     {

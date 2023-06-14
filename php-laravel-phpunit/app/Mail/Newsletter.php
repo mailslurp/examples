@@ -1,5 +1,7 @@
 <?php
+
 //<gen>php_laravel_phpunit_newsletter_mailable
+
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
