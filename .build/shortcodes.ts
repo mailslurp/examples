@@ -190,6 +190,14 @@ async function getFileTree(path: string): Promise<string> {
         },
         {
             paths: await files(
+                "/dart-email-testing/test/*.dart",
+            ),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "dart",
+        },
+        {
+            paths: await files(
                 "/javascript-cypress-js/**/*.js",
                 "/javascript-cypress-mailslurp-plugin/cypress/support/e2e.js"
             ),
