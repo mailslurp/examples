@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:test/test.dart';
+// <gen>dart_import
+// https://pub.dev/packages/mailslurp
 import 'package:mailslurp/api.dart';
+// </gen>
 
 void main() async {
   setUp(() {
@@ -10,13 +13,13 @@ void main() async {
     expect(apiKey != null, true);
 
     // set api key and instantiate controllers
-    defaultApiClient.getAuthentication<ApiKeyAuth>('API_KEY').apiKey = apiKey;
+    defaultApiClient.authentication?.applyToParams([], { 'API_KEY': apiKey! });
   });
 
   test('can create email addresses', () async {
     var inboxController = InboxControllerApi();
     var inbox = await inboxController.createInboxWithOptions(CreateInboxDto());
-    expect(inbox.emailAddress.contains("@mailslurp"), true);
+    expect(inbox!.emailAddress.contains("@mailslurp"), true);
   });
 
   test('can send and receive emails', () async {
@@ -25,17 +28,17 @@ void main() async {
 
     var inbox = await inboxController.createInboxWithOptions(CreateInboxDto());
 
-    var confirmation = await inboxController.sendEmailAndConfirm(inbox.id,
-        sendEmailOptions: SendEmailOptions(
+    var confirmation = await inboxController.sendEmailAndConfirm(inbox!.id,
+        SendEmailOptions(
             to: [inbox.emailAddress],
             subject: "Test email",
             body: "<html>My message</html>",
             isHTML: true
         )
     );
-    expect(confirmation.inboxId, inbox.id);
+    expect(confirmation!.inboxId, inbox.id);
 
     var email = await waitForController.waitForLatestEmail(inboxId: inbox.id, timeout: 30000, unreadOnly: true);
-    expect(email.subject, "Test email");
+    expect(email!.subject, "Test email");
   });
 }
