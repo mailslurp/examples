@@ -7,4 +7,4 @@ environment:
 
 dev_dependencies:
   test: ^1.24.4
-  mailslurp: ^15.17.21
+  mailslurp: ^15.17.22

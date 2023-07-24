@@ -13,18 +13,18 @@ void main() async {
     expect(apiKey != null, true);
 
     // set api key and instantiate controllers
-    defaultApiClient.authentication?.applyToParams([], { 'API_KEY': apiKey! });
+    defaultApiClient.addDefaultHeader('x-api-key', apiKey!);
   });
 
   test('can create email addresses', () async {
-    var inboxController = InboxControllerApi();
+    var inboxController = InboxControllerApi(defaultApiClient);
     var inbox = await inboxController.createInboxWithOptions(CreateInboxDto());
     expect(inbox!.emailAddress.contains("@mailslurp"), true);
   });
 
   test('can send and receive emails', () async {
-    var inboxController = InboxControllerApi();
-    var waitForController = WaitForControllerApi();
+    var inboxController = InboxControllerApi(defaultApiClient);
+    var waitForController = WaitForControllerApi(defaultApiClient);
 
     var inbox = await inboxController.createInboxWithOptions(CreateInboxDto());
 
