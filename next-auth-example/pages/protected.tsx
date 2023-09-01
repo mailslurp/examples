@@ -31,7 +31,7 @@ export default function ProtectedPage() {
   // If session exists, display content
   return (
     <Layout>
-      <h1>Protected Page</h1>
+      <h1 data-id={"access-permitted"}>Protected Page</h1>
       <p>
         <strong>{content ?? "\u00a0"}</strong>
       </p>
