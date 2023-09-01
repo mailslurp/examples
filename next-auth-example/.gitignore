@@ -1,4 +1,6 @@
 .DS_Store
+screenshots
+tests/*.html
 
 node_modules/
 logs

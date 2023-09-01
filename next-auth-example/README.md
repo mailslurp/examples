@@ -11,7 +11,7 @@ npm install --save next next-auth nodemailer mailslurp-client
 Email provider requires a database, let's use [sequelize](https://authjs.dev/reference/adapter/sequelize):
 
 ```
-npm install sequelize sqlite3 @auth/sequelize-adapter
+npm install --save sequelize sqlite3 @auth/sequelize-adapter
 ```
 
 For testing:
