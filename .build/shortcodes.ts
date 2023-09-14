@@ -108,6 +108,16 @@ async function getFileTree(path: string): Promise<string> {
      */
     const fullFiles: { id: string; path: string, highlight: string }[] = [
         {
+            id: 'telnet_imap_sh_fetch_exp',
+            path: join(__dirname, '../telnet-imap-sh/imap-example.exp'),
+            highlight: 'bash'
+        },
+        {
+            id: 'telnet_imap_sh_fetch_sh',
+            path: join(__dirname, '../telnet-imap-sh/imap-example.sh'),
+            highlight: 'bash'
+        },
+        {
             id: 'php_laravel_phpunit_view_email',
             path: join(__dirname, '../php-laravel-phpunit/resources/views/emails/newsletter.blade.php'),
             highlight: 'php'

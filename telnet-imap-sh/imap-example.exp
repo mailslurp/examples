@@ -1,0 +1,20 @@
+#!/usr/bin/expect
+set timeout 20
+
+spawn telnet $env(HOST) $env(PORT)
+expect "* OK*"
+
+send "a1 LOGIN $env(USERNAME) $env(PASSWORD)\r"
+expect "a1 OK*"
+
+send "a2 SELECT $env(ADDRESS)\r"
+expect "a2 OK*"
+
+send "a3 SEARCH UNSEEN\r"
+expect "a3 OK*"
+
+send "a4 FETCH 1 BODY\[1.1\]\r"
+expect "a4 OK*"
+
+send "a5 LOGOUT\r"
+expect "*"
