@@ -1,0 +1,25 @@
+{
+  "name": "javascript-react-email",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest --watch=false"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@react-email/button": "^0.0.10",
+    "@react-email/html": "^0.0.4",
+    "@react-email/render": "^0.0.7",
+    "@react-email/text": "^0.0.5",
+    "mailslurp-client": "^15.17.2",
+    "nodemailer": "^6.9.5",
+    "react-email": "^1.9.5"
+  },
+  "devDependencies": {
+    "vite": "^4.4.10",
+    "vitest": "^0.34.6"
+  }
+}

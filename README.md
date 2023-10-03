@@ -34,6 +34,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [javascript-cypress-mailslurp-plugin](./javascript-cypress-mailslurp-plugin)
 - [javascript-cypress-sms-testing](./javascript-cypress-sms-testing)
 - [javascript-jest-puppeteer](./javascript-jest-puppeteer)
+- [javascript-react-email](./javascript-react-email)
 - [javascript-testcafe](./javascript-testcafe)
 - [javascript-webdriver-io](./javascript-webdriver-io)
 - [kotlin-email-test-example](./kotlin-email-test-example)
@@ -61,6 +62,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [sendgrid](./sendgrid)
 - [shortcodes](./shortcodes)
 - [swift-email-smtp-examples](./swift-email-smtp-examples)
+- [telnet-imap-sh](./telnet-imap-sh)
 - [visualbasic](./visualbasic)
 
 ## Running locally

@@ -3,6 +3,11 @@ import * as fs from "fs";
 import {join} from "path";
 import glob from "fast-glob";
 import Mustache from "mustache";
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename)
 const log = debug("scripts/readme");
 
 (async function() {

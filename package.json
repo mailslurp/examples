@@ -4,11 +4,13 @@
     "fast-glob": "^3.2.11",
     "ts-node": "^10.9.1"
   },
+  "type": "module",
   "scripts": {
-    "shortcodes": "node --loader ts-node/esm .build/shortcodes.ts",
-    "readme": "node --loader ts-node/esm .build/readme.ts"
+    "shortcodes": "node --loader @swc-node/register/esm .build/shortcodes.ts",
+    "readme": "node --loader @swc-node/register/esm .build/readme.ts"
   },
   "devDependencies": {
+    "@swc-node/register": "^1.6.8",
     "@types/debug": "^4.1.7",
     "@types/mustache": "^4.2.1",
     "mustache": "^4.2.0"

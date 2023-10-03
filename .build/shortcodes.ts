@@ -10,13 +10,17 @@
  * ```
  * Creates a shortcode in themes/ms/layouts/shortcodes that can be used in content
  */
-import debug from "debug";
 import * as fs from "fs";
+import debug from "debug";
 import {join} from "path";
 import glob from "fast-glob";
 import util from 'util';
 import {exec} from 'child_process';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename)
 const execAsync = util.promisify(exec);
 const log = debug("scripts/shortcodes");
 
@@ -221,6 +225,15 @@ async function getFileTree(path: string): Promise<string> {
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "dart",
+        },
+        {
+            paths: await files(
+                "/javascript-react-email/**/*.js",
+                "/javascript-react-email/**/*.jsx",
+            ),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "javascript",
         },
         {
             paths: await files(

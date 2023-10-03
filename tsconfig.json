@@ -9,5 +9,5 @@
     "lib": ["esnext", "dom", "DOM.Iterable", "es2020"],
     "types": ["@types/jest", "jest-playwright-preset", "expect-playwright"]
   },
-  "include": ["unit-tests/**/*.ts", "integration/**/*.ts"]
+  "include": ["unit-tests/**/*.ts", "integration/**/*.ts", ".build/**/*.ts"],
 }
