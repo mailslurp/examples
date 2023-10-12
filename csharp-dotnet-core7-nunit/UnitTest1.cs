@@ -123,6 +123,46 @@ public class Tests
     }
 
     [Test]
+    public void CreateAliasWithContact()
+    {
+        //<gen>csharp_demo_create_aliases
+        // create test inboxes
+        var inboxController = new InboxControllerApi(_configuration);
+        var inbox1 = inboxController.CreateInboxWithDefaults();
+        var inbox2 = inboxController.CreateInboxWithDefaults();
+        Assert.That(inbox1.EmailAddress, Is.Not.Null);
+        Assert.That(inbox2.EmailAddress, Is.Not.Null);
+        // create contact
+        var contactController = new ContactControllerApi(_configuration);
+        var contact = contactController.CreateContact(new CreateContactOptions()
+        {
+            EmailAddresses = new List<string>() { inbox2.EmailAddress },
+            Company = "test-company",
+            FirstName = "test-firstname",
+            LastName = "test-lastname"
+        });
+        Assert.That(contact.PrimaryEmailAddress.Contains(inbox2.EmailAddress), Is.True);
+        // create alias
+        var aliasController = new AliasControllerApi(_configuration);
+        var alias = aliasController.CreateAlias(new CreateAliasOptions(inbox2.EmailAddress));
+        Assert.That(alias.IsVerified, Is.True);
+        Assert.That(alias.MaskedEmailAddress.Contains(inbox2.EmailAddress), Is.True);
+        // now email the alias
+        var sent = inboxController.SendEmailAndConfirm(inbox1.Id, new SendEmailOptions()
+        {
+            To = new List<string>() {alias.EmailAddress},
+            Subject = "test-alias"
+        });
+        Assert.That(sent.From.Contains(inbox1.EmailAddress), Is.True);
+        Assert.That(sent.To.Contains(alias.EmailAddress), Is.True);
+        // now wait for email to arrive
+        var waitForController = new WaitForControllerApi(_configuration);
+        var latestEmail = waitForController.WaitForLatestEmail(alias.InboxId, 120_000, true);
+        Assert.That(latestEmail.Subject.Contains("test-alias"), Is.True);
+        //</gen>
+    }
+
+    [Test]
     public void CreateInboxWithOptions()
     {
         var inboxController = new InboxControllerApi(_configuration);
