@@ -31,7 +31,8 @@ const home: NightwatchTests = {
         browser
           .setValue("#email", inbox.emailAddress)
           .click("#quickstart-sign-in")
-          .acceptAlert()
+          .pause(1000)
+          .alerts.dismiss()
         done();
       })
       // accept alert
