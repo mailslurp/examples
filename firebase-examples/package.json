@@ -1,0 +1,28 @@
+{
+  "name": "firebase-email-link-test",
+  "version": "1.0.0",
+  "description": "Examples for testing Firebase authentication using MailSlurp",
+  "engines": {
+    "npm": ">=9.0.0 <10.0.0",
+    "node": ">=18.0.0 <=20.0.0"
+  },
+  "devDependencies": {
+    "@types/jsrsasign": "^10.5.8",
+    "firebase-tools": "^13.0.1",
+    "prettier": "^3.0.3",
+    "start-server-and-test": "^2.0.3",
+    "typescript": "^5.1.6",
+    "vite": "^4.4.9"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "format": "prettier --write .",
+    "emulator": "firebase emulators:start",
+    "deploy": "firebase deploy"
+  },
+  "dependencies": {
+    "firebase": "^10.7.1",
+    "jsrsasign": "^10.9.0"
+  }
+}

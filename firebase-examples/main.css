@@ -1,0 +1,171 @@
+/**
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+html, body {
+    font-family: 'Roboto', 'Helvetica', sans-serif;
+    background-color: #f5f5f5;
+}
+a {
+    text-decoration: none;
+}
+li a {
+    text-decoration: underline;
+    color: #0288d1;
+}
+.mdl-card {
+    overflow: visible;
+}
+.grecaptcha-logo {
+    background-color: white;
+}
+.mdl-grid {
+    max-width: 1024px;
+    margin: auto;
+}
+.mdl-layout__header-row {
+    padding: 0;
+}
+.quickstart-user-details-container, .user-details-container {
+    margin-top: 20px;
+    line-height: 25px;
+}
+#quickstart-sign-in-status, #sign-in-status, #quickstart-tenant-id {
+    font-weight: bold;
+}
+pre {
+    overflow-x: scroll;
+    line-height: 18px;
+}
+code {
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+h3 {
+    background: url('firebase-logo.png') no-repeat;
+    background-size: 40px;
+    padding-left: 50px;
+    color: white;
+}
+.close-icon {
+    cursor: pointer;
+    float: right;
+    width: 20px;
+}
+.gcip-heading {
+    background: none;
+    padding-left: 10px;
+}
+#verification-code-form {
+    display:none;
+}
+#recaptcha-container {
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+#verify-code-button, #cancel-verify-code-button {
+    margin-left: 20px;
+}
+#sign-out-button {
+    display: none;
+}
+#sign-in-card {
+    z-index: 2;
+}
+.recaptcha-container {
+    transform: scale(0.9);
+    transform-origin:0 0;
+    -webkit-transform:scale(0.9);
+    -webkit-transform-origin:0 0;
+}
+.mfa-info-list-item {
+    margin-bottom: 0px;
+    margin-top: 0px;
+    width: 300px;
+}
+.mdl-selectfield {
+    height: 27px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    width: 200px;
+}
+.mdl-selectfield__select {
+    background:
+            linear-gradient(45deg, transparent 50%, rgba(0,0,0, 0.26) 50%),
+            linear-gradient(135deg, rgba(0,0,0, 0.26) 50%, transparent 50%),
+            linear-gradient(to right, transparent, transparent);
+    background-color: transparent;
+    background-position:
+            calc(100% - 10px) calc(1em - 4px),
+            calc(100% - 5px) calc(1em - 4px),
+            100% 0;
+    background-repeat: no-repeat;
+    background-size: 5px 5px, 5px 5px;
+    border-color: rgba(0,0,0, 0.12);
+    border-radius: 0;
+    border-style: solid;
+    border-width: 0 0 1px 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    height: 26px;
+    line-height: 18px;
+    margin: 0;
+    outline: none !important;
+    padding-bottom: 4px;
+    padding-top: 4px;
+    width: 100%;
+    -moz-appearance:none;
+    -moz-box-sizing: border-box;
+    -webkit-appearance:none;
+    -webkit-box-sizing: border-box;
+}
+.mdl-selectfield__label {
+    color: rgba(0,0,0, 0.26);
+    display: block;
+    font-size: 16px;
+    left: 0;
+    overflow: hidden;
+    pointer-events: none;
+    position: relative;
+    text-align: left;
+    top: -23px;
+    transition-duration: 0.2s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    width: 100%;
+}
+.mdl-selectfield__label.is-active {
+    color: rgb(255,152,0);
+    font-size: 12px;
+    top: -40px;
+}
+.blinking{
+    animation: blinkingText 1.2s infinite;
+}
+@keyframes blinkingText {
+    0% { color: #ff0000; }
+    49% { color: transparent; }
+    50% { color: transparent; }
+    99% { color: #ff0000; }
+    100% { color: #ff0000; }
+}
+#quickstart-tenant-card {
+    min-height: 500px;
+}
+#quickstart-tenant-modal-title {
+    margin: 0px;
+    padding: 2px;
+    text-align: center;
+}
