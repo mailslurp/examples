@@ -1,2 +1,5 @@
+.firebase
 node_modules
 dist
+tests_output
+logs

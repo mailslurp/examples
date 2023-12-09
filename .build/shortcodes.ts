@@ -204,6 +204,14 @@ async function getFileTree(path: string): Promise<string> {
         },
         {
             paths: await files(
+                "/firebase-examples/*.ts",
+            ),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "typescript",
+        },
+        {
+            paths: await files(
                 "/powershell-windows-cmd/*.ps1",
             ),
             commentStart: "#<gen>",

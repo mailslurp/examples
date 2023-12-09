@@ -7,19 +7,29 @@
     "node": ">=18.0.0 <=20.0.0"
   },
   "devDependencies": {
+    "@swc/core": "^1.3.100",
     "@types/jsrsasign": "^10.5.8",
+    "chromedriver": "^119.0.1",
     "firebase-tools": "^13.0.1",
-    "prettier": "^3.0.3",
+    "geckodriver": "^4.2.1",
+    "mailslurp-client": "^15.17.4",
+    "nightwatch": "^2.6.23",
+    "prettier": "^3.1.0",
     "start-server-and-test": "^2.0.3",
+    "ts-node": "^10.9.2",
     "typescript": "^5.1.6",
     "vite": "^4.4.9"
   },
   "scripts": {
     "dev": "vite",
+    "start": "vite",
     "build": "vite build",
     "format": "prettier --write .",
     "emulator": "firebase emulators:start",
-    "deploy": "firebase deploy"
+    "deploy": "firebase deploy",
+    "start-server": "npm start",
+    "test": "nightwatch ./nightwatch",
+    "test-ci": "start-server-and-test start-server http://localhost:5173 test"
   },
   "dependencies": {
     "firebase": "^10.7.1",
