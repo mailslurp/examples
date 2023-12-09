@@ -205,6 +205,7 @@ async function getFileTree(path: string): Promise<string> {
         {
             paths: await files(
                 "/firebase-examples/*.ts",
+                "/firebase-examples/nightwatch/*.ts",
             ),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",

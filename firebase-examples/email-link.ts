@@ -1,4 +1,4 @@
-//<gen>firebase-email-link-code
+//<gen>firebase_email_link_code
 import { initializeApp } from "firebase/app";
 import {
   getAdditionalUserInfo,
