@@ -1,7 +1,9 @@
 # Firebase examples
+
 Deployed to `mailslurp-firebase-examples.firebaseapp.com`
 
 ## Install
+
 ```
 npm i
 ```
