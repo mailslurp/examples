@@ -105,5 +105,13 @@ public class MoreMethodsTest {
         //</gen>
         assertEquals(emailSearch.getNumberOfElements(), Integer.valueOf(1));
         assertEquals(Objects.requireNonNull(emailSearch.getContent()).get(0).getFrom(), inbox.getEmailAddress());
+        UUID emailId = emailSearch.getContent().get(0).getId();
+        //<gen>java_get_email_by_id
+        Email email = emailController.getEmail(emailId, false);
+        assertEquals(email.getSubject(), mySubject);
+        assertNotNull(email.getBody());
+        assertNotNull(email.getFrom());
+        assertNotNull(email.getAttachments());
+        //</gen>
     }
 }
