@@ -10,6 +10,6 @@ install:
 	php composer.phar install
 
 test:
-	API_KEY=$(API_KEY) ./vendor/bin/phpunit test
+	API_KEY=$(API_KEY) ./vendor/bin/phpunit test.php
 
 test-ci: composer install test
