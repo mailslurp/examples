@@ -14,7 +14,7 @@
         <dependency>
             <groupId>com.mailslurp</groupId>
             <artifactId>mailslurp-client-java</artifactId>
-            <version>15.17.1</version>
+            <version>15.17.33</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>

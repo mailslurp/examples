@@ -17,6 +17,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [dart-email-testing](./dart-email-testing)
 - [deno-email-api](./deno-email-api)
 - [elixir-phoenix-hound](./elixir-phoenix-hound)
+- [firebase-examples](./firebase-examples)
 - [flutter-email-test](./flutter-email-test)
 - [fsharp-email-mstest](./fsharp-email-mstest)
 - [golang-email-test](./golang-email-test)
@@ -64,6 +65,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [swift-email-smtp-examples](./swift-email-smtp-examples)
 - [telnet-imap-sh](./telnet-imap-sh)
 - [visualbasic](./visualbasic)
+- [wait-for-methods-vitest](./wait-for-methods-vitest)
 
 ## Running locally
 If you wish to run these examples yourself:
