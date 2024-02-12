@@ -3,17 +3,14 @@
   "version": "1.0.0",
   "description": "Example cypress-mailslurp plugin usage",
   "scripts": {
-    "test": "cypress run",
+    "test": "cypress run --headed",
     "dev": "cypress open"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "cypress": "^10.5.0",
-    "cypress-mailslurp": "^1.5.0",
-    "typescript": "^4.4.4"
-  },
-  "devDependencies": {
-    "debug": "^4.3.2"
+    "cypress": "^13.6.2",
+    "cypress-mailslurp": "^1.7.0",
+    "typescript": "^5.3.3"
   }
 }
