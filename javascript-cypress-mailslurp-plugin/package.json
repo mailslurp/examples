@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Example cypress-mailslurp plugin usage",
   "scripts": {
-    "test": "cypress run",
+    "test": "cypress run --headed",
     "dev": "cypress open"
   },
   "author": "",
