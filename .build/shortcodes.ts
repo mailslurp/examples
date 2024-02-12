@@ -204,6 +204,12 @@ async function getFileTree(path: string): Promise<string> {
             highlight: "typescript",
         },
         {
+            paths: await files("/csharp-dotnet-core-8-smtpclient/**/*.cs"),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "csharp"
+        },
+        {
             paths: await files(
                 "/firebase-examples/*.ts",
                 "/firebase-examples/nightwatch/*.ts",
