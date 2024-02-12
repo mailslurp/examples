@@ -284,6 +284,14 @@ async function getFileTree(path: string): Promise<string> {
         },
         {
             paths: await files(
+                "/php-composer-phpunit/*.php",
+            ),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "php",
+        },
+        {
+            paths: await files(
                 "/csharp-dotnet-core7-nunit/*.cs",
             ),
             commentStart: "//<gen>",

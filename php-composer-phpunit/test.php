@@ -15,6 +15,28 @@ use PHPUnit\Framework\TestCase;
  */
 final class EmailTest extends TestCase
 {
+
+    public function test_simpleUsecase() {
+        //<gen>phpunit_simple_usecase
+        // configure mailslurp/mailslurp-client-php library
+        $config = MailSlurp\Configuration::getDefaultConfiguration()
+            ->setApiKey('x-api-key', getenv("API_KEY"));
+        $inboxController = new MailSlurp\Apis\InboxControllerApi(null, $config);
+        // create an inbox
+        $inbox = $inboxController->createInboxWithDefaults();
+        // send an email
+        $sendOptions = new MailSlurp\Models\SendEmailOptions();
+        $sendOptions->setTo([$inbox->getEmailAddress()]);
+        $sendOptions->setSubject("Test");
+        $sendOptions->setBody("Hello");
+        $inboxController->sendEmail($inbox->getId(), $sendOptions);
+        // receive the email
+        $waitForController = new MailSlurp\Apis\WaitForControllerApi(null, $config);
+        $email = $waitForController->waitForLatestEmail($inbox->getId(), 120000, true);
+        $this->assertNotNull($email->getBody());
+        //</gen>
+    }
+
     //<gen>phpunit_get_config
     private function getConfig()
     {
@@ -44,6 +66,44 @@ final class EmailTest extends TestCase
             "mailslurp.com",
             $inbox->getEmailAddress()
         );
+    }
+
+    public function test_SmtpAccess()
+    {
+        $inboxController = new MailSlurp\Apis\InboxControllerApi(null, $this->getConfig());
+        // create an smtp inbox
+        //<gen>phpunit_create_smtp_inbox
+        $options = new \MailSlurp\Models\CreateInboxDto();
+        $options->setInboxType("SMTP_INBOX");
+        $inbox_smtp = $inboxController->createInboxWithOptions($options);
+        //</gen>
+        $inbox_recipient = $inboxController->createInboxWithDefaults();
+
+        //<gen>phpunit_phpmailer_config
+        $access_details = $inboxController->getImapSmtpAccess($inbox_smtp->getId());
+        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+        // set mail server settings using the inbox access details
+        $mail->isSMTP();
+        $mail->Host       = $access_details->getSecureSmtpServerHost();
+        $mail->SMTPAuth   = true;
+        $mail->Username   = $access_details->getSecureSmtpUsername();
+        $mail->Password   = $access_details->getSecureSmtpPassword();
+        $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = $access_details->getSecureSmtpServerPort();
+        //</gen>
+        //<gen>phpunit_smtp_send
+        $mail->setFrom($inbox_smtp->getEmailAddress(), $inbox_smtp->getName());
+        $mail->addAddress($inbox_recipient->getEmailAddress());     //Add a recipient
+        $mail->isHTML(true);                                  //Set email format to HTML
+        $mail->Subject = 'Testing smtp sending';
+        $mail->Body    = 'This is the body';
+        $mail->send();
+        //</gen>
+        //<gen>phpunit_smtp_receive
+        $wait_for_controller = new MailSlurp\Apis\WaitForControllerApi(null, $this->getConfig());
+        $email = $wait_for_controller->waitForLatestEmail($inbox_recipient->getId());
+        $this->assertStringContainsString("smtp sending", $email->getSubject());
+        //</gen>
     }
 
     public function test_CanSendAndReceiveEmail_BetweenTwoInboxes()

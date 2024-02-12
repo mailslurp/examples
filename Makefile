@@ -24,7 +24,7 @@ copy-manifest:
 	aws s3 cp .manifest.json s3://assets.mailslurp.com/examples/manifest.json
 
 copy-shortcodes:
-	aws s3 cp shortcodes/ s3://api-spec.mailslurp.com/shortcodes-github
+	aws s3 cp --recursive shortcodes/ s3://api-spec.mailslurp.com/shortcodes-github
 
 copy-screenshots:
-	aws s3 cp -r php-laravel-phpunit/tests/Browser/screenshots/ s3://api-spec.mailslurp.com/test-screenshots/examples/php-laravel-phpunit
+	aws s3 cp --recursive php-laravel-phpunit/tests/Browser/screenshots/ s3://api-spec.mailslurp.com/test-screenshots/examples/php-laravel-phpunit
