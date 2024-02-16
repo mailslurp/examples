@@ -204,7 +204,7 @@ async function getFileTree(path: string): Promise<string> {
             highlight: "typescript",
         },
         {
-            paths: await files("/csharp-dotnet-core-8-smtpclient/**/*.cs"),
+            paths: await files("/csharp-dotnet-core-8-smtpclient/SmtpClientMailKitExample/SmtpClientMailKitExample/*.cs"),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "csharp"
@@ -283,6 +283,14 @@ async function getFileTree(path: string): Promise<string> {
         {
             paths: await files(
                 "/php-laravel-phpunit/**/*.php",
+            ),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "php",
+        },
+        {
+            paths: await files(
+                "/php-composer-phpunit/*.php",
             ),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",

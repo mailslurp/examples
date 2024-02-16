@@ -7,6 +7,7 @@
   ],
   "require": {
     "mailslurp/mailslurp-client-php": "dev-master",
-    "phpunit/phpunit": "^11"
+    "phpunit/phpunit": "^11",
+    "phpmailer/phpmailer": "^6.9"
   }
 }

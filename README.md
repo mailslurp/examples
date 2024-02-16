@@ -8,6 +8,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 
 ## Projects
 
+- [csharp-dotnet-core-8-smtpclient](./csharp-dotnet-core-8-smtpclient)
 - [csharp-dotnet-core2-selenium](./csharp-dotnet-core2-selenium)
 - [csharp-dotnet-core3](./csharp-dotnet-core3)
 - [csharp-dotnet-core7-nunit](./csharp-dotnet-core7-nunit)
