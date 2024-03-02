@@ -290,6 +290,15 @@ async function getFileTree(path: string): Promise<string> {
         },
         {
             paths: await files(
+                "/ruby-minitest-netsmtp-example/*.rb",
+                "/ruby-minitest-netsmtp-example/Gemfile",
+            ),
+            commentStart: "#<gen>",
+            commentEnd: "#</gen>",
+            highlight: "ruby",
+        },
+        {
+            paths: await files(
                 "/php-composer-phpunit/*.php",
             ),
             commentStart: "//<gen>",

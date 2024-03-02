@@ -58,6 +58,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [rlang-email-sending-in-r](./rlang-email-sending-in-r)
 - [ruby-capybara-cucumber-selenium](./ruby-capybara-cucumber-selenium)
 - [ruby-cucumber-test](./ruby-cucumber-test)
+- [ruby-minitest-netsmtp-example](./ruby-minitest-netsmtp-example)
 - [ruby-rspec](./ruby-rspec)
 - [rust-selenium-email-testing](./rust-selenium-email-testing)
 - [scala-scalatest-email](./scala-scalatest-email)
