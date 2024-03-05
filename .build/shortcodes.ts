@@ -204,6 +204,18 @@ async function getFileTree(path: string): Promise<string> {
             highlight: "typescript",
         },
         {
+            paths: await files("/bun*/*.js"),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "typescript"
+        },
+        {
+            paths: await files("/bun*/Makefile"),
+            commentStart: "#<gen>",
+            commentEnd: "#</gen>",
+            highlight: "bash"
+        },
+        {
             paths: await files("/csharp-dotnet-core-8-smtpclient/SmtpClientMailKitExample/SmtpClientMailKitExample/*.cs"),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
