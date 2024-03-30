@@ -8,6 +8,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 
 ## Projects
 
+- [bun-js-send-email](./bun-js-send-email)
 - [csharp-dotnet-core-8-smtpclient](./csharp-dotnet-core-8-smtpclient)
 - [csharp-dotnet-core2-selenium](./csharp-dotnet-core2-selenium)
 - [csharp-dotnet-core3](./csharp-dotnet-core3)
@@ -33,7 +34,9 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [javascript-axios](./javascript-axios)
 - [javascript-codecept-js](./javascript-codecept-js)
 - [javascript-cypress-js](./javascript-cypress-js)
+- [javascript-cypress-js-open-email](./javascript-cypress-js-open-email)
 - [javascript-cypress-mailslurp-plugin](./javascript-cypress-mailslurp-plugin)
+- [javascript-cypress-newsletter-signup](./javascript-cypress-newsletter-signup)
 - [javascript-cypress-sms-testing](./javascript-cypress-sms-testing)
 - [javascript-jest-puppeteer](./javascript-jest-puppeteer)
 - [javascript-react-email](./javascript-react-email)
