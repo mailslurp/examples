@@ -1,3 +1,5 @@
+Cypress.config('defaultCommandTimeout', 10000);
+
 describe('can sign up for newsletter', () => {
   it('can enter email and receive confirmation', () => {
     //<gen>cypress_newsletter_client_2
@@ -25,7 +27,7 @@ describe('can sign up for newsletter', () => {
     //</gen>
     //<gen>cypress_newsletter_visit_4
     // visit the newsletter page and fill in the form
-    cy.visit('https://playground-newsletter.mailslurp.com')
+    cy.visit('https://newsletter.mailslurp.biz')
     //</gen>
     cy.screenshot('cypress-newsletter-page-01.png')
     //<gen>cypress_newsletter_fill_5
@@ -45,6 +47,23 @@ describe('can sign up for newsletter', () => {
     }).then(email => {
       expect(email.subject).to.eq('Welcome to my newsletter')
       expect(email.body).to.contain('Jack')
+      cy.wrap(email.id).as('emailId')
+    })
+    //</gen>
+    //<gen>cypress_newsletter_view_7
+    // open the email to view it in cypress
+    cy.then(function () {
+      cy.log('Get url for viewing email')
+      return this.mailslurp.emailController.getEmailPreviewURLs({
+        emailId: this.emailId
+      })
+    }).then(emailPreviewUrls => {
+      cy.log(`Open email in browser: ${emailPreviewUrls.html}`)
+      return cy.origin(emailPreviewUrls.origin, { args: { url: emailPreviewUrls.plainHtmlBodyUrl } }, ({ url }) => {
+        cy.visit(url)
+        cy.get('body').contains('Jack')
+        cy.screenshot('cypress-open-email')
+      })
     })
     //</gen>
   })
