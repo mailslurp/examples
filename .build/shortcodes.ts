@@ -161,6 +161,7 @@ async function getFileTree(path: string): Promise<string> {
             path: join(__dirname, '../javascript-cypress-sms-testing/cypress.config.ts'),
             highlight: 'typescript'
         },
+
         {
             id: 'cypress_sms_full',
             path: join(__dirname, '../javascript-cypress-sms-testing/cypress/e2e/integration-test.cy.ts'),
@@ -202,6 +203,12 @@ async function getFileTree(path: string): Promise<string> {
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "typescript",
+        },
+        {
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            paths: await files('/javascript-cypress-newsletter-signup/cypress/e2e/*.cy.js'),
+            highlight: 'javascript'
         },
         {
             paths: await files("/bun*/*.js"),

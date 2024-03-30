@@ -26,7 +26,9 @@ describe('can sign up for newsletter', () => {
     //<gen>cypress_newsletter_visit_4
     // visit the newsletter page and fill in the form
     cy.visit('https://playground-newsletter.mailslurp.com')
+    //</gen>
     cy.screenshot('cypress-newsletter-page-01.png')
+    //<gen>cypress_newsletter_fill_5
     cy.then(function() {
       cy.log('Enter email address and submit')
       cy.get('#email').type(this.inbox.emailAddress)
@@ -36,7 +38,7 @@ describe('can sign up for newsletter', () => {
     })
     //</gen>
     cy.screenshot('cypress-newsletter-page-02.png')
-    //<gen>cypress_newsletter_confirm_5
+    //<gen>cypress_newsletter_confirm_6
     // wait for the confirmation email
     cy.then(function () {
       return this.mailslurp.waitForLatestEmail(this.inbox.id, 120_000, true)
