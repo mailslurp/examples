@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyyaml
+    - name: Run check
+      run: |
+        make check-actions
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory:
+          - 'javascript-cypress-js'
+          - 'javascript-cypress-mailslurp-plugin'
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up environment
+      run: echo "API_KEY=$API_KEY" > .env
+    - name: Run tests
+      run: |
+        cd ${{ matrix.directory }}
+        make test
