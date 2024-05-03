@@ -19,6 +19,7 @@ import {exec} from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// @ts-ignore
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename)
 const execAsync = util.promisify(exec);
@@ -203,6 +204,16 @@ async function getFileTree(path: string): Promise<string> {
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "typescript",
+        },
+        {
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            paths: [
+                ...await files('/golang-email-test/*.go'),
+                ...await files('/golang-smtp-client-test/*.go'),
+                ...await files('/golang-imap-examples/*.go')
+            ],
+            highlight: 'go'
         },
         {
             commentStart: "//<gen>",
