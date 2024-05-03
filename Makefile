@@ -29,3 +29,9 @@ copy-shortcodes:
 copy-screenshots:
 	aws s3 cp --recursive php-laravel-phpunit/tests/Browser/screenshots/ s3://api-spec.mailslurp.com/test-screenshots/examples/php-laravel-phpunit
 	aws s3 cp --recursive javascript-cypress-newsletter-signup/cypress/screenshots/spec.cy.js/ s3://api-spec.mailslurp.com/test-screenshots/examples/cypress-newsletter-signup
+
+# checks
+check-actions:
+	python3 .build/check-actions.py
+check-deps:
+	python3 .build/check-deps.py
