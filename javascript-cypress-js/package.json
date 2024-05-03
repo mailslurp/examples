@@ -6,7 +6,7 @@
     "postinstall": "cypress install"
   },
   "dependencies": {
-    "cypress": "^10.5.0",
-    "mailslurp-client": "^15.13.3"
+    "cypress": "^13.8.1",
+    "mailslurp-client": "^15.20.0"
   }
 }

@@ -33,3 +33,5 @@ copy-screenshots:
 # checks
 check-actions:
 	python3 .build/check-actions.py
+check-deps:
+	python3 .build/check-deps.py
