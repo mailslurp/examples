@@ -250,6 +250,14 @@ async function getFileTree(path: string): Promise<string> {
         },
         {
             paths: await files(
+                "/powershell-email-send-ps1/*.ps1",
+            ),
+            commentStart: "#<gen>",
+            commentEnd: "#</gen>",
+            highlight: "pwsh",
+        },
+        {
+            paths: await files(
                 "/powershell-windows-cmd/*.ps1",
             ),
             commentStart: "#<gen>",
