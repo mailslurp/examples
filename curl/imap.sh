@@ -36,45 +36,45 @@ curl --ssl "imaps://$SECURE_IMAP_SERVER_HOST:$SECURE_IMAP_SERVER_PORT/INBOX" -vu
 
 echo "--- IMAP commands"
 #<gen>curl_imap_search_list
-curl -vu "$IMAP_USERNAME:$IMAP_PASSWORD" "imap://$IMAP_SERVER_HOST:$IMAP_SERVER_PORT/$IMAP_MAILBOX" -X 'LIST "" *'
+curl -X 'LIST "" *' -vu "$IMAP_USERNAME:$IMAP_PASSWORD" "imap://mailslurp.click:1143/$IMAP_MAILBOX"
 #</gen>
 #<gen>curl_imap_search_unseen
-curl -vu "$IMAP_USERNAME:$IMAP_PASSWORD" "imap://$IMAP_SERVER_HOST:$IMAP_SERVER_PORT/$IMAP_MAILBOX" -X "SEARCH UNSEEN"
+curl -X "SEARCH UNSEEN" -vu "$IMAP_USERNAME:$IMAP_PASSWORD" "imap://mailslurp.click:1143/$IMAP_MAILBOX"
 #</gen>
 
 #<gen>curl_imap_LOGIN
 # Login command
-curl "imap://$IMAP_SERVER_HOST:$IMAP_SERVER_PORT/" -vX "LOGIN $IMAP_USERNAME $IMAP_PASSWORD"
+curl -vX "LOGIN $IMAP_USERNAME $IMAP_PASSWORD" "imap://mailslurp.click:1143"
 #</gen>
 
 #<gen>curl_imap_SELECT
 # Select a mailbox
-curl -vu "$IMAP_USERNAME:$IMAP_PASSWORD" "imap://$IMAP_SERVER_HOST:$IMAP_SERVER_PORT/$IMAP_MAILBOX" -X "SELECT INBOX"
+curl -X "SELECT INBOX" -vu "$IMAP_USERNAME:$IMAP_PASSWORD" "imap://mailslurp.click:1143/$IMAP_MAILBOX"
 #</gen>
 
 #<gen>curl_imap_FETCH
 # Fetch messages
-curl -vu "$IMAP_USERNAME:$IMAP_PASSWORD" "imap://$IMAP_SERVER_HOST:$IMAP_SERVER_PORT/$IMAP_MAILBOX" -X "FETCH 1:* (FLAGS BODY[HEADER.FIELDS (FROM TO SUBJECT DATE)])"
+curl -X "FETCH 1:* (FLAGS BODY[HEADER.FIELDS (FROM TO SUBJECT DATE)])" -vu "$IMAP_USERNAME:$IMAP_PASSWORD" "imap://mailslurp.click:1143/$IMAP_MAILBOX"
 #</gen>
 
 #<gen>curl_imap_SEARCH
 # Search for unseen messages
-curl -vu "$IMAP_USERNAME:$IMAP_PASSWORD" "imap://$IMAP_SERVER_HOST:$IMAP_SERVER_PORT/$IMAP_MAILBOX" -X "SEARCH UNSEEN"
+curl -X "SEARCH UNSEEN" -vu "$IMAP_USERNAME:$IMAP_PASSWORD" "imap://mailslurp.click:1143/$IMAP_MAILBOX"
 #</gen>
 
 #<gen>curl_imap_STORE
 # Store command to mark messages as seen
-curl -vu "$IMAP_USERNAME:$IMAP_PASSWORD" "imap://$IMAP_SERVER_HOST:$IMAP_SERVER_PORT/$IMAP_MAILBOX" -X "STORE 1:* +FLAGS (\Seen)"
+curl -X "STORE 1:* +FLAGS (\Seen)" -vu "$IMAP_USERNAME:$IMAP_PASSWORD" "imap://mailslurp.click:1143/$IMAP_MAILBOX"
 #</gen>
 
 OTHER_INBOX_ADDRESS=$EMAIL_ADDRESS
 source .env.account
 #<gen>curl_imap_COPY
 # Copy messages to another mailbox
-curl -vu "$IMAP_USERNAME:$IMAP_PASSWORD" "imap://$IMAP_SERVER_HOST:$IMAP_SERVER_PORT/INBOX" -X "COPY 1:* $OTHER_INBOX_ADDRESS"
+curl -X "COPY 1:* $OTHER_INBOX_ADDRESS" -vu "$IMAP_USERNAME:$IMAP_PASSWORD" "imap://mailslurp.click:1143/INBOX"
 #</gen>
 
 #<gen>curl_imap_DELETE
 # Delete a mailbox
-curl -vu "$IMAP_USERNAME:$IMAP_PASSWORD" "imap://$IMAP_SERVER_HOST:$IMAP_SERVER_PORT/$IMAP_MAILBOX" -X "DELETE $EMAIL_ADDRESS"
+curl -X "DELETE $EMAIL_ADDRESS" -vu "$IMAP_USERNAME:$IMAP_PASSWORD" "imap://mailslurp.click:1143/$IMAP_MAILBOX"
 #</gen>

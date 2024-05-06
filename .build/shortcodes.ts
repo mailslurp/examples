@@ -189,7 +189,7 @@ async function getFileTree(path: string): Promise<string> {
             highlight: 'typescript'
         },
         {id: 'java_jakarta_mail_pom', path: join(__dirname, '../java-jakarta-mail/pom.xml'), highlight: 'xml'},
-        {id: 'powershell_ps1', path: join(__dirname, '../powershell-email-send-ps1/send.ps1'), highlight: 'pwsh'},
+        {id: 'powershell_ps1', path: join(__dirname, '../powershell-email-send-ps1/send.ps1'), highlight: 'ps1'},
     ]
     // *.use.ts test classes have a special comment -> //<gen>inbox_send ----> //</gen>
     const useCases: { paths: string[], commentStart: string, commentEnd: string, highlight: string }[] = [
@@ -254,7 +254,7 @@ async function getFileTree(path: string): Promise<string> {
             ),
             commentStart: "#<gen>",
             commentEnd: "#</gen>",
-            highlight: "pwsh",
+            highlight: "ps1",
         },
         {
             paths: await files(
@@ -263,7 +263,7 @@ async function getFileTree(path: string): Promise<string> {
             ),
             commentStart: "#<gen>",
             commentEnd: "#</gen>",
-            highlight: "pwsh",
+            highlight: "ps1",
         },
         {
             paths: await files(
