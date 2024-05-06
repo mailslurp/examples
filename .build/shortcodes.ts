@@ -17,7 +17,7 @@ import glob from "fast-glob";
 import util from 'util';
 import {exec} from 'child_process';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import {fileURLToPath} from 'url';
 
 // @ts-ignore
 const __filename = fileURLToPath(import.meta.url);
@@ -259,6 +259,7 @@ async function getFileTree(path: string): Promise<string> {
         {
             paths: await files(
                 "/powershell-windows-cmd/*.ps1",
+                "/powershell-imap/*.ps1",
             ),
             commentStart: "#<gen>",
             commentEnd: "#</gen>",

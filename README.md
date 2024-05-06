@@ -56,6 +56,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [playwright-email-testing](./playwright-email-testing)
 - [playwright-sms-testing](./playwright-sms-testing)
 - [powershell-email-send-ps1](./powershell-email-send-ps1)
+- [powershell-imap-smtp](./powershell-imap-smtp)
 - [powershell-windows-cmd](./powershell-windows-cmd)
 - [python2-pytest](./python2-pytest)
 - [python3-django-playwright](./python3-django-playwright)

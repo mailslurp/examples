@@ -8,7 +8,20 @@ Invoke-WebRequest -OutFile ".env" -Uri "https://api.mailslurp.com/inboxes/imap-s
 
 # source the .env and connect using variables
 Get-Content ".env" | ForEach-Object {
-    $key, $value = $_ -split '=', 2
-    Set-Item -Path "env:$key" -Value $value
+    $keyValue = $_.Split('=', 2)
+    if ($keyValue.Count -eq 2)
+    {
+        $envName = $keyValue[0].Trim()
+        $envValue = $keyValue[1].Trim()
+        # Remove leading and trailing double quotes from the value
+        if ($envValue.StartsWith('"') -and $envValue.EndsWith('"'))
+        {
+            $envValue = $envValue.Substring(1, $envValue.Length - 2)
+        }
+        [Environment]::SetEnvironmentVariable($envName, $envValue, [System.EnvironmentVariableTarget]::Process)
+    }
 }
 #</gen>
+if (-not (Test-Path env:IMAP_SERVER_HOST)) {
+    throw "Environment variable IMAP_SERVER_HOST does not exist"
+}

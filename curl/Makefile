@@ -1,6 +1,8 @@
 -include ../.env
 .PHONY: test
-test:
-	API_KEY=$(API_KEY) ./smtp-imap.sh
-	API_KEY=$(API_KEY) ./curl-example.sh
+
+SHELL_SCRIPTS = $(wildcard *.sh)
+
+test: $(SHELL_SCRIPTS)
+	for file in $^ ; do API_KEY=$(API_KEY) ./$$file ; done
  
