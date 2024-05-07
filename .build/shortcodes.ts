@@ -114,12 +114,12 @@ async function getFileTree(path: string): Promise<string> {
     const fullFiles: { id: string; path: string, highlight: string }[] = [
         {
             id: 'telnet_imap_sh_fetch_exp',
-            path: join(__dirname, '../telnet-imap-sh/imap-example.exp'),
+            path: join(__dirname, '../telnet-imap-smtp-sh/imap-example.exp'),
             highlight: 'bash'
         },
         {
             id: 'telnet_imap_sh_fetch_sh',
-            path: join(__dirname, '../telnet-imap-sh/imap-example.sh'),
+            path: join(__dirname, '../telnet-imap-smtp-sh/imap-example.sh'),
             highlight: 'bash'
         },
         {
@@ -247,6 +247,15 @@ async function getFileTree(path: string): Promise<string> {
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "typescript",
+        },
+        {
+            paths: await files(
+                "/telnet-imap-smtp-sh/*.sh",
+                "/telnet-imap-smtp-sh/*.exp",
+            ),
+            commentStart: "#<gen>",
+            commentEnd: "#</gen>",
+            highlight: "bash",
         },
         {
             paths: await files(

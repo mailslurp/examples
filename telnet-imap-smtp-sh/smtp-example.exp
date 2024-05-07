@@ -1,0 +1,40 @@
+#!/usr/bin/expect
+set timeout 20
+
+#<gen>telnet_smtp_exp
+spawn telnet $env(HOST) $env(PORT)
+expect "220*"
+
+send "HELO test.mailslurp.com\r"
+expect "250*"
+
+# AUTH_STRING="\0$USERNAME\0$PASSWORD"
+# USERNAME_PASSWORD_BASE64=$(echo -ne "$AUTH_STRING" | base64)
+send "AUTH PLAIN $env(USERNAME_PASSWORD_BASE64)\r"
+expect "235*"
+
+# Send MAIL FROM command
+send "MAIL FROM: <$env(ADDRESS)>\r"
+expect "250*"
+
+# Send RCPT TO command
+send "RCPT TO: <$env(ADDRESS)>\r"
+expect "250*"
+
+# Start data transfer
+send "DATA\r"
+expect "354*"
+
+# Send email headers and body
+send "From: <$env(ADDRESS)>\r"
+send "To: <$env(ADDRESS)>\r"
+send "Subject: test\r"
+send "\r"
+send "this is a test message.\r"
+send ".\r"
+expect "250*"
+
+# Quit session
+send "QUIT\r"
+expect "221*"
+#</gen>

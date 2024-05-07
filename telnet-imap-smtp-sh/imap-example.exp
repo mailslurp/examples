@@ -1,6 +1,7 @@
 #!/usr/bin/expect
 set timeout 20
 
+#<gen>telnet_imap_exp
 spawn telnet $env(HOST) $env(PORT)
 expect "* OK*"
 
@@ -18,3 +19,4 @@ expect "a4 OK*"
 
 send "a5 LOGOUT\r"
 expect "*"
+#</gen>

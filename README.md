@@ -72,7 +72,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [sendgrid](./sendgrid)
 - [shortcodes](./shortcodes)
 - [swift-email-smtp-examples](./swift-email-smtp-examples)
-- [telnet-imap-sh](./telnet-imap-sh)
+- [telnet-imap-smtp-sh](./telnet-imap-smtp-sh)
 - [visualbasic](./visualbasic)
 - [wait-for-methods-vitest](./wait-for-methods-vitest)
 
