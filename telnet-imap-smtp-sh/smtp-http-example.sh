@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # get an inbox with smtp/imap capabilties
-INBOX_TYPE="SMTP_INBOX"
+INBOX_TYPE="HTTP_INBOX"
 INBOX=$(curl -sXPOST "https://api.mailslurp.com/inboxes?inboxType=$INBOX_TYPE&expiresIn=300000" -H"x-api-key:$API_KEY")
 
 # get inbox imap access details
