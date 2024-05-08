@@ -17,6 +17,20 @@ expect "a3 OK*"
 send "a4 FETCH 1 BODY\[1.1\]\r"
 expect "a4 OK*"
 
+# Begin IDLE
+send "a5 IDLE\r"
+expect "+ IDLE*"  # Server response indicating it's ready to push notifications
+
+set idle_timeout 30
+expect {
+    timeout { send "DONE\r"; expect "a5 OK*" }
+    "* EXISTS" {
+        send "DONE\r"
+        expect "a5 OK*"
+        # Add handling for new mail or changes here if needed
+    }
+}
+
 send "a5 LOGOUT\r"
 expect "*"
 #</gen>
