@@ -11,7 +11,8 @@ export USERNAME=$(echo "$ACCESS" | jq -j '.imapUsername')
 export PASSWORD=$(echo "$ACCESS" | jq -j '.imapPassword')
 export PORT=$(echo "$ACCESS" | jq -j '.imapServerPort')
 export HOST=$(echo "$ACCESS" | jq -j '.imapServerHost')
-
+auth_string="\0$USERNAME\0$PASSWORD"
+export AUTH_PLAIN=$(echo -ne "$auth_string" | base64)
 # send a message to the inbox
 curl -XPOST "https://api.mailslurp.com/sendEmailQuery?to=$ADDRESS&body=Hello&subject=Test" -Hx-api-key:$API_KEY
 
