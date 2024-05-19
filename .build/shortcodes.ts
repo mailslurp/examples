@@ -17,8 +17,9 @@ import glob from "fast-glob";
 import util from 'util';
 import {exec} from 'child_process';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import {fileURLToPath} from 'url';
 
+// @ts-ignore
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename)
 const execAsync = util.promisify(exec);
@@ -113,12 +114,12 @@ async function getFileTree(path: string): Promise<string> {
     const fullFiles: { id: string; path: string, highlight: string }[] = [
         {
             id: 'telnet_imap_sh_fetch_exp',
-            path: join(__dirname, '../telnet-imap-sh/imap-example.exp'),
+            path: join(__dirname, '../telnet-imap-smtp-sh/imap-example.exp'),
             highlight: 'bash'
         },
         {
             id: 'telnet_imap_sh_fetch_sh',
-            path: join(__dirname, '../telnet-imap-sh/imap-example.sh'),
+            path: join(__dirname, '../telnet-imap-smtp-sh/imap-example.sh'),
             highlight: 'bash'
         },
         {
@@ -188,7 +189,7 @@ async function getFileTree(path: string): Promise<string> {
             highlight: 'typescript'
         },
         {id: 'java_jakarta_mail_pom', path: join(__dirname, '../java-jakarta-mail/pom.xml'), highlight: 'xml'},
-        {id: 'powershell_ps1', path: join(__dirname, '../powershell-email-send-ps1/send.ps1'), highlight: 'pwsh'},
+        {id: 'powershell_ps1', path: join(__dirname, '../powershell-email-send-ps1/send.ps1'), highlight: 'ps1'},
     ]
     // *.use.ts test classes have a special comment -> //<gen>inbox_send ----> //</gen>
     const useCases: { paths: string[], commentStart: string, commentEnd: string, highlight: string }[] = [
@@ -203,6 +204,16 @@ async function getFileTree(path: string): Promise<string> {
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "typescript",
+        },
+        {
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            paths: [
+                ...await files('/golang-email-test/*.go'),
+                ...await files('/golang-smtp-client-test/*.go'),
+                ...await files('/golang-imap-examples/*.go')
+            ],
+            highlight: 'go'
         },
         {
             commentStart: "//<gen>",
@@ -239,11 +250,29 @@ async function getFileTree(path: string): Promise<string> {
         },
         {
             paths: await files(
-                "/powershell-windows-cmd/*.ps1",
+                "/telnet-imap-smtp-sh/*.sh",
+                "/telnet-imap-smtp-sh/*.exp",
             ),
             commentStart: "#<gen>",
             commentEnd: "#</gen>",
-            highlight: "pwsh",
+            highlight: "bash",
+        },
+        {
+            paths: await files(
+                "/powershell-email-send-ps1/*.ps1",
+            ),
+            commentStart: "#<gen>",
+            commentEnd: "#</gen>",
+            highlight: "ps1",
+        },
+        {
+            paths: await files(
+                "/powershell-windows-cmd/*.ps1",
+                "/powershell-imap/*.ps1",
+            ),
+            commentStart: "#<gen>",
+            commentEnd: "#</gen>",
+            highlight: "ps1",
         },
         {
             paths: await files(

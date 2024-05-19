@@ -45,6 +45,7 @@ func Test_CanSendEmail_Insecure(t *testing.T) {
 
 	// create two inboxes for testing
 	inbox1, _, _ := client.InboxControllerApi.CreateInbox(ctx, opts)
+	//<gen>golang_smtp_access
 	smtpAccess, _, _ := client.InboxControllerApi.GetImapSmtpAccess(ctx, &mailslurp.GetImapSmtpAccessOpts{
 		InboxId: optional.NewInterface(inbox1.Id),
 	})
@@ -77,6 +78,7 @@ func Test_CanSendEmail_Insecure(t *testing.T) {
 		"This is the email body.\r\n")
 	err = c.SendMail(inbox1.EmailAddress, to, msg)
 	assert.NoError(t, err, "Expect insecure smtp send to work")
+	//</gen>
 
 	// fetch the email for inbox2
 	log.Println("Wait for email to arrive")

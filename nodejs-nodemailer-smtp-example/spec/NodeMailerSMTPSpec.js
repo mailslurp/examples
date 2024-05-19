@@ -3,6 +3,200 @@ const fetchApi = require("isomorphic-fetch");
 const nodemailer = require("nodemailer");
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
+describe("get imap access", function () {
+    it("call with secure", async function () {
+        const apiKey = process.env.API_KEY;
+        if (!apiKey) {
+            throw new Error("Please set API_KEY environment variable")
+        }
+        const mailslurp = new MailSlurp({apiKey, fetchApi})
+        const inbox = await mailslurp.createInboxWithOptions({expiresIn: 300_000, inboxType: 'SMTP_INBOX'})
+        const {
+            secureSmtpUsername,
+            secureSmtpPassword,
+        } = await mailslurp.inboxController.getImapSmtpAccess({
+            inboxId: inbox.id
+        });
+        //<gen>nodemailer_connect_secure
+        const transportSecure = nodemailer.createTransport({
+            host: "mailslurp.mx",
+            port: 465,
+            secure: true,
+            tls: {
+                rejectUnauthorized: false,
+                ciphers: 'SSLv3'
+            },
+            auth: {
+                user: secureSmtpUsername,
+                pass: secureSmtpPassword,
+                type: 'PLAIN',
+            },
+        });
+        await transportSecure.sendMail({
+            from: 'test@mailslurp.dev',
+            to: inbox.emailAddress,
+            subject: "Test secure",
+            attachments: [
+                {
+                    filename: "example.txt",
+                    content: Buffer.from('hello world!', 'utf-8')
+                }
+            ],
+        })
+        //</gen>
+        await mailslurp.waitController.waitForMatchingFirstEmail({
+            inboxId: inbox.id,
+            timeout: 30_000,
+            unreadOnly: true,
+            matchOptions: {
+                matches: [
+                    {
+                        field: "SUBJECT",
+                        should: "CONTAIN",
+                        value: "Test secure"
+                    }
+                ],
+                conditions: [
+                    {
+                        condition: "HAS_ATTACHMENTS",
+                        value: "TRUE"
+                    }
+                ]
+            }
+        });
+    })
+})
+it("call with inbox", async function () {
+    const apiKey = process.env.API_KEY;
+    if (!apiKey) {
+        throw new Error("Please set API_KEY environment variable")
+    }
+    const mailslurp = new MailSlurp({apiKey, fetchApi})
+    const {id: inboxId} = await mailslurp.createInboxWithOptions({
+        expiresIn: 300_000,
+        inboxType: 'SMTP_INBOX'
+    });
+    //<gen>node_get_imap_access
+    const {
+        secureSmtpServerHost,
+        secureSmtpServerPort,
+        secureSmtpUsername,
+        secureSmtpPassword,
+        smtpServerHost,
+        smtpServerPort,
+        smtpUsername,
+        smtpPassword,
+        secureImapServerHost,
+        secureImapServerPort,
+        secureImapUsername,
+        secureImapPassword,
+        imapServerHost,
+        imapServerPort,
+        imapUsername,
+        imapPassword,
+        mailFromDomain,
+    } = await mailslurp.inboxController.getImapSmtpAccess({
+        inboxId // optional inbox scope
+    });
+    //</gen>
+    expect(secureSmtpServerHost).toBeDefined();
+    expect(secureSmtpServerPort).toBeDefined();
+    expect(secureSmtpUsername).toBeDefined();
+    expect(secureSmtpPassword).toBeDefined();
+    expect(smtpServerHost).toBeDefined();
+    expect(smtpServerPort).toBeDefined();
+    expect(smtpUsername).toBeDefined();
+    expect(smtpPassword).toBeDefined();
+    expect(secureImapServerHost).toBeDefined();
+    expect(secureImapServerPort).toBeDefined();
+    expect(secureImapUsername).toBeDefined();
+    expect(secureImapPassword).toBeDefined();
+    expect(imapServerHost).toBeDefined();
+    expect(imapServerPort).toBeDefined();
+    expect(imapUsername).toBeDefined();
+    expect(imapPassword).toBeDefined();
+    expect(mailFromDomain).toBeDefined();
+
+    const inbox = await mailslurp.createInboxWithOptions({expiresIn: 300_000, inboxType: 'SMTP_INBOX'})
+    //<gen>nodemailer_connect_insecure
+    const transportInsecure = nodemailer.createTransport({
+        host: smtpServerHost,
+        port: smtpServerPort,
+        secure: false,
+        auth: {
+            user: smtpUsername,
+            pass: smtpPassword,
+            type: 'PLAIN',
+        },
+    });
+    await transportInsecure.sendMail({
+        from: 'test@mailslurp.dev',
+        to: inbox.emailAddress,
+        subject: "Test insecure",
+    })
+    //</gen>
+    await mailslurp.waitController.waitForMatchingFirstEmail({
+        inboxId: inbox.id,
+        timeout: 30_000,
+        unreadOnly: true,
+        matchOptions: {
+            matches: [
+                {
+                    field: "SUBJECT",
+                    should: "CONTAIN",
+                    value: "Test insecure"
+                }
+            ],
+        }
+    });
+    //<gen>nodemailer_connect_secure
+    const transportSecure = nodemailer.createTransport({
+        host: secureSmtpServerHost,
+        port: 465,
+        secure: true,
+        tls: {
+            rejectUnauthorized: false,
+            ciphers: 'SSLv3'
+        },
+        auth: {
+            user: secureSmtpUsername,
+            pass: secureSmtpPassword,
+            type: 'PLAIN',
+        },
+    });
+    await transportSecure.sendMail({
+        from: 'test@mailslurp.dev',
+        to: inbox.emailAddress,
+        subject: "Test secure",
+        attachments: [
+            {
+                filename: "example.txt",
+                content: Buffer.from('hello world!', 'utf-8')
+            }
+        ],
+    })
+    //</gen>
+    await mailslurp.waitController.waitForMatchingFirstEmail({
+        inboxId: inbox.id,
+        timeout: 30_000,
+        unreadOnly: true,
+        matchOptions: {
+            matches: [
+                {
+                    field: "SUBJECT",
+                    should: "CONTAIN",
+                    value: "Test secure"
+                }
+            ],
+            conditions: [
+                {
+                    condition: "HAS_ATTACHMENTS",
+                    value: "TRUE"
+                }
+            ]
+        }
+    });
+})
 //<gen>nodemailer_full_send
 describe("testing smtp", function () {
     it("can create an mailbox and get email preview urls", async function () {
@@ -35,7 +229,7 @@ describe("testing smtp", function () {
             attachments: [
                 {
                     filename: "example.txt",
-                    content: new Buffer('hello world!','utf-8')
+                    content: Buffer.from('hello world!', 'utf-8')
                 }
             ],
         });

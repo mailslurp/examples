@@ -1,0 +1,50 @@
+#!/usr/bin/expect
+set timeout 20
+
+#<gen>telnet_imap_exp_auth_plain
+spawn telnet $env(HOST) $env(PORT)
+expect "* OK*"
+
+send "a1 AUTHENTICATE PLAIN $env(AUTH_PLAIN)\r"
+expect "a1 OK*"
+
+send a2 'LIST "" *\r'
+expect "a2 *"
+
+send "a3 LOGOUT\r"
+expect "*"
+
+#</gen>
+#<gen>telnet_imap_exp
+spawn telnet $env(HOST) $env(PORT)
+expect "* OK*"
+
+send "a1 LOGIN $env(USERNAME) $env(PASSWORD)\r"
+expect "a1 OK*"
+
+send "a2 SELECT $env(ADDRESS)\r"
+expect "a2 OK*"
+
+send "a3 SEARCH UNSEEN\r"
+expect "a3 OK*"
+
+send "a4 FETCH 1 BODY\[1.1\]\r"
+expect "a4 OK*"
+
+# Begin IDLE
+send "a5 IDLE\r"
+expect "+ IDLE*"  # Server response indicating it's ready to push notifications
+
+set idle_timeout 10
+expect {
+    timeout { send "DONE\r"; expect "a5 OK*" }
+    "* EXISTS" {
+        send "DONE\r"
+        expect "a5 OK*"
+        # Add handling for new mail or changes here if needed
+    }
+}
+
+send "a5 LOGOUT\r"
+expect "*"
+#</gen>
