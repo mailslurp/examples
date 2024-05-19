@@ -1,0 +1,5 @@
+composer.phar
+.env
+geckodriver
+selenium-server.jar
+vendor

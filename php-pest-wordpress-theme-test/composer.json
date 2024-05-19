@@ -1,0 +1,15 @@
+{
+  "name": "mailslurp/php-pest-wordpress-theme-test",
+  "require-dev": {
+    "pestphp/pest": "^2.34"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  },
+  "require": {
+    "mailslurp/mailslurp-client-php": "^15.19",
+    "vlucas/phpdotenv": "^5.6"
+  }
+}
