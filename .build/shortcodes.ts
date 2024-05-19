@@ -355,6 +355,14 @@ async function getFileTree(path: string): Promise<string> {
         },
         {
             paths: await files(
+                "/php-pest-wordpress-theme-test/*.php",
+            ),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "php",
+        },
+        {
+            paths: await files(
                 "/php-composer-phpunit/*.php",
             ),
             commentStart: "//<gen>",
