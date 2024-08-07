@@ -23,7 +23,7 @@ describe("mailslurp axios example", () => {
     // expect an inbox to have been created
     expect(inbox.id).toBeDefined()
     expect(inbox.emailAddress).toBeDefined()
-    expect(inbox.emailAddress).toMatch(/.+@mailslurp.com/)
+    expect(inbox.emailAddress).toMatch(/.+@mailslurp.net/)
   })
 
   test("can send a real email between two addresses", async () => {

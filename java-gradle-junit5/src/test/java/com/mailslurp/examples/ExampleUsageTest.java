@@ -30,6 +30,19 @@ public class ExampleUsageTest {
     }
 
     @Test
+    public void CanUseSecureEndpoint() throws Exception {
+        //<gen>java_demo_create_secure
+        ApiClient secureClient = Configuration.getDefaultApiClient();
+        secureClient.setApiKey(YOUR_API_KEY);
+        secureClient.setBasePath("https://secure-api.mailslurp.com");
+        secureClient.setConnectTimeout(TIMEOUT_MILLIS.intValue());
+        InboxControllerApi inboxControllerApi = new InboxControllerApi(secureClient);
+        InboxDto inbox = inboxControllerApi.createInboxWithDefaults();
+        //</gen>
+        assertNotNull(inbox.getId());
+    }
+
+    @Test
     public void CanCreateInboxes() throws Exception {
 
         //<gen>java_demo_create_client
