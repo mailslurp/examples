@@ -1,2 +1,5 @@
 bin
-objSmtpClientMailKitExample/SmtpClientMailKitExample.sln.DotSettings.user
+obj
+SmtpClientMailKitExample/SmtpClientMailKitExample.sln.DotSettings.user
+/obj/
+SmtpClientMailKitExample/SmtpClientMailKitExample/obj/

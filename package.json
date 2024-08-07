@@ -6,8 +6,8 @@
   },
   "type": "module",
   "scripts": {
-    "shortcodes": "node --loader @swc-node/register/esm .build/shortcodes.ts",
-    "readme": "node --loader @swc-node/register/esm .build/readme.ts"
+    "shortcodes": "node --import tsx .build/shortcodes.ts",
+    "readme": "node --import tsx .build/readme.ts"
   },
   "devDependencies": {
     "@swc-node/register": "^1.6.8",
