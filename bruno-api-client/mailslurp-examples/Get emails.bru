@@ -1,0 +1,17 @@
+meta {
+  name: Get emails
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://api.mailslurp.com/inboxes/{{inboxId}}/emails
+  body: none
+  auth: apikey
+}
+
+auth:apikey {
+  key: x-api-key
+  value: {{apiKey}}
+  placement: header
+}

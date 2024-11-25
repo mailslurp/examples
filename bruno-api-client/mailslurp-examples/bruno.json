@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "MailSlurp Examples",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

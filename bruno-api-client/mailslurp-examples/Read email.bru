@@ -1,0 +1,23 @@
+meta {
+  name: Read email
+  type: http
+  seq: 6
+}
+
+get {
+  url: https://api.mailslurp.com/emails/{{emailId}}
+  body: none
+  auth: apikey
+}
+
+auth:apikey {
+  key: x-api-key
+  value: {{apiKey}}
+  placement: header
+}
+
+script:post-response {
+  const data = res.getBody();
+  bru.setVar('emailId', data.id);
+  
+}

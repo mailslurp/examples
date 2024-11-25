@@ -1,0 +1,24 @@
+meta {
+  name: Create an inbox
+  type: http
+  seq: 2
+}
+
+post {
+  url: https://api.mailslurp.com/inboxes/withDefaults
+  body: none
+  auth: apikey
+}
+
+auth:apikey {
+  key: x-api-key
+  value: {{apiKey}}
+  placement: header
+}
+
+script:post-response {
+  const data = res.getBody();
+  bru.setVar('emailAddress', data.emailAddress);
+  bru.setVar('inboxId', data.id);
+  
+}

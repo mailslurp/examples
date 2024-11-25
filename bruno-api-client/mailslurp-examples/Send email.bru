@@ -1,0 +1,25 @@
+meta {
+  name: Send email
+  type: http
+  seq: 4
+}
+
+post {
+  url: https://api.mailslurp.com/inboxes/{{inboxId}}/confirm
+  body: json
+  auth: apikey
+}
+
+auth:apikey {
+  key: x-api-key
+  value: {{apiKey}}
+  placement: header
+}
+
+body:json {
+  {
+    "to": ["{{emailAddress}}"],
+    "subject": "Test email",
+    "body": "Hello world"
+  }
+}

@@ -1,0 +1,29 @@
+meta {
+  name: Wait for email
+  type: http
+  seq: 5
+}
+
+get {
+  url: https://api.mailslurp.com/waitForLatestEmail?inboxId={{inboxId}}&timeout=60000&unreadOnly=true
+  body: none
+  auth: apikey
+}
+
+params:query {
+  inboxId: {{inboxId}}
+  timeout: 60000
+  unreadOnly: true
+}
+
+auth:apikey {
+  key: x-api-key
+  value: {{apiKey}}
+  placement: header
+}
+
+script:post-response {
+  const data = res.getBody();
+  bru.setVar('emailId', data.id);
+  
+}
