@@ -38,6 +38,5 @@ test.describe('test email login with playwright', () => {
     await page.click('[data-test="sign-in-sign-in-button"]');
     await page.waitForSelector("[data-test='greetings-nav']")
   });
-
 });
 //</gen>
