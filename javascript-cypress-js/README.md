@@ -1,6 +1,6 @@
 # Test Emails in Cypress JS
 
-See [/cypress/integration/example.cy.js](/cypress/integration/example.spec.js) for usage.
+See [/cypress/e2e/example.cy.js](/cypress/e2e/example.cy.js) for usage.
 
 **Note:** the test uses `mailslurp-client` and adds custom commands in the `support/commands.js` file.
 
