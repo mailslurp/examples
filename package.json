@@ -15,6 +15,7 @@
     "@types/mustache": "^4.2.1",
     "cypress": "^13.7.1",
     "mailslurp-client": "^15.18.2",
-    "mustache": "^4.2.0"
+    "mustache": "^4.2.0",
+    "tsx": "^4.19.2"
   }
 }

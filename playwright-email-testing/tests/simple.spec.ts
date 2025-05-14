@@ -48,3 +48,23 @@ test.describe('email magic links test', () => {
         await page.waitForSelector('[data-el="dashboard-success"]')
     })
 })
+
+test.describe('email magic links test short', () => {
+    //<gen>playwright_simple_signup_magic_link_short
+    test('can receive confirmation link', async ({page}) => {
+        const inbox = await ms.createInbox();
+        // use new email address to sign up
+        await page.goto(Pages.magicLinkSignUp);
+        await page.fill('#emailAddress', inbox.emailAddress);
+        await page.click('[type="submit"]');
+        // wait for email magic link
+        const email = await ms.waitForLatestEmail(inbox.id, TIMEOUT)
+        // extract link and click it
+        const query = await ms.emailController.getEmailLinks({
+            selector: '.confirm-btn',
+            emailId: email.id
+        })
+        await page.goto(query.links[0]);
+    });
+    //</gen>
+})

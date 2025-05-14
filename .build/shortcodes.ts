@@ -188,6 +188,11 @@ async function getFileTree(path: string): Promise<string> {
             path: join(__dirname, '../javascript-cypress-mailslurp-plugin/cypress/e2e/integration-test.cy.ts'),
             highlight: 'typescript'
         },
+        {
+            id: 'cypress_plugin_simple',
+            path: join(__dirname, '../javascript-cypress-mailslurp-plugin/cypress/e2e/simple-test.cy.ts'),
+            highlight: 'typescript'
+        },
         {id: 'java_jakarta_mail_pom', path: join(__dirname, '../java-jakarta-mail/pom.xml'), highlight: 'xml'},
         {id: 'powershell_ps1', path: join(__dirname, '../powershell-email-send-ps1/send.ps1'), highlight: 'ps1'},
     ]
