@@ -12,6 +12,7 @@ export default function () {
 
   console.log('Creating inbox');
   // 1) Create a new inbox with defaults
+  //<gen>k6_create_disposable_inbox
   let createRes = http.post(
     `https://api.mailslurp.com/inboxes/withDefaults`,
     null,
@@ -22,26 +23,28 @@ export default function () {
     'inboxId is present': (r) => !!r.json('id'),
     'emailAddress is present': (r) => !!r.json('emailAddress'),
   });
+  //</gen>
   const inboxId = createRes.json('id');
   const emailAddress = createRes.json('emailAddress');
   console.log('Sending test email from ' + inboxId + ' to ' + emailAddress);
 
   // 2) Send a confirmation/test email into that inbox
-  const confirmPayload = JSON.stringify({
+  //<gen>k6_send_email
+  const sentEmail = JSON.stringify({
     to: [emailAddress],
     subject: 'test',
   });
   let confirmRes = http.post(
     `https://api.mailslurp.com/inboxes/${inboxId}/confirm`,
-    confirmPayload,
+    sentEmail,
     { headers, timeout }
   );
   check(confirmRes, {
-    'confirm endpoint status is 200': (r) => r.status === 201,
+    'confirm email is sent': (r) => r.status === 201,
   });
+  //</gen>
 
   console.log('Waiting for response with url: ' + waitUrl);
-  // 3) Wait for the latest email to arrive
   //<gen>k6_wait_for_email
   const waitUrl = `https://api.mailslurp.com/waitForLatestEmail?inboxId=${inboxId}&timeout=60000&unreadOnly=true`;
   let emailRes = http.get(waitUrl, { headers, timeout });
