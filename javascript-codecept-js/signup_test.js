@@ -2,8 +2,8 @@ Feature('signup');
 
 const MY_APPLICATION = 'https://playground.mailslurp.com'
 
+//<gen>codeceptjs_signup_and_extract_full
 Scenario('Test user sign up',  async ({ I }) => {
-    //<gen>codeceptjs_signup_and_extract
     // create a dummy inbox with MailSlurp
     const emailAccount = await I.haveNewMailbox()
     const password = 'test-password';
@@ -27,11 +27,13 @@ Scenario('Test user sign up',  async ({ I }) => {
     // submit verification code
     I.fillField('[name="code"]', code)
     I.click('[data-test="confirm-sign-up-confirm-button"]');
-    //</gen>
+
     // now login with verified account
     I.fillField('[name="username"]', emailAccount.emailAddress);
     I.fillField('[name="password"]', password);
     I.click('[data-test="sign-in-sign-in-button"]');
+
     // see welcome message
     I.waitForElement('img[src*="welcome"]', 30);
 });
+//</gen>

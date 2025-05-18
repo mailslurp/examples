@@ -12,13 +12,12 @@ How to use MailSlurp with Cypress JS. Loads a demonstration app, signs up with a
 
 ```typescript
 /// <reference types="cypress-mailslurp" />
-
 describe("user sign up test with mailslurp plugin", function () {
     //<gen>cypress_plugin_before
     // use cypress-mailslurp plugin to create an email address before test
     before(function () {
         cy.log("Wrap inbox before test")
-        return cy.mailslurp()
+        cy.mailslurp()
             .then(mailslurp => mailslurp.createInbox())
             .then(inbox => {
                 cy.log(`Inbox id ${inbox.id}`)
@@ -29,6 +28,7 @@ describe("user sign up test with mailslurp plugin", function () {
     });
     //</gen>
     it("01 - can load the demo application", function () {
+        cy.log("Run tests")
         //<gen>cypress_plugin_01
         // get wrapped email address and assert contains a mailslurp email address
         expect(this.emailAddress).to.contain("@mailslurp");
