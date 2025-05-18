@@ -3,8 +3,12 @@
     "test": "npx codeceptjs run"
   },
   "dependencies": {
-    "@codeceptjs/mailslurp-helper": "^1.0.5",
-    "codeceptjs": "^2.3.0",
-    "mailslurp-client": "^15.0.1"
+    "@codeceptjs/mailslurp-helper": "^1.4.3",
+    "codeceptjs": "^3.7.3",
+    "mailslurp-client": "^15.0.1",
+    "playwright": "^1.52.0"
+  },
+  "devDependencies": {
+    "chai": "^5.2.0"
   }
 }

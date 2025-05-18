@@ -113,6 +113,16 @@ async function getFileTree(path: string): Promise<string> {
      */
     const fullFiles: { id: string; path: string, highlight: string }[] = [
         {
+            id: 'codeceptjs_config',
+            path: join(__dirname, '../javascript-codecept-js/codecept.conf.js'),
+            highlight: 'javascript'
+        },
+        {
+            id: 'codeceptjs_package',
+            path: join(__dirname, '../javascript-codecept-js/package.json'),
+            highlight: 'javascript'
+        },
+        {
             id: 'telnet_imap_sh_fetch_exp',
             path: join(__dirname, '../telnet-imap-smtp-sh/imap-example.exp'),
             highlight: 'bash'
@@ -199,6 +209,14 @@ async function getFileTree(path: string): Promise<string> {
     // *.use.ts test classes have a special comment -> //<gen>inbox_send ----> //</gen>
     const useCases: { paths: string[], commentStart: string, commentEnd: string, highlight: string }[] = [
         // add
+        {
+            paths: await files(
+                "/javascript-codecept-js/**/*.js",
+            ),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "javascript",
+        },
         {
             paths: await files(
                 "/javascript-cypress-sms-testing/**/*.ts",
