@@ -1,0 +1,54 @@
+## Build results
+bin/
+obj/
+[Ll]og/
+*.log
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Rider project files
+.idea/
+*.sln.iml
+
+## VS Code
+.vscode/
+
+## .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+## StyleCop
+StyleCopReport.xml
+
+## Others
+*.dbmdl
+*.pdb
+*.cache
+*.zip
+*.7z
+*.gz
+*.tar
+*.tmp
+*.bak
+
+# Mac
+.DS_Store
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+*.nuspec
+*.psmdcp
+
+# Test results
+TestResults/
