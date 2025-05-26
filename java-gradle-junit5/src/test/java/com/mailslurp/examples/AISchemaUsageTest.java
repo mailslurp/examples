@@ -1,15 +1,16 @@
 package com.mailslurp.examples;
 
-// <gen>java_demo_imports
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+//<gen>java_demo_imports
 import com.mailslurp.apis.*;
 import com.mailslurp.clients.ApiClient;
 import com.mailslurp.clients.Configuration;
 import com.mailslurp.models.*;
+//</gen>
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -54,7 +55,7 @@ public class AISchemaUsageTest {
     secureClient.setConnectTimeout(TIMEOUT_MILLIS.intValue());
     AiControllerApi inboxControllerApi = new AiControllerApi(secureClient);
 
-    // <gen>java_ai_output_schema_large
+    //<gen>java_ai_output_schema_large
     var schema =
         new StructuredOutputSchema()
             .type(StructuredOutputSchema.TypeEnum.OBJECT)
@@ -90,18 +91,18 @@ public class AISchemaUsageTest {
                         )
                 )
             ));
-    // </gen>
+    //</gen>
 
     var validate = inboxControllerApi.validateStructuredOutputSchema(schema).execute();
     assertTrue(validate.getValid());
     String jsonString = validate.getExampleOutput();
     var objectMapper = new ObjectMapper();
-    // <gen>java_ai_deserialize_json
+    //<gen>java_ai_deserialize_json
     DesiredOutput obj = objectMapper.readValue(jsonString, DesiredOutput.class);
     assertNotNull(obj.invoiceId());
     assertTrue(obj.status() == DesiredOutput.InvoiceStatus.PAID
         || obj.status() == DesiredOutput.InvoiceStatus.PENDING);
     assertFalse(obj.lineItems().isEmpty());
-    // </gen>
+    //</gen>
   }
 }
