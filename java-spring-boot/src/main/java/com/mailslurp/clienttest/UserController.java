@@ -1,7 +1,8 @@
 package com.mailslurp.clienttest;
 
 import java.util.UUID;
-import mailslurp.ApiException;
+
+import com.mailslurp.client.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

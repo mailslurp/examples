@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id("com.diffplug.spotless") version "7.0.3"
 }
 
 group 'com.mailslurp.examples'
@@ -10,11 +11,17 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'com.mailslurp:mailslurp-client-java:15.17.4'
+    testImplementation 'com.mailslurp:mailslurp-client-java:16.1.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 }
 
 test {
     useJUnitPlatform()
+}
+spotless {
+    java {
+        googleJavaFormat("1.27.0")
+        target("src/**/*.java")
+    }
 }

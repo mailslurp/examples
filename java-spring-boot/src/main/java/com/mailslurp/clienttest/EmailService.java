@@ -1,12 +1,14 @@
 package com.mailslurp.clienttest;
 
 import java.util.Collections;
-import mailslurp.ApiClient;
-import mailslurp.ApiException;
-import mailslurp.Configuration;
-import mailslurp.auth.ApiKeyAuth;
-import mailslurpapi.CommonOperationsApi;
-import mailslurpmodels.SendEmailOptions;
+
+import com.mailslurp.client.ApiClient;
+import com.mailslurp.client.ApiException;
+import com.mailslurp.client.Configuration;
+import com.mailslurp.client.auth.ApiKeyAuth;
+import com.mailslurp.models.SendEmailOptions;
+import com.mailslurp.api.api.CommonActionsControllerApi;
+import com.mailslurp.models.SimpleSendEmailOptions;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,10 +19,10 @@ public class EmailService {
         client.setConnectTimeout(60000);
         ApiKeyAuth API_KEY = (ApiKeyAuth) client.getAuthentication("API_KEY");
         API_KEY.setApiKey("test");
-        CommonOperationsApi apiInstance = new CommonOperationsApi();
-        SendEmailOptions options = new SendEmailOptions();
+        CommonActionsControllerApi apiInstance = new CommonActionsControllerApi();
+        SimpleSendEmailOptions options = new SimpleSendEmailOptions();
         options.setBody(body);
-        options.setTo(Collections.singletonList(to));
-        apiInstance.sendEmailSimpleUsingPOST(options);
+        options.setTo(to);
+        apiInstance.sendEmailSimple(options);
     }
 }

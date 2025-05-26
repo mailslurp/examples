@@ -1,12 +1,13 @@
 package com.mailslurp.clienttest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import mailslurp.ApiClient;
-import mailslurp.Configuration;
-import mailslurp.auth.ApiKeyAuth;
-import mailslurpapi.CommonOperationsApi;
-import mailslurpmodels.Email;
-import mailslurpmodels.Inbox;
+import com.mailslurp.api.api.CommonActionsControllerApi;
+import com.mailslurp.api.api.WaitForControllerApi;
+import com.mailslurp.client.ApiClient;
+import com.mailslurp.client.Configuration;
+import com.mailslurp.client.auth.ApiKeyAuth;
+import com.mailslurp.models.Email;
+import com.mailslurp.models.Inbox;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,9 @@ public class UserSignUpTest {
         API_KEY.setApiKey("test");
 
         // create an email address
-        CommonOperationsApi apiInstance = new CommonOperationsApi();
-        Inbox inbox = apiInstance.createNewEmailAddressUsingPOST();
+        CommonActionsControllerApi apiInstance = new CommonActionsControllerApi();
+        WaitForControllerApi waitController = new WaitForControllerApi();
+        Inbox inbox = apiInstance.createNewEmailAddress();
 
         // sign up user and check that is not verified
         String json = mvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(inbox.getEmailAddress()))
@@ -54,7 +56,7 @@ public class UserSignUpTest {
         assertThat(user.getVerified()).isEqualTo(false);
 
         // now get the verification code from our email
-        Email email = apiInstance.fetchLatestEmailUsingGET(inbox.getEmailAddress(), null);
+        Email email = waitController.waitForLatestEmail(inbox.getId(), 60000L, true);
         assertThat(email.getBody()).isNotEmpty();
         String code = email.getBody().replace("\n","").replace("\r","");
 

@@ -1,14 +1,16 @@
 package com.mailslurp.examples;
 
-import com.mailslurp.api.api.InboxControllerApi;
-import com.mailslurp.api.api.WaitForControllerApi;
-import com.mailslurp.client.ApiClient;
-import com.mailslurp.client.Configuration;
+import com.mailslurp.apis.InboxControllerApi;
+import com.mailslurp.apis.WaitForControllerApi;
+import com.mailslurp.clients.ApiClient;
+import com.mailslurp.clients.Configuration;
 import com.mailslurp.models.Email;
-import com.mailslurp.models.Inbox;
+import com.mailslurp.models.InboxDto;
 import com.mailslurp.models.SendEmailOptions;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -33,7 +35,7 @@ public class ExampleUsageTest {
         defaultClient.setApiKey(YOUR_API_KEY);
 
         InboxControllerApi inboxControllerApi = new InboxControllerApi(defaultClient);
-        Inbox inbox = inboxControllerApi.createInbox(null, null, null, null, null, null);
+        InboxDto inbox = inboxControllerApi.createInbox().execute();
 
         // verify inbox
         assertEquals(inbox.getEmailAddress().contains("@mailslurp.com"), true);
@@ -46,13 +48,13 @@ public class ExampleUsageTest {
         defaultClient.setApiKey(YOUR_API_KEY);
 
         InboxControllerApi inboxControllerApi = new InboxControllerApi(defaultClient);
-        Inbox inbox = inboxControllerApi.createInbox(null, null, null, null, null, null);
+        InboxDto inbox = inboxControllerApi.createInbox().execute();
 
         SendEmailOptions sendEmailOptions = new SendEmailOptions()
                 .to(singletonList(inbox.getEmailAddress()))
                 .subject("Test")
                 .body("Hello");
-        inboxControllerApi.sendEmail(inbox.getId(), sendEmailOptions);
+        inboxControllerApi.sendEmail(inbox.getId(), sendEmailOptions).execute();
     }
 
     @Test
@@ -61,8 +63,8 @@ public class ExampleUsageTest {
         defaultClient.setApiKey(YOUR_API_KEY);
 
         InboxControllerApi inboxControllerApi = new InboxControllerApi(defaultClient);
-        Inbox inbox1 = inboxControllerApi.createInbox(null, null, null, null, null, null);
-        Inbox inbox2 = inboxControllerApi.createInbox(null, null, null, null, null, null);
+        InboxDto inbox1 = inboxControllerApi.createInbox().execute();
+        InboxDto inbox2 = inboxControllerApi.createInbox().execute();
 
         SendEmailOptions sendEmailOptions = new SendEmailOptions()
                 .to(singletonList(inbox2.getEmailAddress()))
@@ -71,7 +73,7 @@ public class ExampleUsageTest {
         inboxControllerApi.sendEmail(inbox1.getId(), sendEmailOptions);
 
         WaitForControllerApi waitForControllerApi = new WaitForControllerApi(defaultClient);
-        Email email = waitForControllerApi.waitForLatestEmail(inbox2.getId(), TIMEOUT_MILLIS, UNREAD_ONLY);
+        Email email = waitForControllerApi.waitForLatestEmail().inboxId(inbox2.getId()).timeout(TIMEOUT_MILLIS).unreadOnly(UNREAD_ONLY).execute();
 
         assertEquals(email.getSubject(), "Hello inbox2");
         assertEquals(email.getBody().contains("Your code is:"), true);
@@ -80,7 +82,7 @@ public class ExampleUsageTest {
         Matcher m = p.matcher(email.getBody());
         m.find();
 
-        String code =  m.group(1);
+        String code = m.group(1);
         assertEquals(code, "123");
     }
 }

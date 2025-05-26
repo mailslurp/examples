@@ -10,6 +10,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 
 - [bruno-api-client](./bruno-api-client)
 - [bun-js-send-email](./bun-js-send-email)
+- [csharp-dotnet-8](./csharp-dotnet-8)
 - [csharp-dotnet-core-8-smtpclient](./csharp-dotnet-core-8-smtpclient)
 - [csharp-dotnet-core2-selenium](./csharp-dotnet-core2-selenium)
 - [csharp-dotnet-core3](./csharp-dotnet-core3)

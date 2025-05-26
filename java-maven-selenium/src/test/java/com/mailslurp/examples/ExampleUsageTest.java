@@ -123,7 +123,7 @@ public class ExampleUsageTest {
         logger.info("Create email address");
         // create a real, randomized email address with MailSlurp to represent a user
         InboxControllerApi inboxControllerApi = new InboxControllerApi(mailslurpClient);
-        inbox = inboxControllerApi.createInboxWithDefaults();
+        inbox = inboxControllerApi.createInboxWithDefaults().execute();
 
         logger.info("Assert inbox exists");
         // check the inbox was created
@@ -150,7 +150,7 @@ public class ExampleUsageTest {
     public void test4_canReceiveConfirmationEmail() throws ApiException {
         // receive a verification email from playground using mailslurp
         WaitForControllerApi waitForControllerApi = new WaitForControllerApi(mailslurpClient);
-        email = waitForControllerApi.waitForLatestEmail(inbox.getId(), TIMEOUT_MILLIS, UNREAD_ONLY, null, null, null, null);
+        email = waitForControllerApi.waitForLatestEmail().inboxId(inbox.getId()).timeout( TIMEOUT_MILLIS).unreadOnly( UNREAD_ONLY).execute();
 
         // verify the contents
         assertTrue(email.getSubject().contains("Please confirm your email address"));

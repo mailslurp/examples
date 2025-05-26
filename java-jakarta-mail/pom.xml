@@ -23,7 +23,7 @@
     <dependency>
       <groupId>com.mailslurp</groupId>
       <artifactId>mailslurp-client-java</artifactId>
-      <version>15.13.17</version>
+      <version>16.1.2</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

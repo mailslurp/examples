@@ -56,20 +56,20 @@ public class MoreMethodsTest {
                 .name(customName)
                 .description(customDescription)
                 .tags(Collections.singletonList(customTag));
-        InboxDto inbox = inboxControllerApi.createInboxWithOptions(options);
+        InboxDto inbox = inboxControllerApi.createInboxWithOptions(options).execute();
         //</gen>
         assertEquals(inbox.getName(), customName);
         assertEquals(inbox.getDescription(), customDescription);
         assertEquals(Objects.requireNonNull(inbox.getTags()).get(0), customTag);
         //<gen>java_fetch_inbox_by_name
-        InboxByNameResult inboxByName = inboxControllerApi.getInboxByName(customName);
+        InboxByNameResult inboxByName = inboxControllerApi.getInboxByName(customName).execute();
         assertEquals(inboxByName.getInboxId(), inbox.getId());
         //</gen>
         //<gen>java_fetch_inbox_by_tags
         PageInboxProjection inboxSearchResult = inboxControllerApi.searchInboxes(
                 new SearchInboxesOptions()
                         .search(customTag)
-        );
+        ).execute();
         assertEquals(inboxSearchResult.getNumberOfElements(), Integer.valueOf(1));
         assertEquals(inboxSearchResult.getContent().get(0).getId(), inbox.getId());
         //</gen>
@@ -92,7 +92,7 @@ public class MoreMethodsTest {
                         .value("Test subject")
                 )
 
-        );
+        ).execute();
         //</gen>
         assertEquals(matchingEmails.size(), 1);
         assertEquals(Objects.requireNonNull(matchingEmails).get(0).getFrom(), inbox.getEmailAddress());
@@ -101,13 +101,13 @@ public class MoreMethodsTest {
         PageEmailProjection emailSearch = emailController.searchEmails(
                 new SearchEmailsOptions()
                         .searchFilter("Test subject")
-        );
+        ).execute();
         //</gen>
         assertEquals(emailSearch.getNumberOfElements(), Integer.valueOf(1));
         assertEquals(Objects.requireNonNull(emailSearch.getContent()).get(0).getFrom(), inbox.getEmailAddress());
         UUID emailId = emailSearch.getContent().get(0).getId();
         //<gen>java_get_email_by_id
-        Email email = emailController.getEmail(emailId, false);
+        Email email = emailController.getEmail(emailId).execute();
         assertEquals(email.getSubject(), mySubject);
         assertNotNull(email.getBody());
         assertNotNull(email.getFrom());

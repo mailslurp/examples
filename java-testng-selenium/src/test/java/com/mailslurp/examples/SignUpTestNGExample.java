@@ -6,7 +6,8 @@ import com.mailslurp.clients.ApiClient;
 import com.mailslurp.clients.ApiException;
 import com.mailslurp.clients.Configuration;
 import com.mailslurp.models.Email;
-import com.mailslurp.models.Inbox;
+import com.mailslurp.models.InboxDto;
+import com.mailslurp.models.InboxDto;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -32,7 +33,7 @@ public class SignUpTestNGExample {
   private static final String TEST_PASSWORD = "password-" + new Random().nextLong();
   private static final Boolean UNREAD_ONLY = true;
   private static final Long TIMEOUT_MILLIS = 30000L;
-  private static Inbox inbox;
+  private static InboxDto inbox;
   private static Email email;
   private static String confirmationCode;
   private static ApiClient mailslurpClient;
@@ -79,7 +80,7 @@ public class SignUpTestNGExample {
   public void test3_canCreateEmailAddressAndSignUp() throws ApiException {
     // create a real, randomized email address with MailSlurp to represent a user
     InboxControllerApi inboxControllerApi = new InboxControllerApi(mailslurpClient);
-    inbox = inboxControllerApi.createInbox(null, null,null, null,null,null,null, null, null);
+    inbox = inboxControllerApi.createInbox().execute();
 
     // check the inbox was created
     assertNotNull(inbox.getId());
@@ -102,7 +103,7 @@ public class SignUpTestNGExample {
   public void test4_canReceiveConfirmationEmail() throws ApiException {
     // receive a verification email from playground using mailslurp
     WaitForControllerApi waitForControllerApi = new WaitForControllerApi(mailslurpClient);
-    email = waitForControllerApi.waitForLatestEmail(inbox.getId(), TIMEOUT_MILLIS, UNREAD_ONLY);
+    email = waitForControllerApi.waitForLatestEmail().inboxId(inbox.getId()).timeout(TIMEOUT_MILLIS).unreadOnly(UNREAD_ONLY).execute();
 
     // verify the contents
     assertTrue(email.getSubject().contains("Please confirm your email address"));

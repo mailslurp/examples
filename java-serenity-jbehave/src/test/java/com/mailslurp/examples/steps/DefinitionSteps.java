@@ -1,7 +1,7 @@
 package com.mailslurp.examples.steps;
 
 import com.mailslurp.clients.ApiException;
-import com.mailslurp.models.Inbox;
+import com.mailslurp.models.InboxDto;
 import net.thucydides.core.annotations.Steps;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
@@ -11,7 +11,7 @@ import com.mailslurp.examples.steps.serenity.EndUserSteps;
 
 public class DefinitionSteps {
 
-    private Inbox inbox;
+    private InboxDto inbox;
 
     @Steps
     EndUserSteps endUser;

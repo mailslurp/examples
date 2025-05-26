@@ -2,7 +2,7 @@ package example;
 
 import static org.junit.Assert.assertTrue;
 
-import com.mailslurp.apis.ApiUserControllerApi;
+import com.mailslurp.apis.UserControllerApi;
 import com.mailslurp.apis.InboxControllerApi;
 import com.mailslurp.clients.ApiClient;
 import com.mailslurp.clients.ApiException;
@@ -45,13 +45,18 @@ public class AppTest {
         InboxControllerApi inboxControllerApi = new InboxControllerApi(defaultClient);
 
         // get an smtp inbox belonging to our mailslurp account
-        PageInboxProjection inboxes = inboxControllerApi.getAllInboxes(0, 1, null, null, null, null, null, null, null, InboxDto.InboxTypeEnum.SMTP_INBOX.toString(), null);
+        PageInboxProjection inboxes = inboxControllerApi
+                .getAllInboxes()
+                .page(0)
+                .size(1)
+                .inboxType(InboxDto.InboxTypeEnum.SMTP_INBOX.toString())
+                .execute();
         InboxPreview inbox = inboxes.getContent().get(0);
         this.emailAddress = inbox.getEmailAddress();
         this.inboxId = inbox.getId();
 
         // get smtp access details for our mailslurp smtp mailserver
-        ImapSmtpAccessDetails imapSmtpAccess = inboxControllerApi.getImapSmtpAccess(null);
+        ImapSmtpAccessDetails imapSmtpAccess = inboxControllerApi.getImapSmtpAccess().execute();
         this.host = imapSmtpAccess.getSmtpServerHost();
         this.port = imapSmtpAccess.getSmtpServerPort();
         this.username = imapSmtpAccess.getSmtpUsername();

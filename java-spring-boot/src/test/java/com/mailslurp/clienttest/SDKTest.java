@@ -2,14 +2,17 @@ package com.mailslurp.clienttest;
 
 import java.time.Instant;
 import java.util.Collections;
-import mailslurp.ApiClient;
-import mailslurp.ApiException;
-import mailslurp.Configuration;
-import mailslurp.auth.ApiKeyAuth;
-import mailslurpapi.CommonOperationsApi;
-import mailslurpmodels.Email;
-import mailslurpmodels.Inbox;
-import mailslurpmodels.SendEmailOptions;
+
+import com.mailslurp.api.api.CommonActionsControllerApi;
+import com.mailslurp.api.api.WaitForControllerApi;
+import com.mailslurp.client.ApiClient;
+import com.mailslurp.client.ApiException;
+import com.mailslurp.client.Configuration;
+import com.mailslurp.client.auth.ApiKeyAuth;
+import com.mailslurp.models.Email;
+import com.mailslurp.models.Inbox;
+import com.mailslurp.models.SendEmailOptions;
+import com.mailslurp.models.SimpleSendEmailOptions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,19 +30,20 @@ public class SDKTest {
         API_KEY.setApiKey("test");
 
         // create an email address
-        CommonOperationsApi apiInstance = new CommonOperationsApi();
-        Inbox inbox = apiInstance.createNewEmailAddressUsingPOST();
+        CommonActionsControllerApi apiInstance = new CommonActionsControllerApi();
+        WaitForControllerApi waitInstance = new WaitForControllerApi();
+        Inbox inbox = apiInstance.createNewEmailAddress();
         assertThat(inbox.getId()).isNotNull();
         assertThat(inbox.getEmailAddress()).contains("mailslurp.com");
 
         // send email to self
-        SendEmailOptions sendOptions = new SendEmailOptions();
-        sendOptions.setTo(Collections.singletonList(inbox.getEmailAddress()));
+        SimpleSendEmailOptions sendOptions = new SimpleSendEmailOptions();
+        sendOptions.setTo(inbox.getEmailAddress());
         String body = "test-body-" + Instant.now().toEpochMilli();
         sendOptions.setBody(body);
-        apiInstance.sendEmailSimpleUsingPOST(sendOptions);
+        apiInstance.sendEmailSimple(sendOptions);
 
-        Email email = apiInstance.fetchLatestEmailUsingGET(inbox.getEmailAddress(), null);
+        Email email = waitInstance.waitForLatestEmail(inbox.getId(), 60000L, true);
         assertThat(email.getBody()).contains(body);
     }
 
