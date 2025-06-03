@@ -65,11 +65,11 @@ async function checkFile(content: string, commentStart: string, commentEnd: stri
 type Block = { id: string; body: string };
 
 async function getGenBlocks(content: string, commentStart: string, commentEnd: string): Promise<Block[]> {
-    const pKeys = new RegExp(`${commentStart}([0-9a-zA-Z_]*)`, "g");
+    const pKeys = new RegExp(`${commentStart}([0-9a-zA-Z_]*)(?: -->)?`, "g");
     const matchKeys = [...content.matchAll(pKeys)];
     const matches: Block[][] = matchKeys.map(([_, key]) => {
         const pBlock = new RegExp(
-            `${commentStart}${key}[\\r\\n]*([\\s\\S]+)${commentEnd}`,
+            `${commentStart}${key}(?: -->)?[\\r\\n]*([\\s\\S]+)${commentEnd}`,
             "g"
         );
         log(`Key ${key} match ${pBlock}`);
@@ -112,6 +112,11 @@ async function getFileTree(path: string): Promise<string> {
      * Full files to be included in the shortcodes export
      */
     const fullFiles: { id: string; path: string, highlight: string }[] = [
+        {
+            id: 'jmeter_loadtest_xml',
+            path: join(__dirname, '../java-jmeter-loadtest/EmailLoadTest.jmx'),
+            highlight: 'xml'
+        },
         {
             id: 'codeceptjs_config',
             path: join(__dirname, '../javascript-codecept-js/codecept.conf.js'),
@@ -209,6 +214,22 @@ async function getFileTree(path: string): Promise<string> {
     // *.use.ts test classes have a special comment -> //<gen>inbox_send ----> //</gen>
     const useCases: { paths: string[], commentStart: string, commentEnd: string, highlight: string }[] = [
         // add
+        {
+            paths: await files(
+                "/java-jmeter-loadtest/src/test/java/dev/mailslurp/EmailJMeterTest.java",
+            ),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "java",
+        },
+        {
+            paths: await files(
+                "/java-jmeter-loadtest/EmailLoadTest.jmx",
+            ),
+            commentStart: "<!-- <gen>",
+            commentEnd: "<!-- </gen>",
+            highlight: "xml",
+        },
         {
             paths: await files(
                 "/javascript-codecept-js/**/*.js",

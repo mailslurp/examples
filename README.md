@@ -33,6 +33,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [insomnia-test](./insomnia-test)
 - [java-gradle-junit5](./java-gradle-junit5)
 - [java-jakarta-mail](./java-jakarta-mail)
+- [java-jmeter-loadtest](./java-jmeter-loadtest)
 - [java-maven-junit4](./java-maven-junit4)
 - [java-maven-selenium](./java-maven-selenium)
 - [java-serenity-jbehave](./java-serenity-jbehave)

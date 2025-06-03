@@ -18,6 +18,7 @@
         </elementProp>
       </ThreadGroup>
       <hashTree>
+        <!-- <gen>jmeter_xml_create_inbox -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /inboxes" enabled="true">
           <stringProp name="HTTPSampler.domain">api.mailslurp.com</stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
@@ -36,7 +37,9 @@
             </collectionProp>
           </elementProp>
         </HTTPSamplerProxy>
+        <!-- </gen> -->
         <hashTree>
+          <!-- <gen>jmeter_xml_set_headers -->
           <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="API Key + JSON header" enabled="true">
             <collectionProp name="HeaderManager.headers">
               <elementProp name="x-api-key" elementType="Header">
@@ -49,14 +52,17 @@
               </elementProp>
             </collectionProp>
           </HeaderManager>
+          <!-- </gen> -->
           <hashTree/>
-          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Extract INBOX_ID &amp; EMAIL_ADDRESS">
+          <!-- <gen>jmeter_xml_extract -->
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Extract INBOX_ID &amp; EMAIL_ADDRESS" enabled="true">
             <stringProp name="JSONPostProcessor.referenceNames">INBOX_ID;EMAIL_ADDRESS</stringProp>
             <stringProp name="JSONPostProcessor.jsonPathExprs">$.id;$.emailAddress</stringProp>
             <stringProp name="JSONPostProcessor.match_numbers">0;0</stringProp>
             <stringProp name="JSONPostProcessor.defaultValues">NOT_FOUND;NOT_FOUND</stringProp>
             <stringProp name="JSONPostProcessor.return_default">false</stringProp>
           </JSONPostProcessor>
+          <!-- </gen> -->
           <hashTree/>
         </hashTree>
         <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Assert vars present" enabled="true">
@@ -69,6 +75,7 @@
           </stringProp>
         </JSR223Sampler>
         <hashTree/>
+        <!-- <gen>jmeter_xml_signup -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="POST /test-application/magic-link" enabled="true">
           <stringProp name="HTTPSampler.domain">api.mailslurp.com</stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
@@ -87,6 +94,7 @@
             </collectionProp>
           </elementProp>
         </HTTPSamplerProxy>
+        <!-- </gen> -->
         <hashTree>
           <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="Content-Type Header" enabled="true">
             <collectionProp name="HeaderManager.headers">
@@ -98,6 +106,7 @@
           </HeaderManager>
           <hashTree/>
         </hashTree>
+        <!-- <gen>jmeter_xml_waitforemail -->
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET /waitForLatestEmail" enabled="true">
           <stringProp name="HTTPSampler.domain">api.mailslurp.com</stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
@@ -129,6 +138,7 @@
             </collectionProp>
           </elementProp>
         </HTTPSamplerProxy>
+        <!-- </gen> -->
         <hashTree>
           <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="API Key header" enabled="true">
             <collectionProp name="HeaderManager.headers">
@@ -140,12 +150,14 @@
           </HeaderManager>
           <hashTree/>
           <JSONPathAssertion guiclass="JSONPathAssertionGui" testclass="JSONPathAssertion" testname="Assert subject present" enabled="true">
-            <stringProp name="JSONPathAssertion.jsonPath">$.subject</stringProp>
-            <stringProp name="JSONPathAssertion.expectedValue"></stringProp>
-            <boolProp name="JSONPathAssertion.jsonValidation">false</boolProp>
-            <boolProp name="JSONPathAssertion.expectNull">false</boolProp>
-            <boolProp name="JSONPathAssertion.invert">false</boolProp>
-            <boolProp name="JSONPathAssertion.isRegex">false</boolProp>
+            <stringProp name="JSON_PATH">$.subject</stringProp>
+            <stringProp name="EXPECTED_VALUE"></stringProp>
+            <boolProp name="JSONVALIDATION">false</boolProp>
+            <boolProp name="EXPECT_NULL">false</boolProp>
+            <boolProp name="INVERT">false</boolProp>
+            <boolProp name="ISREGEX">false</boolProp>
+            <stringProp name="TOLERANCE"></stringProp>
+            <stringProp name="DEFAULT_VALUE"></stringProp>
           </JSONPathAssertion>
           <hashTree/>
         </hashTree>
