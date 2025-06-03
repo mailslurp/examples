@@ -21,7 +21,7 @@ public class EmailJMeterTest {
     @Timeout(value = 2, unit = TimeUnit.MINUTES)
     void magicLinkFlow() throws Exception {
 
-        //<gen>jmeter_java_email_test_setup
+        //<gen>jmeter_java_email_testsetup
         String apiKey = System.getenv("API_KEY");
         ApiClient client = Configuration.getDefaultApiClient();
         client.setApiKey(apiKey);

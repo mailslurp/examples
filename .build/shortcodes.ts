@@ -117,6 +117,12 @@ async function getFileTree(path: string): Promise<string> {
             path: join(__dirname, '../java-jmeter-loadtest/EmailLoadTest.jmx'),
             highlight: 'xml'
         },
+        // /Users/jackmahoney/projects/examples/
+        {
+            id: 'jmeter_loadtest_java',
+            path: join(__dirname, '../java-jmeter-loadtest/src/test/java/dev/mailslurp/EmailJMeterTest.java'),
+            highlight: 'java'
+        },
         {
             id: 'codeceptjs_config',
             path: join(__dirname, '../javascript-codecept-js/codecept.conf.js'),

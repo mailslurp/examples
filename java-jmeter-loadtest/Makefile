@@ -1,5 +1,6 @@
 -include ../.env
 
+#<gen>jmeter_make_download
 DRIVER_LOCATION=jmeter/bin/jmeter
 DRIVER_URL=https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.3.zip
 ZIP_FILE=jmeter.zip
@@ -10,6 +11,7 @@ $(DRIVER_LOCATION):
 	rm -f $(ZIP_FILE)
 	mv apache-jmeter-* jmeter
 	chmod +x $(DRIVER_LOCATION)
+#</gen>
 
 test-junit:
 	API_KEY=$(API_KEY) mvn install test
