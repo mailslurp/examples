@@ -348,6 +348,18 @@ async function getFileTree(path: string): Promise<string> {
             highlight: "javascript",
         },
         {
+            paths: await files("/python-locust-load-test/*.py"),
+            commentStart: "# <gen>",
+            commentEnd: "# </gen>",
+            highlight: "python",
+        },
+        {
+            paths: await files("/python-locust-load-test/*.py"),
+            commentStart: "#<gen>",
+            commentEnd: "#</gen>",
+            highlight: "python",
+        },
+        {
             paths: await files("/python3-pyunit/*.py"),
             commentStart: "# <gen>",
             commentEnd: "# </gen>",

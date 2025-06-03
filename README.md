@@ -67,6 +67,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [powershell-email-send-ps1](./powershell-email-send-ps1)
 - [powershell-imap-smtp](./powershell-imap-smtp)
 - [powershell-windows-cmd](./powershell-windows-cmd)
+- [python-locust-load-test](./python-locust-load-test)
 - [python2-pytest](./python2-pytest)
 - [python3-django-playwright](./python3-django-playwright)
 - [python3-pyunit](./python3-pyunit)
