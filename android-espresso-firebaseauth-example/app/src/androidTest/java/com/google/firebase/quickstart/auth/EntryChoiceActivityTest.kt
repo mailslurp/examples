@@ -178,7 +178,7 @@ class EntryChoiceActivityTest {
         device.pressBack()
         //</gen>
         Thread.sleep(2000)
-
+        //<gen>android_espressoauth_7_check_status
         val textView = onView(
             allOf(
                 withId(R.id.status),

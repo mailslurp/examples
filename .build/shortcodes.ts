@@ -223,6 +223,7 @@ async function getFileTree(path: string): Promise<string> {
         {
             paths: await files(
                 "/android-espresso-firebaseauth-example/app/src/androidTest/java/com/google/firebase/quickstart/auth/EntryChoiceActivityTest.kt",
+                "/android-espresso-firebaseauth-example/app/build.gradle.kts"
             ),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",

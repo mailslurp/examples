@@ -85,7 +85,9 @@ dependencies {
     androidTestImplementation("androidx.test:runner:1.6.2")
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
 
+    //<gen>android_build_gradle
     implementation("com.mailslurp:mailslurp-client-java:16.1.3")
+    //</gen>
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.6.1")
     androidTestImplementation("androidx.test.espresso:espresso-web:3.6.1")
     androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.6.1")
