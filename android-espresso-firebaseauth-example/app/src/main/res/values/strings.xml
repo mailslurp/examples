@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Firebase Authentication</string>
+    <string name="app_name">MailSlurp Examples</string>
 
     <string name="label_google_sign_in">Firebase + Google Sign In</string>
     <string name="desc_google_sign_in">Use a Google Sign In credential to authenticate with Firebase.</string>
@@ -91,7 +91,7 @@
 
     <string name="generic_title_text">OAuth Sign In</string>
     <string name="generic_signin_fmt">Sign In with %s</string>
-    <string name="generic_status_fmt">User: %s (%s)</string>
+    <string name="generic_status_fmt">User: %1$s (%2$s)</string>
     <string name="generic_label_provider">Provider:</string>
 
     <string name="id_fmt">User ID: %s</string>

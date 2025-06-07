@@ -222,6 +222,15 @@ async function getFileTree(path: string): Promise<string> {
         // add
         {
             paths: await files(
+                "/android-espresso-firebaseauth-example/app/src/androidTest/java/com/google/firebase/quickstart/auth/EntryChoiceActivityTest.kt",
+            ),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "kotlin",
+        },
+        // add
+        {
+            paths: await files(
                 "/java-jmeter-loadtest/src/test/java/dev/mailslurp/EmailJMeterTest.java",
             ),
             commentStart: "//<gen>",

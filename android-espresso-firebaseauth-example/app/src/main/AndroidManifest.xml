@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-sdk
+        android:minSdkVersion="16"
+        tools:overrideLibrary="com.google.android.material" />
     <application
         android:name="androidx.multidex.MultiDexApplication"
         android:allowBackup="true"
@@ -20,23 +22,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".java.MainActivity" />
         <activity android:name=".kotlin.MainActivity" />
-
-        <activity
-            android:name=".java.PasswordlessActivity"
-            android:label="@string/label_passwordless"
-            android:launchMode="singleTop"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <data
-                    android:host="mailslurp-firebase-examples.firebaseapp.com"
-                    android:scheme="https" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
         <activity
             android:name=".kotlin.PasswordlessActivity"

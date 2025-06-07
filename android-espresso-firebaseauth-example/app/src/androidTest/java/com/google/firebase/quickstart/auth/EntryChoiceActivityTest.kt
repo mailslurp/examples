@@ -177,22 +177,6 @@ class EntryChoiceActivityTest {
         Thread.sleep(5000)
         device.pressBack()
         //</gen>
-
-        //<gen>android_espressoauth_7_assert_verified
-        onView(
-            allOf(
-                withId(R.id.reloadButton), withText("Reload"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.main_layout),
-                        2
-                    ),
-                    9
-                ),
-                isDisplayed()
-            )
-        ).perform(click())
-        // wait for verification screen
         Thread.sleep(2000)
 
         val textView = onView(

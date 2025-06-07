@@ -103,13 +103,7 @@ class ChooserFragment : Fragment() {
             "GoogleSignInFragment",
             "FacebookLoginFragment",
             "EmailPasswordFragment",
-            "PasswordlessActivity",
             "PhoneAuthFragment",
-            "AnonymousAuthFragment",
-            "FirebaseUIFragment",
-            "CustomAuthFragment",
-            "GenericIdpFragment",
-            "MultiFactorFragment",
         )
         private val DESCRIPTION_IDS = intArrayOf(
             R.string.desc_google_sign_in,
