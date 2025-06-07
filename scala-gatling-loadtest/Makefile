@@ -1,13 +1,13 @@
+include ../.env
+
 SBT := sbt
 
 .PHONY: all clean gatling
 
 all: gatling
 
-# run the full Gatling test suite
-gatling:
+test:
 	@$(SBT) "gatling:test"
 
-# clean
 clean:
 	@$(SBT) clean

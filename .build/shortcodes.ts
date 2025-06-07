@@ -286,6 +286,12 @@ async function getFileTree(path: string): Promise<string> {
             highlight: "typescript"
         },
         {
+            paths: await files("/scala-gatling-loadtest/src/test/scala/dev/mailslurp/EmailLoadTest.scala"),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "scala"
+        },
+        {
             paths: await files("/bun*/Makefile"),
             commentStart: "#<gen>",
             commentEnd: "#</gen>",

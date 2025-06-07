@@ -79,6 +79,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [ruby-minitest-netsmtp-example](./ruby-minitest-netsmtp-example)
 - [ruby-rspec](./ruby-rspec)
 - [rust-selenium-email-testing](./rust-selenium-email-testing)
+- [scala-gatling-loadtest](./scala-gatling-loadtest)
 - [scala-scalatest-email](./scala-scalatest-email)
 - [sendgrid](./sendgrid)
 - [shortcodes](./shortcodes)
