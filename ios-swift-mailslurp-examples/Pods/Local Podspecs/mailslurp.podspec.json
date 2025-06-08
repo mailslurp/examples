@@ -1,0 +1,30 @@
+{
+  "name": "mailslurp",
+  "platforms": {
+    "ios": "9.0",
+    "osx": "10.11",
+    "tvos": "9.0",
+    "watchos": "3.0"
+  },
+  "version": "15.19.22",
+  "source": {
+    "git": "git@github.com:mailslurp/mailslurp-client-swift.git",
+    "tag": "15.19.22"
+  },
+  "authors": "mailslurp",
+  "license": {
+    "type": "MIT"
+  },
+  "homepage": "https://www.mailslurp.com",
+  "summary": "mailslurp Swift SDK",
+  "documentation_url": "https://docs.mailslurp.com/swift/",
+  "source_files": "mailslurp/**/*.swift",
+  "dependencies": {
+    "AnyCodable-FlightSchool": [
+      "~> 0.6.1"
+    ],
+    "PromiseKit/CorePromise": [
+      "~> 6.15.3"
+    ]
+  }
+}

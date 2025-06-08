@@ -1,0 +1,6 @@
+framework module mailslurp {
+  umbrella header "mailslurp-umbrella.h"
+
+  export *
+  module * { export * }
+}
