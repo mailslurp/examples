@@ -1,0 +1,19 @@
+{
+  "name": "android-mailslurp-examples",
+  "version": "1.0.0",
+  "description": "Gradle install.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "appium": "^2.19.0"
+  },
+  "devDependencies": {
+    "appium-uiautomator2-driver": "^4.2.3"
+  }
+}
