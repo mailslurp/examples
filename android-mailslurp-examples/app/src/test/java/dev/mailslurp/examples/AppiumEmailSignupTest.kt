@@ -8,9 +8,11 @@ import org.junit.After
 import org.junit.Assert.*
 import org.junit.Test
 import java.time.Duration
+//<gen>android_appium_9_import
 import com.mailslurp.clients.ApiClient
 import com.mailslurp.apis.*
 import com.mailslurp.models.*
+//</gen>
 import io.appium.java_client.AppiumBy
 import java.net.URL
 import java.io.File
