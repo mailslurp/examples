@@ -8,7 +8,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 
 ## Projects
 
-- [android-espresso-firebaseauth-example](./android-espresso-firebaseauth-example)
+- [android-mailslurp-examples](./android-mailslurp-examples)
 - [bruno-api-client](./bruno-api-client)
 - [bun-js-send-email](./bun-js-send-email)
 - [csharp-dotnet-8](./csharp-dotnet-8)
