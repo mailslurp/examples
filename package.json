@@ -13,7 +13,6 @@
     "@swc-node/register": "^1.6.8",
     "@types/debug": "^4.1.7",
     "@types/mustache": "^4.2.1",
-    "cypress": "^13.7.1",
     "mailslurp-client": "^15.18.2",
     "mustache": "^4.2.0",
     "tsx": "^4.19.2"

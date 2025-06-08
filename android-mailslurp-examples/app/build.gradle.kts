@@ -11,14 +11,14 @@ tasks {
 }
 
 android {
-    namespace = "com.google.firebase.quickstart.auth"
+    namespace = "dev.mailslurp.examples"
     compileSdk = 36
     flavorDimensions += "minSdkVersion"
     testOptions {
         animationsDisabled = true
     }
     defaultConfig {
-        applicationId = "com.google.firebase.quickstart.auth"
+        applicationId = "dev.mailslurp.examples"
         minSdk = 23
         targetSdk = 36
         versionCode = 1

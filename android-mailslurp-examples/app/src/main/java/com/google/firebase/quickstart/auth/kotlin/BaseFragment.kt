@@ -1,4 +1,4 @@
-package com.google.firebase.quickstart.auth.kotlin
+package dev.mailslurp.examples.kotlin
 
 import android.content.Context
 import android.view.View
