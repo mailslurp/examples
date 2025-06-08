@@ -1,0 +1,52 @@
+.DS_Store
+/.build
+/Packages
+xcuserdata/
+DerivedData/
+.swiftpm/configuration/registries.json
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+.netrc
+# Swift Package Manager
+.build/
+Package.resolved
+
+# Xcode (if you ever open it)
+*.xcworkspace
+xcuserdata/
+*.xcuserstate
+DerivedData/
+
+# CocoaPods (just in case)
+Pods/
+
+# Carthage (if ever used)
+Carthage/Build/
+
+# SwiftPM caches
+.swiftpm/
+
+# Logs
+*.log
+logs/
+
+# Build artifacts
+*.o
+*.LinkFileList
+*.swiftmodule
+*.swiftdoc
+*.swiftsourceinfo
+*.dSYM
+*.tmp
+
+# Editor backups
+*~
+*.swp
+*.swo
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+
+# macOS
+.DS_Store

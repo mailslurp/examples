@@ -1,6 +1,0 @@
-framework module AnyCodable {
-  umbrella header "AnyCodable-FlightSchool-umbrella.h"
-
-  export *
-  module * { export * }
-}

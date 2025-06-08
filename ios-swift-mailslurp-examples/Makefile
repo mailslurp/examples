@@ -12,6 +12,7 @@ list:
 
 clean:
 	xcodebuild clean
+	pod cache clean --all
 
 build:
 	xcodebuild build-for-testing \
