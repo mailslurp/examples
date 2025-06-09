@@ -64,7 +64,13 @@ async function checkFile(content: string, commentStart: string, commentEnd: stri
 
 type Block = { id: string; body: string };
 
-async function getGenBlocks(content: string, commentStart: string, commentEnd: string): Promise<Block[]> {
+async function getGenBlocks(content: string, commentStart: string, commentEnd: string, ignoreStart?: string, ignoreEnd?: string): Promise<Block[]> {
+    if (ignoreStart && ignoreEnd) {
+        // delete all lines between ignoreStart and ignoreEnd inclusive of those lines
+        const ignoreRegex = new RegExp(`${ignoreStart}[\\s\\S]*?${ignoreEnd}`, "g");
+        content = content.replace(ignoreRegex, "");
+        log(`Ignoring blocks between ${ignoreStart} and ${ignoreEnd}`);
+    }
     const pKeys = new RegExp(`${commentStart}([0-9a-zA-Z_]*)(?: -->)?`, "g");
     const matchKeys = [...content.matchAll(pKeys)];
     const matches: Block[][] = matchKeys.map(([_, key]) => {
@@ -218,7 +224,7 @@ async function getFileTree(path: string): Promise<string> {
         {id: 'powershell_ps1', path: join(__dirname, '../powershell-email-send-ps1/send.ps1'), highlight: 'ps1'},
     ]
     // *.use.ts test classes have a special comment -> //<gen>inbox_send ----> //</gen>
-    const useCases: { paths: string[], commentStart: string, commentEnd: string, highlight: string }[] = [
+    const useCases: { paths: string[], commentStart: string, commentEnd: string, ignoreStart?: string, ignoreEnd?: string, highlight: string }[] = [
         // add
         {
             paths: await files(
@@ -229,6 +235,14 @@ async function getFileTree(path: string): Promise<string> {
             commentStart: "//<gen>",
             commentEnd: "//</gen>",
             highlight: "kotlin",
+        },
+        {
+          paths: await files("/totp-mfa-auth0-selenium/tests/src/test/java/com/example/E2ETest.java"),
+          commentStart: "//<gen>",
+          commentEnd: "//</gen>",
+          highlight: "java",
+          ignoreStart: "//<gen-ignore>",
+          ignoreEnd: "//</gen-ignore>",
         },
         // add
         {
@@ -510,7 +524,7 @@ async function getFileTree(path: string): Promise<string> {
             log(`Check file ${filePath}`);
             await checkFile(content, useCase.commentStart, useCase.commentEnd);
             log(`Generate blocks ${filePath}`);
-            const blocks = await getGenBlocks(content, useCase.commentStart, useCase.commentEnd);
+            const blocks = await getGenBlocks(content, useCase.commentStart, useCase.commentEnd, useCase.ignoreStart, useCase.ignoreEnd);
             log(`${blocks.length} blocks found`);
             for (const block of blocks) {
                 log(`Writing block ${block.id}`);

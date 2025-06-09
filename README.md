@@ -32,6 +32,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [hurl](./hurl)
 - [imap-smtp-examples](./imap-smtp-examples)
 - [insomnia-test](./insomnia-test)
+- [ios-swift-mailslurp-examples](./ios-swift-mailslurp-examples)
 - [java-gradle-junit5](./java-gradle-junit5)
 - [java-jakarta-mail](./java-jakarta-mail)
 - [java-jmeter-loadtest](./java-jmeter-loadtest)
@@ -85,7 +86,9 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [sendgrid](./sendgrid)
 - [shortcodes](./shortcodes)
 - [swift-email-smtp-examples](./swift-email-smtp-examples)
+- [swift-xctest-example](./swift-xctest-example)
 - [telnet-imap-smtp-sh](./telnet-imap-smtp-sh)
+- [totp-mfa-auth0-selenium](./totp-mfa-auth0-selenium)
 - [visualbasic](./visualbasic)
 - [wait-for-methods-vitest](./wait-for-methods-vitest)
 
