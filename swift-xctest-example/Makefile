@@ -14,8 +14,14 @@ build: install
 
 # run XCTest (requires MAILSLURP_API_KEY env var)
 test: build
-	MAILSLURP_API_KEY=$(API_KEY) $(SWIFT) test --disable-sandbox
+	API_KEY=$(API_KEY) $(SWIFT) test --disable-sandbox
 
 # clean build artifacts
 clean:
 	$(SWIFT) package clean
+
+xcode-generate:
+	xcodegen generate --spec xcodegen.yml
+
+xcode-open:
+	open swift-xctest-example.xcodeproj

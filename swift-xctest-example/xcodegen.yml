@@ -1,0 +1,28 @@
+name: swift-xctest-example
+options:
+  bundleIdPrefix: dev.mailslurp
+
+packages:
+  mailslurp-client-swift:
+    url: https://github.com/mailslurp/mailslurp-client-swift.git
+    from: "16.1.5"
+
+targets:
+  swift-xctest-example:
+    type: framework       # use 'framework' instead of 'library'
+    platform: macOS
+    deploymentTarget: "10.15"
+    sources:
+      - Sources
+    dependencies:
+      - package: mailslurp-client-swift
+
+  swift-xctest-exampleTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "10.15"
+    sources:
+      - Tests
+    dependencies:
+      - target: swift-xctest-example
+
