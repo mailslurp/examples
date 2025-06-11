@@ -4,6 +4,7 @@ node_modules
 .idea
 .app.pid
 tests/target
+playwright-report
 # ─── Node / JavaScript ────────────────────────────────────────────────────────
 
 # dependencies
@@ -64,3 +65,9 @@ tests/**/target/
 
 # Maven wrapper
 tests/.mvn
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

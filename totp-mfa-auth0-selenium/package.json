@@ -15,13 +15,17 @@
     "@highlightjs/vue-plugin": "^2.1.0",
     "express": "^4.18.1",
     "highlight.js": "^11.9.0",
+    "mailslurp-client": "^15.24.1",
     "morgan": "^1.10.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.53.0",
+    "@types/node": "^24.0.1",
     "@vitejs/plugin-vue": "^1.6.1",
     "@vue/compiler-sfc": "^3.3.4",
+    "cypress": "^14.4.1",
     "typescript": "^4.9.3",
     "vite": "^2.9.16"
   },
