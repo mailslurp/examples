@@ -225,7 +225,16 @@ async function getFileTree(path: string): Promise<string> {
     ]
     // *.use.ts test classes have a special comment -> //<gen>inbox_send ----> //</gen>
     const useCases: { paths: string[], commentStart: string, commentEnd: string, ignoreStart?: string, ignoreEnd?: string, highlight: string }[] = [
+      
         // add
+        {
+          paths: await files("/totp-mfa-auth0-selenium/playwright/mfa-totp.spec.ts"),
+          commentStart: "//<gen>",
+          commentEnd: "//</gen>",
+          highlight: "typescript",
+          ignoreStart: "//<gen-ignore>",
+          ignoreEnd: "//</gen-ignore>",
+        },
         {
             paths: await files(
                 "/android-mailslurp-examples/app/src/androidTest/java/dev/mailslurp/examples/EspressoEmailPasswordLinkTest.kt",
@@ -247,10 +256,10 @@ async function getFileTree(path: string): Promise<string> {
         // add
         {
             paths: await files(
-                "/java-jmeter-loadtest/src/test/java/dev/mailslurp/EmailJMeterTest.java",
+                "/java-jmeter-loadtest/src/test/java/dev/mailslurp/emailjmetertest.java",
             ),
-            commentStart: "//<gen>",
-            commentEnd: "//</gen>",
+            commentstart: "//<gen>",
+            commentend: "//</gen>",
             highlight: "java",
         },
         {

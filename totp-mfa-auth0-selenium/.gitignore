@@ -4,6 +4,7 @@ node_modules
 .idea
 .app.pid
 tests/target
+screenshots
 playwright-report
 # ─── Node / JavaScript ────────────────────────────────────────────────────────
 

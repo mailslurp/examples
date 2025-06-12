@@ -102,6 +102,7 @@ public class E2ETest {
         wait.until(visibilityOfElementLocated(By.id("email"))).sendKeys(emailAddress);
         wait.until(visibilityOfElementLocated(By.id("password"))).sendKeys(password);
         //<gen-ignore>
+        Thread.sleep(2_000);
         takeScreenshot(driver, "totp-selenium-3-fill");
         //</gen-ignore>
         wait.until(elementToBeClickable(By.cssSelector("button[type='submit']"))).click();
@@ -114,7 +115,7 @@ public class E2ETest {
         String optAuthUrl = driver.findElement(By.cssSelector("[data-qr-data]")).getAttribute("data-qr-data");
         assertTrue(optAuthUrl.startsWith("otpauth://"), "Expect otpauth:// URI in QR code");
         //<gen-ignore>
-        Thread.sleep(1_000);
+        Thread.sleep(2_000);
         takeScreenshot(driver, "totp-selenium-4-qr-code");
         //</gen-ignore>
         //</gen>
