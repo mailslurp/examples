@@ -5,5 +5,8 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
+    env: {
+      API_KEY: process.env.API_KEY
+    }
   },
 });
