@@ -18,7 +18,6 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [csharp-dotnet-core7-nunit](./csharp-dotnet-core7-nunit)
 - [csharp-smtp-client-xunit](./csharp-smtp-client-xunit)
 - [csharp-specflow-mstest-selenium](./csharp-specflow-mstest-selenium)
-- [curl-email-api](./curl-email-api)
 - [curl-imap-smtp](./curl-imap-smtp)
 - [dart-email-testing](./dart-email-testing)
 - [deno-email-api](./deno-email-api)

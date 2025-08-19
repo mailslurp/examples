@@ -10,5 +10,8 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       return require('./cypress/plugins/index.js')(on, config)
     },
+    env: {
+      MAILSLURP_API_KEY: process.env.API_KEY || process.env.MAILSLURP_API_KEY
+    }
   },
 })
