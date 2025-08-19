@@ -5,13 +5,12 @@ const { MailSlurp } = require('mailslurp-client');
 const apiKey = Cypress.env('API_KEY')
 const mailslurp = new MailSlurp({ apiKey });
 
-Cypress.Commands.add("createInbox", () => {
-  return mailslurp.createInbox();
-});
+Cypress.Commands.add('createInbox', () => {
+  // wrap the promise so it becomes a Cypress chainable
+  return cy.wrap(mailslurp.createInbox(), { log: false })
+})
 
-Cypress.Commands.add("waitForLatestEmail", (inboxId) => {
-  // how long we should hold connection waiting for an email to arrive
-  const timeoutMillis = 30_000;
-  return mailslurp.waitForLatestEmail(inboxId, timeoutMillis)
-});
+Cypress.Commands.add('waitForLatestEmail', (inboxId, timeoutMillis = 30_000) => {
+  return cy.wrap(mailslurp.waitForLatestEmail(inboxId, timeoutMillis), { log: false })
+})
 //</gen>

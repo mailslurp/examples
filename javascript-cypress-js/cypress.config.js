@@ -8,5 +8,9 @@ module.exports = defineConfig({
   videoCompression: false,
   e2e: {
     setupNodeEvents(on, config) {},
+    baseUrl: 'https://playground.mailslurp.com',
+    env: {
+      API_KEY: process.env.API_KEY
+    }
   },
 })
