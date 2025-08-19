@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cypress run"
+    "test": "cypress run",
+    "dev": "cypress open"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "cypress": "^13.7.1",
-    "mailslurp-client": "^15.19.0"
+    "cypress": "^14.5.4",
+    "mailslurp-client": "^16.0.0"
   }
 }
