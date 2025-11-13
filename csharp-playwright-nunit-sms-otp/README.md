@@ -6,6 +6,8 @@ This examples demonstrates how to use the [MailSlurp C# library](https://www.nug
 
 It contains an NUnit Playwright test that loads a [demo application](https://playground-sms.mailslurp.com) and uses a MailSlurp phone number to sign up, receive an SMS verification code, extract the code, fill out the verification form, and complete user sign-up.
 
+> **To get started see ./UnitTest1.cs
+
 ## Key concepts
 The important techniques in this test are:
 - Fetching a phone number you created in the dashboard with the SDK
