@@ -2,6 +2,8 @@
 
 This examples demonstrates how to use the [MailSlurp C# library](https://www.nuget.org/packages/mailslurp/) and phone numbers to test user sign-up and OTP SMS code verification. 
 
+![](./sign-up-form.png)
+
 It contains an NUnit Playwright test that loads a [demo application](https://playground-sms.mailslurp.com) and uses a MailSlurp phone number to sign up, receive an SMS verification code, extract the code, fill out the verification form, and complete user sign-up.
 
 ## Key concepts
