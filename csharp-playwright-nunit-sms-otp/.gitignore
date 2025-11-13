@@ -1,0 +1,81 @@
+.idea
+.config
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## Rider / IntelliJ
+.idea/
+*.sln.iml
+
+## VS Code
+.vscode/
+
+## User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Mono
+*.pidb
+*.booproj
+*.userprefs
+
+## ASP.NET
+appsettings.Development.json
+appsettings.Local.json
+
+## Azure Functions
+local.settings.json
+
+## NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+!**/packages/repositories.config
+.nuget/
+
+## MSBuild
+*.cache
+*.bak
+
+## Entity Framework
+Migrations/**/Designer.cs
+*efbundle
+
+## Logs
+*.log
+
+## Other generated files
+*.dbmdl
+*.jfm
+*.pdb
+
+## Test output
+TestResults/
+*.coverage
+*.coveragexml
+*.trx
+
+## Playwright
+bin/Debug/**/playwright.ps1
+bin/Debug/**/playwright.sh
+bin/Debug/**/ms-playwright/
+bin/Release/**/ms-playwright/
+
+## OS files
+# macOS
+.DS_Store
+# Windows
+Thumbs.db
