@@ -7,6 +7,11 @@ using mailslurp.Model;
 [TestFixture]
 public class Tests : PageTest
 {
+    /**
+     * Load the test application, then use a MailSlurp phone number to sign up via SMS OTP
+     * Once submitted use the WaitFor controller to wait for the SMS
+     * Then extract the verificaiton code and submit it and expect a logged in dashboard
+     */
     [Test]
     public async Task HomepageHasPlaywrightInTitleAndGetStartedLinkLinkingtoTheIntroPage()
     {
@@ -39,7 +44,7 @@ public class Tests : PageTest
             // --- Fill sign up form ---
             const string password = "test-password-123";
 
-            // Strip +1 for the local number field, same as TS example.
+            // Strip +1 for the local number field, to match the UI input method
             var localNumber = phone.PhoneNumber.Replace("+1", string.Empty);
 
             await Page.FillAsync("input[name=phone_line_number]", localNumber);
