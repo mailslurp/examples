@@ -4,6 +4,19 @@ This examples demonstrates how to use the [MailSlurp C# library](https://www.nug
 
 It contains an NUnit Playwright test that loads a [demo application](https://playground-sms.mailslurp.com) and uses a MailSlurp phone number to sign up, receive an SMS verification code, extract the code, fill out the verification form, and complete user sign-up.
 
+## Key concepts
+The important techniques in this test are:
+- Fetching a phone number you created in the dashboard with the SDK
+- Using the phone's number to sign up as a new user
+- Using the WaitForContoller [WaitForLastestSms](https://csharp.mailslurp.com/api/mailslurp.Api.WaitForControllerApi.html) methods
+
+> The [waitFor](https://docs.mailslurp.com/wait-for/) methods allow the test to wait until an expected SMS is received by your phone number. This means you don't need retry methods or timeout waits.
+
+## Links
+- [Testing techniques](https://docs.mailslurp.com/testing/)
+- [PhoneController documentation](https://csharp.mailslurp.com/api/mailslurp.Api.PhoneControllerApi.html)
+- [WaitForController documentation](https://csharp.mailslurp.com/api/mailslurp.Api.WaitForControllerApi.html)
+
 ## Run
 
 ```
