@@ -3,9 +3,16 @@
 This project shows you how to use the [MailSlurp REST API](https://swagger.mailslurp.com/) to create email accounts and receive OTP codes within ReadyAPI test cases.
 
 ## Setup
-- Get a free [API Key](https://app.mailslurp.com) and set it as the `apiKey` Authorization JWT Bearer token.
+- Download project XML file
+- Get a free [API Key](https://app.mailslurp.com)
+- Edit XML, replace YOUR_API_KEY with your Api Key
+- Open in ReadyAPI and inspect test cases
+
+### From scratch
+To start your own project
+- Create an Authorization JWT Bearer token using your MailSlurp API Key
 - Import the MailSlurp API from our [definitions endpoint](https://api.mailslurp.com/v2/api-docs/).
-- Run the test and inspect the steps.
+- Create tests using the MailSlurp API
 
 ## How it works
 This demo runs a test against a demo app with a sign-up and confirmation user flow. We can sign up with an email address and the app sends us a confirmation code that we must submit to confirm the user account. The steps are as follows:
