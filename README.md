@@ -16,6 +16,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [csharp-dotnet-core2-selenium](./csharp-dotnet-core2-selenium)
 - [csharp-dotnet-core3](./csharp-dotnet-core3)
 - [csharp-dotnet-core7-nunit](./csharp-dotnet-core7-nunit)
+- [csharp-playwright-nunit-sms-otp](./csharp-playwright-nunit-sms-otp)
 - [csharp-smtp-client-xunit](./csharp-smtp-client-xunit)
 - [csharp-specflow-mstest-selenium](./csharp-specflow-mstest-selenium)
 - [curl-imap-smtp](./curl-imap-smtp)
@@ -74,6 +75,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [python3-django-playwright](./python3-django-playwright)
 - [python3-pyunit](./python3-pyunit)
 - [python3-robotframework](./python3-robotframework)
+- [readyapi-mailslurp-example](./readyapi-mailslurp-example)
 - [rlang-email-sending-in-r](./rlang-email-sending-in-r)
 - [ruby-capybara-cucumber-selenium](./ruby-capybara-cucumber-selenium)
 - [ruby-cucumber-test](./ruby-cucumber-test)
@@ -88,6 +90,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [swift-xctest-example](./swift-xctest-example)
 - [telnet-imap-smtp-sh](./telnet-imap-smtp-sh)
 - [totp-mfa-auth0-selenium](./totp-mfa-auth0-selenium)
+- [uipath-email-otp-test](./uipath-email-otp-test)
 - [visualbasic](./visualbasic)
 - [wait-for-methods-vitest](./wait-for-methods-vitest)
 

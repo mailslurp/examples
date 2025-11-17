@@ -1,0 +1,101 @@
+{
+  "Workflows": [
+    {
+      "Path": null,
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [],
+      "ArgumentsSectionElementsOrder": null,
+      "ConstantsSectionElementsOrder": [
+        "AppUrl&"
+      ],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "Main.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [
+        "otp&Flowchart_1",
+        "strInboxID&Flowchart_1",
+        "strEmailAddress&Flowchart_1",
+        "MailSlurpApiKey&Flowchart_1",
+        "NewTransaction&Flowchart_1",
+        "jsonArray&Flowchart_1",
+        "intTransactionNextCount&Flowchart_1",
+        "intTotalTransactionCount&Flowchart_1"
+      ],
+      "ArgumentsSectionElementsOrder": [],
+      "ConstantsSectionElementsOrder": [
+        "AppUrl&Sequence_1"
+      ],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "HTTP Request/HTTP_InboxCreation.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [
+        "jsonArray&Sequence_3",
+        "apiEndpoint&Sequence_1",
+        "HttpRequestText&Sequence_1",
+        "responseJson&TryCatch_2"
+      ],
+      "ArgumentsSectionElementsOrder": [
+        "inboxId",
+        "emailAddress",
+        "MailSlurpApiKey"
+      ],
+      "ConstantsSectionElementsOrder": [
+        "AppUrl&Sequence_15"
+      ],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "Mailslurp/Mailslurp_SignUp.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [],
+      "ArgumentsSectionElementsOrder": [
+        "InboxId",
+        "emailAddress"
+      ],
+      "ConstantsSectionElementsOrder": [
+        "AppUrl&Sequence_15"
+      ],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "HTTP Request/HTTP_FetchOTP.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [
+        "strBody&Sequence_3",
+        "strSubject&Sequence_3",
+        "body&Sequence_3",
+        "subject&Sequence_3",
+        "HttpRequestText&Sequence_1",
+        "apiEndpoint&Sequence_1",
+        "responseJson&TryCatch_2",
+        "jsonArray&Sequence_3"
+      ],
+      "ArgumentsSectionElementsOrder": [
+        "inboxID",
+        "otp",
+        "MailSlurpApiKey"
+      ],
+      "ConstantsSectionElementsOrder": [
+        "AppUrl&Sequence_15"
+      ],
+      "AddedNamespaces": null
+    },
+    {
+      "Path": "Mailslurp/Mailslurp_LoginCheck.xaml",
+      "SortBy": 0,
+      "VariablesSectionElementsOrder": [],
+      "ArgumentsSectionElementsOrder": [
+        "emailAddress",
+        "otp"
+      ],
+      "ConstantsSectionElementsOrder": [
+        "AppUrl&Sequence_1"
+      ],
+      "AddedNamespaces": null
+    }
+  ]
+}
