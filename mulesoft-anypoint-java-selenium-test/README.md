@@ -1,4 +1,4 @@
-# MuleSoft Anypoint Selenium OTP Email Test
+ # MuleSoft Anypoint Selenium OTP Email Test
 
 This project demonstrates OTP email verification testing using Selenium WebDriver and MailSlurp API within a MuleSoft Anypoint project structure.
 
@@ -48,7 +48,6 @@ mulesoft-project/
     ├── main/
     │   └── java/
     │       └── com/smoketest/selenium/
-    │           └── SeleniumSmokeTest.java    # Original smoke test (optional)
     └── test/
         └── java/
             └── com/smoketest/selenium/
