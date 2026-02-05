@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:java="http://www.mulesoft.org/schema/mule/java"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+		http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+		http://www.mulesoft.org/schema/mule/java http://www.mulesoft.org/schema/mule/java/current/mule-java.xsd">
+
+	<!-- Configuration Properties -->
+	<configuration-properties doc:name="Configuration properties" doc:id="config-props" file="config.yaml" />
+
+	<!-- HTTP Request Configuration for MailSlurp API -->
+	<http:request-config name="MailSlurp_HTTP_Config" doc:name="HTTP Request configuration" doc:id="mailslurp-http-config">
+		<http:request-connection host="api.mailslurp.com" protocol="HTTPS" port="443" connectionIdleTimeout="60000" />
+	</http:request-config>
+
+	<!-- Java Config for Browser Helper -->
+	<java:config name="BrowserHelper_Config" doc:name="Java Config" doc:id="browser-helper-config" />
+
+	<!-- ============================================== -->
+	<!-- MAIN FLOW: OTP Email Verification Test        -->
+	<!-- ============================================== -->
+	<flow name="otp-email-verification-flow" doc:id="otp-email-test-flow">
+		<logger level="INFO" doc:name="Start Test" doc:id="start-log" 
+			message='#["=== Starting OTP Email Verification Test ==="]' />
+
+		<!-- Step 1: Create MailSlurp Inbox -->
+		<http:request method="POST" doc:name="Create Inbox" doc:id="create-inbox"
+			config-ref="MailSlurp_HTTP_Config" path="/inboxes">
+			<http:headers>
+				<![CDATA[#[{
+					"x-api-key": p('mailslurp.apiKey'),
+					"Content-Type": "application/json"
+				}]]]>
+			</http:headers>
+		</http:request>
+
+		<!-- Parse inbox response and store in variables -->
+		<ee:transform doc:name="Extract Inbox Details" doc:id="extract-inbox">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+var inboxResponse = payload
+---
+{
+	inboxId: inboxResponse.id,
+	emailAddress: inboxResponse.emailAddress
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="inboxId"><![CDATA[%dw 2.0
+output application/java
+---
+payload.id]]></ee:set-variable>
+				<ee:set-variable variableName="emailAddress"><![CDATA[%dw 2.0
+output application/java
+---
+payload.emailAddress]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+
+		<logger level="INFO" doc:name="Log Inbox Created" doc:id="log-inbox" 
+			message='#["Created inbox: " ++ vars.emailAddress]' />
+
+		<!-- Step 2: Browser opens playground and fills signup form -->
+		<java:new doc:name="Create BrowserHelper" doc:id="create-browser-helper"
+			class="com.smoketest.selenium.BrowserHelper" constructor="BrowserHelper()"
+			target="browserHelper" />
+
+		<java:invoke doc:name="Open and Signup" doc:id="browser-signup"
+			instance="#[vars.browserHelper]" class="com.smoketest.selenium.BrowserHelper"
+			method="openAndSignup(String, String)">
+			<java:args><![CDATA[#[{
+				arg0: vars.emailAddress,
+				arg1: p('test.password')
+			}]]]></java:args>
+		</java:invoke>
+
+		<logger level="INFO" doc:name="Log Signup Complete" doc:id="log-signup" 
+			message='#["Signup form submitted, waiting for email..."]' />
+
+		<!-- Step 3: Wait for confirmation email -->
+		<http:request method="GET" doc:name="Wait For Email" doc:id="wait-for-email"
+			config-ref="MailSlurp_HTTP_Config" path="/waitForLatestEmail">
+			<http:headers>
+				<![CDATA[#[{
+					"x-api-key": p('mailslurp.apiKey')
+				}]]]>
+			</http:headers>
+			<http:query-params>
+				<![CDATA[#[{
+					"inboxId": vars.inboxId,
+					"timeout": "60000",
+					"unreadOnly": "true"
+				}]]]>
+			</http:query-params>
+		</http:request>
+
+		<logger level="INFO" doc:name="Log Email Received" doc:id="log-email-received" 
+			message='#["Email received with subject: " ++ payload.subject default "unknown"]' />
+
+		<!-- Step 4: Extract 6-digit OTP from email body using DataWeave regex -->
+		<ee:transform doc:name="Extract OTP Code" doc:id="extract-otp">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+import * from dw::core::Strings
+var emailBody = payload.body default ""
+// Extract 6-digit code using regex - matches digits at end of line
+var codeMatch = emailBody scan /([0-9]{6})$/
+---
+{
+	emailSubject: payload.subject,
+	emailBody: emailBody,
+	otpCode: if (sizeOf(codeMatch) > 0) codeMatch[0][1] else null
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables>
+				<ee:set-variable variableName="otpCode"><![CDATA[%dw 2.0
+output application/java
+import * from dw::core::Strings
+var emailBody = payload.body default ""
+var codeMatch = emailBody scan /([0-9]{6})$/
+---
+if (sizeOf(codeMatch) > 0) codeMatch[0][1] else null]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+
+		<logger level="INFO" doc:name="Log OTP Extracted" doc:id="log-otp" 
+			message='#["Extracted OTP code: " ++ (vars.otpCode default "NOT FOUND")]' />
+
+		<!-- Validate OTP was found -->
+		<choice doc:name="Validate OTP" doc:id="validate-otp">
+			<when expression="#[vars.otpCode == null]">
+				<raise-error doc:name="OTP Not Found" doc:id="otp-error"
+					type="APP:OTP_NOT_FOUND" description="Could not extract OTP code from email body" />
+			</when>
+		</choice>
+
+		<!-- Step 5: Browser enters code and completes login -->
+		<java:invoke doc:name="Enter Code and Login" doc:id="browser-login"
+			instance="#[vars.browserHelper]" class="com.smoketest.selenium.BrowserHelper"
+			method="enterCodeAndLogin(String, String, String)">
+			<java:args><![CDATA[#[{
+				arg0: vars.otpCode,
+				arg1: vars.emailAddress,
+				arg2: p('test.password')
+			}]]]></java:args>
+		</java:invoke>
+
+		<!-- Cleanup: Close browser -->
+		<java:invoke doc:name="Close Browser" doc:id="close-browser"
+			instance="#[vars.browserHelper]" class="com.smoketest.selenium.BrowserHelper"
+			method="closeBrowser()" />
+
+		<!-- Step 6: Return success payload -->
+		<ee:transform doc:name="Success Response" doc:id="success-response">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	success: true,
+	message: "OTP Email Verification Test Passed",
+	details: {
+		emailAddress: vars.emailAddress,
+		inboxId: vars.inboxId,
+		otpCodeVerified: true
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+
+		<logger level="INFO" doc:name="Test Complete" doc:id="end-log" 
+			message='#["=== OTP Email Verification Test PASSED ==="]' />
+
+		<!-- Error Handler -->
+		<error-handler>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="error-handler">
+				<!-- Attempt to close browser on error -->
+				<try doc:name="Try Close Browser" doc:id="try-close-browser">
+					<java:invoke doc:name="Close Browser on Error" doc:id="close-browser-error"
+						instance="#[vars.browserHelper]" class="com.smoketest.selenium.BrowserHelper"
+						method="closeBrowser()" />
+					<error-handler>
+						<on-error-continue enableNotifications="false" logException="false" doc:name="Ignore Close Error" />
+					</error-handler>
+				</try>
+				<ee:transform doc:name="Error Response" doc:id="error-response">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	success: false,
+	message: "OTP Email Verification Test Failed",
+	error: {
+		type: error.errorType.identifier,
+		description: error.description,
+		detailedDescription: error.detailedDescription
+	}
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+
+</mule>

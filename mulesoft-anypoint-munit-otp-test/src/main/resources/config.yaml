@@ -1,0 +1,16 @@
+# MailSlurp OTP Test Configuration
+# ==================================
+# 
+# API Key can be set via environment variable MAILSLURP_API_KEY
+# or directly in this file (not recommended for production)
+
+mailslurp:
+  # API Key - reads from environment variable, falls back to placeholder
+  apiKey: ${env.MAILSLURP_API_KEY}
+
+# Test Configuration
+test:
+  # Password used for signup/login on playground
+  password: "test-password"
+  # Timeout for waiting for emails (milliseconds)
+  emailTimeoutMs: 60000
