@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:java="http://www.mulesoft.org/schema/mule/java" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/java http://www.mulesoft.org/schema/mule/java/current/mule-java.xsd">
+	<flow name="seleniumsmoketestFlow" doc:id="8956da42-8bd3-4181-a979-28180ae3706c" >
+		<scheduler doc:name="Scheduler" doc:id="2e017b24-c633-4f41-b2db-be46276e2037" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="60000"/>
+			</scheduling-strategy>
+		</scheduler>
+		<logger level="INFO" doc:name="Logger" doc:id="99ed9585-5ed0-4172-96e3-641f9bb6728c" message='#["\nStarting Selenium Smoke Test\n"]'/>
+		<java:invoke-static doc:name="Invoke static" doc:id="0127ad5f-f3c8-4bad-aff5-7e65618b2671" class="com.smoketest.selenium.SeleniumSmokeTest" method="runTest()"/>
+		<logger level="INFO" doc:name="Logger" doc:id="c1740cad-33a9-4d5a-90e4-d4a7691fcc9b" message='#["\nSUCCESS\n"]'/>
+	</flow>
+</mule>
