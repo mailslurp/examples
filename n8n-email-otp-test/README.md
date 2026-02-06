@@ -297,18 +297,6 @@ Add Email Send node at end:
 3. Configure SMTP settings
 4. Send summary email on completion
 
-## Comparison with Other Tools
-
-| Feature | n8n | Power Automate | Zapier |
-|---------|-----|----------------|--------|
-| **Cost** | Free (self-hosted) | Requires Microsoft 365 | Free tier limited |
-| **Self-Hosted** | ✅ Yes | ❌ No | ❌ No |
-| **Visual Editor** | ✅ Yes | ✅ Yes | ✅ Yes |
-| **Code Nodes** | ✅ JavaScript | ⚠️ Limited | ⚠️ Limited |
-| **HTTP Requests** | ✅ Full control | ✅ Yes | ✅ Yes |
-| **Browser Automation** | ✅ Via exec | ⚠️ Premium | ❌ No |
-| **Open Source** | ✅ Yes | ❌ No | ❌ No |
-
 ## Related Examples
 
 - **MuleSoft Anypoint (MUnit + DataWeave):** [mulesoft-anypoint-munit-otp-test](../mulesoft-anypoint-munit-otp-test)
@@ -321,13 +309,3 @@ Add Email Send node at end:
 - **n8n Docs:** https://docs.n8n.io
 - **MailSlurp API:** https://docs.mailslurp.com/api
 - **Puppeteer:** https://pptr.dev
-
-## Support
-
-**Issues:** https://github.com/mailslurp/examples/issues  
-**Email:** support@mailslurp.com  
-**Discord:** https://discord.gg/mailslurp
-
-## License
-
-MIT - See [LICENSE](../../LICENSE) for details.
