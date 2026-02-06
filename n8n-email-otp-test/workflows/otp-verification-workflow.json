@@ -1,0 +1,164 @@
+{
+  "name": "MailSlurp OTP Verification",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "start",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.mailslurp.com/inboxes",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "create-inbox",
+      "name": "Create Inbox",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [470, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "1",
+          "name": "MailSlurp API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "=node {{ $runIndex }}/scripts/browser-signup.js \"{{ $json.emailAddress }}\""
+      },
+      "id": "browser-signup",
+      "name": "Browser Signup",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [690, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.mailslurp.com/waitForLatestEmail?inboxId={{ $('Create Inbox').item.json.id }}&timeout=60000&unreadOnly=true",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "wait-for-email",
+      "name": "Wait for Email",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [910, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "1",
+          "name": "MailSlurp API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract OTP code from email body using regex\nconst emailBody = $input.item.json.body || '';\n\n// Try multiple regex patterns\nconst patterns = [\n  /([0-9]{6})$/m,\n  /code:\\s*([0-9]{6})/i,\n  /verification\\s+code[:\\s]+([0-9]{6})/i,\n  /([0-9]{6})/\n];\n\nlet otpCode = null;\nfor (const pattern of patterns) {\n  const match = emailBody.match(pattern);\n  if (match && match[1]) {\n    otpCode = match[1];\n    break;\n  }\n}\n\nif (!otpCode) {\n  throw new Error('Could not extract OTP code from email body');\n}\n\nreturn {\n  otpCode,\n  emailSubject: $input.item.json.subject,\n  emailAddress: $('Create Inbox').item.json.emailAddress,\n  inboxId: $('Create Inbox').item.json.id\n};"
+      },
+      "id": "extract-otp",
+      "name": "Extract OTP",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1130, 300]
+    },
+    {
+      "parameters": {
+        "command": "=node {{ $runIndex }}/scripts/browser-verify.js \"{{ $json.otpCode }}\" \"{{ $json.emailAddress }}\""
+      },
+      "id": "browser-verify",
+      "name": "Browser Verify",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [1350, 300]
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "duplicateItem": false,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "success",
+              "name": "success",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "message",
+              "name": "message",
+              "value": "OTP Email Verification Completed Successfully",
+              "type": "string"
+            },
+            {
+              "id": "emailAddress",
+              "name": "emailAddress",
+              "value": "={{ $('Extract OTP').item.json.emailAddress }}",
+              "type": "string"
+            },
+            {
+              "id": "inboxId",
+              "name": "inboxId",
+              "value": "={{ $('Extract OTP').item.json.inboxId }}",
+              "type": "string"
+            },
+            {
+              "id": "otpCode",
+              "name": "otpCode",
+              "value": "={{ $('Extract OTP').item.json.otpCode }}",
+              "type": "string"
+            },
+            {
+              "id": "verified",
+              "name": "verified",
+              "value": true,
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-result",
+      "name": "Set Result",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.3,
+      "position": [1570, 300]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [[{ "node": "Create Inbox", "type": "main", "index": 0 }]]
+    },
+    "Create Inbox": {
+      "main": [[{ "node": "Browser Signup", "type": "main", "index": 0 }]]
+    },
+    "Browser Signup": {
+      "main": [[{ "node": "Wait for Email", "type": "main", "index": 0 }]]
+    },
+    "Wait for Email": {
+      "main": [[{ "node": "Extract OTP", "type": "main", "index": 0 }]]
+    },
+    "Extract OTP": {
+      "main": [[{ "node": "Browser Verify", "type": "main", "index": 0 }]]
+    },
+    "Browser Verify": {
+      "main": [[{ "node": "Set Result", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2026-02-07T00:00:00.000Z",
+  "versionId": "1"
+}

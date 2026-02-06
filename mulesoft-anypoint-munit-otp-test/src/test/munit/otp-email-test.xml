@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+		http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+
+	<!-- MUnit Configuration -->
+	<munit:config name="munit" doc:name="MUnit configuration" />
+
+	<!-- ============================================== -->
+	<!-- MUnit Test: OTP Email Verification Flow       -->
+	<!-- ============================================== -->
+	<munit:test name="otp-email-verification-flow-test" 
+		description="Tests the complete OTP email verification flow using MailSlurp API and Selenium browser automation"
+		doc:id="otp-test-main">
+
+		<!-- Behavior: Execute the main flow -->
+		<munit:behavior>
+			<munit-tools:assert-that doc:name="Assert API Key Configured" doc:id="assert-api-key"
+				expression="#[!isEmpty(p('mailslurp.apiKey')) and p('mailslurp.apiKey') != '${env.MAILSLURP_API_KEY}']"
+				is="#[MunitTools::equalTo(true)]"
+				message="MAILSLURP_API_KEY environment variable must be set" />
+		</munit:behavior>
+
+		<!-- Execution: Call the OTP verification flow -->
+		<munit:execution>
+			<flow-ref doc:name="Execute OTP Flow" doc:id="execute-otp-flow" 
+				name="otp-email-verification-flow" />
+		</munit:execution>
+
+		<!-- Validation: Assert success response -->
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert Success True" doc:id="assert-success"
+				expression="#[payload.success]"
+				is="#[MunitTools::equalTo(true)]"
+				message="Expected success to be true" />
+
+			<munit-tools:assert-that doc:name="Assert OTP Verified" doc:id="assert-otp-verified"
+				expression="#[payload.details.otpCodeVerified]"
+				is="#[MunitTools::equalTo(true)]"
+				message="Expected OTP code to be verified" />
+
+			<munit-tools:assert-that doc:name="Assert Email Address Present" doc:id="assert-email"
+				expression="#[payload.details.emailAddress]"
+				is="#[MunitTools::notNullValue()]"
+				message="Expected emailAddress in response" />
+
+			<munit-tools:assert-that doc:name="Assert Inbox ID Present" doc:id="assert-inbox-id"
+				expression="#[payload.details.inboxId]"
+				is="#[MunitTools::notNullValue()]"
+				message="Expected inboxId in response" />
+
+			<logger level="INFO" doc:name="Log Test Result" doc:id="log-result"
+				message='#["MUnit Test PASSED: " ++ write(payload, "application/json")]' />
+		</munit:validation>
+
+	</munit:test>
+
+	<!-- ============================================== -->
+	<!-- MUnit Test: Verify Response Structure         -->
+	<!-- ============================================== -->
+	<munit:test name="otp-email-verification-response-structure-test"
+		description="Validates the response structure contains all expected fields"
+		doc:id="structure-test"
+		ignore="true">
+
+		<munit:execution>
+			<flow-ref doc:name="Execute OTP Flow" doc:id="execute-otp-flow-structure" 
+				name="otp-email-verification-flow" />
+		</munit:execution>
+
+		<munit:validation>
+			<!-- Validate top-level structure -->
+			<munit-tools:assert-that doc:name="Assert Has Success Field" doc:id="assert-has-success"
+				expression="#[payload.success?]"
+				is="#[MunitTools::equalTo(true)]"
+				message="Response must have 'success' field" />
+
+			<munit-tools:assert-that doc:name="Assert Has Message Field" doc:id="assert-has-message"
+				expression="#[payload.message?]"
+				is="#[MunitTools::equalTo(true)]"
+				message="Response must have 'message' field" />
+
+			<munit-tools:assert-that doc:name="Assert Has Details Field" doc:id="assert-has-details"
+				expression="#[payload.details?]"
+				is="#[MunitTools::equalTo(true)]"
+				message="Response must have 'details' field" />
+
+			<!-- Validate details structure -->
+			<munit-tools:assert-that doc:name="Assert Details Has EmailAddress" doc:id="assert-details-email"
+				expression="#[payload.details.emailAddress?]"
+				is="#[MunitTools::equalTo(true)]"
+				message="Details must have 'emailAddress' field" />
+
+			<munit-tools:assert-that doc:name="Assert Details Has InboxId" doc:id="assert-details-inbox"
+				expression="#[payload.details.inboxId?]"
+				is="#[MunitTools::equalTo(true)]"
+				message="Details must have 'inboxId' field" />
+
+			<munit-tools:assert-that doc:name="Assert Details Has OtpCodeVerified" doc:id="assert-details-otp"
+				expression="#[payload.details.otpCodeVerified?]"
+				is="#[MunitTools::equalTo(true)]"
+				message="Details must have 'otpCodeVerified' field" />
+		</munit:validation>
+
+	</munit:test>
+
+</mule>

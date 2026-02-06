@@ -1,0 +1,26 @@
+{
+  "name": "n8n-email-otp-test",
+  "version": "1.0.0",
+  "description": "OTP email verification workflow using n8n and MailSlurp API",
+  "main": "index.js",
+  "scripts": {
+    "start": "n8n start",
+    "test": "node test/otp-verification-test.js"
+  },
+  "keywords": [
+    "n8n",
+    "mailslurp",
+    "otp",
+    "email",
+    "automation",
+    "testing"
+  ],
+  "author": "MailSlurp",
+  "license": "MIT",
+  "dependencies": {
+    "n8n": "^1.21.0",
+    "mailslurp-client": "^16.0.0",
+    "puppeteer": "^21.11.0"
+  },
+  "devDependencies": {}
+}

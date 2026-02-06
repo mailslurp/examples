@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# n8n data
+.n8n/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+.idea/
+
+# Test artifacts
+screenshots/
+videos/
