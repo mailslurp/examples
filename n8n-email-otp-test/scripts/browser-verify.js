@@ -12,31 +12,64 @@ const puppeteer = require('puppeteer');
 
 const PLAYGROUND_URL = 'https://playground.mailslurp.com';
 const TEST_PASSWORD = 'test-password';
-const TIMEOUT = 30000;
+const TIMEOUT = 60000;
 
-async function browserVerify(otpCode, emailAddress) {
+async function browserVerify(otpCode, emailAddress, existingBrowser, existingPage) {
   console.log('Starting browser verification...');
   console.log(`OTP Code: ${otpCode}`);
   console.log(`Email: ${emailAddress}`);
 
-  const browser = await puppeteer.launch({
-    headless: process.env.HEADLESS === 'false' ? false : 'new',
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-gpu'
-    ]
-  });
+  let browser = existingBrowser;
+  let page = existingPage;
+  let newBrowser = false;
 
   try {
-    const page = await browser.newPage();
-    await page.setDefaultTimeout(TIMEOUT);
+    // Use existing browser if provided, otherwise launch new one
+    if (!browser || !page) {
+      console.log('No existing browser, launching new one...');
+      newBrowser = true;
+      
+      const os = require('os');
+      const path = require('path');
+      let executablePath;
+      
+      if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+        executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+      } else {
+        const homeDir = os.homedir();
+        executablePath = path.join(
+          homeDir,
+          '.cache/puppeteer/chrome/mac_arm-121.0.6167.85/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing'
+        );
+      }
+      
+      console.log(`Using Chrome at: ${executablePath}`);
+      
+      browser = await puppeteer.launch({
+        executablePath,
+        headless: process.env.HEADLESS === 'false' ? false : 'new',
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-gpu',
+          '--disable-software-rasterizer',
+          '--disable-extensions'
+        ],
+        dumpio: false,
+        protocolTimeout: TIMEOUT
+      });
 
-    // Navigate to playground (should be on verification page)
-    console.log(`Navigating to ${PLAYGROUND_URL}...`);
-    await page.goto(PLAYGROUND_URL, { waitUntil: 'networkidle2' });
+      console.log('Creating new page...');
+      page = await browser.newPage();
+      await page.setDefaultTimeout(TIMEOUT);
+      await page.setDefaultNavigationTimeout(TIMEOUT);
+
+      console.log(`Navigating to ${PLAYGROUND_URL}...`);
+      await page.goto(PLAYGROUND_URL, { waitUntil: 'networkidle2' });
+    } else {
+      console.log('Using existing browser session...');
+    }
 
     // Wait for verification code input
     console.log('Waiting for verification code input...');
@@ -67,12 +100,17 @@ async function browserVerify(otpCode, emailAddress) {
       await page.type('input[name="username"]', emailAddress);
       await page.type('input[name="password"]', TEST_PASSWORD);
 
-      // Submit login
+      // Submit login and wait for navigation
       console.log('Submitting login...');
-      await page.click('[data-test=sign-in-sign-in-button]');
+      await Promise.all([
+        page.waitForNavigation({ waitUntil: 'networkidle2', timeout: TIMEOUT }),
+        page.click('[data-test=sign-in-sign-in-button]')
+      ]).catch(() => {
+        console.log('Navigation timeout or no navigation occurred');
+      });
 
-      // Wait for login to complete
-      await page.waitForTimeout(3000);
+      // Additional wait for React to render
+      await page.waitForTimeout(5000);
     }
 
     // Check for welcome message
@@ -113,9 +151,24 @@ async function browserVerify(otpCode, emailAddress) {
 
   } catch (error) {
     console.error('❌ Error during verification:', error.message);
+    console.error('Error stack:', error.stack);
     throw error;
   } finally {
-    await browser.close();
+    // Always close browser after verification (whether new or existing)
+    if (page) {
+      try {
+        await page.close();
+      } catch (e) {
+        console.error('Error closing page:', e.message);
+      }
+    }
+    if (browser) {
+      try {
+        await browser.close();
+      } catch (e) {
+        console.error('Error closing browser:', e.message);
+      }
+    }
   }
 }
 

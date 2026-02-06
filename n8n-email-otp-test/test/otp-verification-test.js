@@ -114,7 +114,8 @@ async function runTest() {
 
     // Step 2: Browser signup
     console.log('\n🌐 Step 2: Opening browser and filling signup form...');
-    await browserSignup(inbox.emailAddress);
+    const signupResult = await browserSignup(inbox.emailAddress);
+    const { browser, page } = signupResult;
 
     // Step 3: Wait for email
     const email = await waitForEmail(inbox.id);
@@ -129,9 +130,9 @@ async function runTest() {
     
     console.log(`✅ Extracted OTP code: ${otpCode}`);
 
-    // Step 5: Browser verify
+    // Step 5: Browser verify (reuse browser from signup)
     console.log('\n✅ Step 5: Verifying OTP and logging in...');
-    const verifyResult = await browserVerify(otpCode, inbox.emailAddress);
+    const verifyResult = await browserVerify(otpCode, inbox.emailAddress, browser, page);
 
     // Step 6: Summary
     console.log('\n' + '='.repeat(60));
