@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  MailSlurp SMS deliverability workflow using plain HTTP samplers.
+
+  High-level flow:
+  1) List phone numbers and choose one sender phone for simulation.
+  2) Create deliverability test:
+     - runType=ALL: selector.type=ALL and exclude sender.
+     - runType=SINGLE: selector.type=EXPLICIT with second phone ID and exclude sender.
+  3) Start the deliverability test.
+  4) sendMode=SIMULATOR: create simulation job to send SMS to selected targets.
+     sendMode=EXTERNAL: skip simulation and trigger your own SUT externally.
+  5) Poll test status/progress every 15s until success/failure/timeout.
+
+  Note: The sender phone is excluded from targets because telecom routing can allow
+  self-delivery/loopback in some regions, which can distort test signal.
+-->
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="MailSlurp SMS Deliverability + Simulation" enabled="true">
+      <stringProp name="TestPlan.comments">Creates and runs a PHONE-scope deliverability test with SMS simulation using MailSlurp, then polls for completion.</stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="apiProtocol" elementType="Argument">
+            <stringProp name="Argument.name">apiProtocol</stringProp>
+            <stringProp name="Argument.value">${__P(apiProtocol,https)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="apiHost" elementType="Argument">
+            <stringProp name="Argument.name">apiHost</stringProp>
+            <stringProp name="Argument.value">${__P(apiHost,api.mailslurp.com)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="apiPort" elementType="Argument">
+            <stringProp name="Argument.name">apiPort</stringProp>
+            <stringProp name="Argument.value">${__P(apiPort,443)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="apiBasePath" elementType="Argument">
+            <stringProp name="Argument.name">apiBasePath</stringProp>
+            <stringProp name="Argument.value">${__P(apiBasePath,)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="apiKey" elementType="Argument">
+            <stringProp name="Argument.name">apiKey</stringProp>
+            <stringProp name="Argument.value">${__P(apiKey,${__env(API_KEY,)})}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="runType" elementType="Argument">
+            <stringProp name="Argument.name">runType</stringProp>
+            <stringProp name="Argument.value">${__P(runType,ALL)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendMode" elementType="Argument">
+            <stringProp name="Argument.name">sendMode</stringProp>
+            <stringProp name="Argument.value">${__P(sendMode,SIMULATOR)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="phoneListPageSize" elementType="Argument">
+            <stringProp name="Argument.name">phoneListPageSize</stringProp>
+            <stringProp name="Argument.value">${__P(phoneListPageSize,20)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="deliverabilityScope" elementType="Argument">
+            <stringProp name="Argument.name">deliverabilityScope</stringProp>
+            <stringProp name="Argument.value">${__P(deliverabilityScope,PHONE)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="deliverabilitySelectorType" elementType="Argument">
+            <stringProp name="Argument.name">deliverabilitySelectorType</stringProp>
+            <stringProp name="Argument.value">${__P(deliverabilitySelectorType,ALL)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="expectedMinCount" elementType="Argument">
+            <stringProp name="Argument.name">expectedMinCount</stringProp>
+            <stringProp name="Argument.value">${__P(expectedMinCount,1)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="testMaxDurationSeconds" elementType="Argument">
+            <stringProp name="Argument.name">testMaxDurationSeconds</stringProp>
+            <stringProp name="Argument.value">${__P(testMaxDurationSeconds,1200)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="simulationDelayMs" elementType="Argument">
+            <stringProp name="Argument.name">simulationDelayMs</stringProp>
+            <stringProp name="Argument.value">${__P(simulationDelayMs,250)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="simulationBatchSize" elementType="Argument">
+            <stringProp name="Argument.name">simulationBatchSize</stringProp>
+            <stringProp name="Argument.value">${__P(simulationBatchSize,10)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="simulationSendsPerTarget" elementType="Argument">
+            <stringProp name="Argument.name">simulationSendsPerTarget</stringProp>
+            <stringProp name="Argument.value">${__P(simulationSendsPerTarget,1)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="pollIntervalMillis" elementType="Argument">
+            <stringProp name="Argument.name">pollIntervalMillis</stringProp>
+            <stringProp name="Argument.value">${__P(pollIntervalMillis,15000)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="pollTimeoutMillis" elementType="Argument">
+            <stringProp name="Argument.name">pollTimeoutMillis</stringProp>
+            <stringProp name="Argument.value">${__P(pollTimeoutMillis,1200000)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="phoneNumbersPath" elementType="Argument">
+            <stringProp name="Argument.name">phoneNumbersPath</stringProp>
+            <stringProp name="Argument.value">${__P(phoneNumbersPath,/phone/numbers)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="createDeliverabilityTestPath" elementType="Argument">
+            <stringProp name="Argument.name">createDeliverabilityTestPath</stringProp>
+            <stringProp name="Argument.value">${__P(createDeliverabilityTestPath,/test/deliverability)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="deliverabilityPathBase" elementType="Argument">
+            <stringProp name="Argument.name">deliverabilityPathBase</stringProp>
+            <stringProp name="Argument.value">${__P(deliverabilityPathBase,/test/deliverability)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Deliverability Scenario" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">stopthread</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">${__P(loops,1)}</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">${__P(threads,1)}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${__P(rampUpSeconds,1)}</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <!-- Global HTTP defaults and auth headers for every API call in this plan -->
+        <ConfigTestElement guiclass="HttpDefaultsGui" testclass="ConfigTestElement" testname="HTTP Request Defaults" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="HTTP Arguments" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.domain">${apiHost}</stringProp>
+          <stringProp name="HTTPSampler.port">${apiPort}</stringProp>
+          <stringProp name="HTTPSampler.protocol">${apiProtocol}</stringProp>
+          <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+          <stringProp name="HTTPSampler.connect_timeout">15000</stringProp>
+          <stringProp name="HTTPSampler.response_timeout">60000</stringProp>
+        </ConfigTestElement>
+        <hashTree/>
+        <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="MailSlurp Headers" enabled="true">
+          <collectionProp name="HeaderManager.headers">
+            <elementProp name="x-api-key" elementType="Header">
+              <stringProp name="Header.name">x-api-key</stringProp>
+              <stringProp name="Header.value">${apiKey}</stringProp>
+            </elementProp>
+            <elementProp name="accept" elementType="Header">
+              <stringProp name="Header.name">accept</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+            <elementProp name="content-type" elementType="Header">
+              <stringProp name="Header.name">content-type</stringProp>
+              <stringProp name="Header.value">application/json</stringProp>
+            </elementProp>
+          </collectionProp>
+        </HeaderManager>
+        <hashTree/>
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Preflight: Validate API Key" enabled="true">
+          <stringProp name="cacheKey">true</stringProp>
+          <stringProp name="scriptLanguage">groovy</stringProp>
+          <stringProp name="script">import java.util.Locale
+
+def key = vars.get('apiKey')
+if (key == null || key.trim().isEmpty()) {
+  throw new IllegalStateException('Missing API key. Set API_KEY env var or -JapiKey=...')
+}
+def keyTrimmed = key.trim()
+def keyPrefix = keyTrimmed.length() > 8 ? keyTrimmed.substring(0, 8) + '...' : keyTrimmed
+def runType = (vars.get('runType') ?: 'ALL').trim().toUpperCase(Locale.ROOT)
+if (!(runType in ['ALL', 'SINGLE'])) {
+  throw new IllegalStateException("Invalid runType='${runType}'. Allowed values: ALL or SINGLE.")
+}
+vars.put('runType', runType)
+def sendMode = (vars.get('sendMode') ?: 'SIMULATOR').trim().toUpperCase(Locale.ROOT)
+if (!(sendMode in ['SIMULATOR', 'EXTERNAL'])) {
+  throw new IllegalStateException("Invalid sendMode='${sendMode}'. Allowed values: SIMULATOR or EXTERNAL.")
+}
+vars.put('sendMode', sendMode)
+SampleResult.setResponseMessage("apiHost=${vars.get('apiHost')} apiBasePath='${vars.get('apiBasePath')}' runType=${runType} sendMode=${sendMode} apiKeyLen=${keyTrimmed.length()} apiKeyPrefix=${keyPrefix}")</stringProp>
+        </JSR223Sampler>
+        <hashTree/>
+
+        <!-- Phase 1: discover account phone numbers and choose simulation/target IDs -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="1) List Phone Numbers" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="HTTP Arguments" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.path">${apiBasePath}${phoneNumbersPath}?page=0&amp;size=${phoneListPageSize}&amp;sort=ASC</stringProp>
+          <stringProp name="HTTPSampler.method">GET</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Assert 2xx" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="script">if (!(prev.getResponseCode() ==~ /2\d\d/)) {
+  AssertionResult.setFailure(true)
+  AssertionResult.setFailureMessage('Expected 2xx for List Phone Numbers but got ' + prev.getResponseCode())
+}</stringProp>
+          </JSR223Assertion>
+          <hashTree/>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Capture Simulation Phone" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="script">import groovy.json.JsonSlurper
+import java.util.Locale
+
+def payload = new JsonSlurper().parseText(prev.getResponseDataAsString())
+def phones = []
+if (payload instanceof List) {
+  phones = payload
+} else if (payload?.content instanceof List) {
+  phones = payload.content
+} else if (payload?.data instanceof List) {
+  phones = payload.data
+}
+System.out.println("JMETER_SETUP phoneCount=${phones.size()}")
+if (phones.isEmpty()) {
+  def preview = (prev.getResponseDataAsString() ?: '').replaceAll('\\s+', ' ').take(500)
+  throw new IllegalStateException('No phone numbers found. Add at least one phone number to your MailSlurp account before running this test. responsePreview=' + preview)
+}
+def runType = (vars.get('runType') ?: 'ALL').trim().toUpperCase(Locale.ROOT)
+def simulation = phones[0]
+def simulationPhoneId = simulation?.id?.toString()
+def simulationPhoneNumber = (simulation?.phoneNumber ?: simulation?.number ?: '').toString()
+def uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/
+if (!simulationPhoneId) {
+  throw new IllegalStateException('Phone list response did not contain content[0].id')
+}
+if (!(simulationPhoneId ==~ uuidRegex)) {
+  throw new IllegalStateException("Simulation phone id is not a valid UUID: '${simulationPhoneId}'")
+}
+vars.put('simulationPhoneId', simulationPhoneId)
+vars.put('simulationPhoneNumber', simulationPhoneNumber)
+if (runType == 'SINGLE') {
+  if (phones.size() &lt; 2) {
+    throw new IllegalStateException('runType=SINGLE requires at least 2 phone numbers. One for simulator and one explicit target.')
+  }
+  def target = phones[1]
+  def targetPhoneId = target?.id?.toString()
+  def targetPhoneNumber = (target?.phoneNumber ?: target?.number ?: '').toString()
+  if (!targetPhoneId) {
+    throw new IllegalStateException('Phone list response did not contain content[1].id for SINGLE run')
+  }
+  if (!(targetPhoneId ==~ uuidRegex)) {
+    throw new IllegalStateException("Target phone id is not a valid UUID: '${targetPhoneId}'")
+  }
+  if (targetPhoneId == simulationPhoneId) {
+    throw new IllegalStateException("Target phone id equals simulation phone id in SINGLE mode: '${targetPhoneId}'")
+  }
+  vars.put('targetPhoneId', targetPhoneId)
+  vars.put('targetPhoneNumber', targetPhoneNumber)
+  vars.put('resolvedSelectorType', 'EXPLICIT')
+  log.info("runType=SINGLE simulationPhoneId=${simulationPhoneId} targetPhoneId=${targetPhoneId}")
+  System.out.println("JMETER_SETUP runType=SINGLE simulationPhoneId=${simulationPhoneId} targetPhoneId=${targetPhoneId}")
+} else {
+  vars.put('targetPhoneId', '')
+  vars.put('targetPhoneNumber', '')
+  vars.put('resolvedSelectorType', (vars.get('deliverabilitySelectorType') ?: 'ALL').trim().toUpperCase(Locale.ROOT))
+  log.info("runType=ALL simulationPhoneId=${simulationPhoneId}")
+  System.out.println("JMETER_SETUP runType=ALL simulationPhoneId=${simulationPhoneId}")
+}</stringProp>
+          </JSR223PostProcessor>
+          <hashTree/>
+        </hashTree>
+
+        <!-- Phase 2: create deliverability test definition with selector based on runType -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="2) Create Deliverability Test" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="HTTP Arguments" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="" elementType="HTTPArgument">
+                <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                <stringProp name="Argument.value">${deliverabilityCreateBody}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="HTTPSampler.path">${apiBasePath}${createDeliverabilityTestPath}</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <JSR223PreProcessor guiclass="TestBeanGUI" testclass="JSR223PreProcessor" testname="Build Deliverability Test Request Body" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="script">import groovy.json.JsonOutput
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+def runType = (vars.get('runType') ?: 'ALL').trim().toUpperCase(Locale.ROOT)
+def simulationPhoneId = vars.get('simulationPhoneId')
+def simulationPhoneNumber = vars.get('simulationPhoneNumber')
+def scope = vars.get('deliverabilityScope')
+long maxDurationSeconds = (vars.get('testMaxDurationSeconds') ?: '1200') as long
+long expectedMinCount = (vars.get('expectedMinCount') ?: '1') as long
+def runTs = new SimpleDateFormat('yyyyMMdd-HHmmss').format(new Date())
+
+if (!simulationPhoneId) {
+  throw new IllegalStateException('simulationPhoneId is missing before create deliverability test')
+}
+
+def selector = [:]
+if (runType == 'SINGLE') {
+  def targetPhoneId = vars.get('targetPhoneId')
+  if (!targetPhoneId) {
+    throw new IllegalStateException('runType=SINGLE requires targetPhoneId but none was set')
+  }
+  selector.type = 'EXPLICIT'
+  selector.entityIds = [targetPhoneId]
+  // Exclude sender to avoid telecom loopback/self-send skewing results.
+  selector.excludeEntityIds = [simulationPhoneId]
+} else {
+  selector.type = vars.get('resolvedSelectorType') ?: 'ALL'
+  // Exclude sender to avoid telecom loopback/self-send skewing results.
+  selector.excludeEntityIds = [simulationPhoneId]
+}
+
+def payload = [
+  name: "jmeter-sms-deliverability-${runTs}",
+  description: "JMeter example deliverability run (${runType})",
+  scope: scope,
+  maxDurationSeconds: maxDurationSeconds,
+  selector: selector,
+  expectations: [[
+    name: 'At least one SMS from the simulation sender',
+    minCount: expectedMinCount,
+    from: simulationPhoneNumber
+  ]]
+]
+
+vars.put('deliverabilityCreateBody', JsonOutput.prettyPrint(JsonOutput.toJson(payload)))
+log.info("CreateDeliverabilityTest payload prepared for runType=${runType} selectorType=${selector.type}")
+System.out.println("JMETER_SETUP createDeliverabilityRequest=" + (vars.get('deliverabilityCreateBody') ?: ''))</stringProp>
+          </JSR223PreProcessor>
+          <hashTree/>
+          <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Assert 2xx" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="script">if (!(prev.getResponseCode() ==~ /2\d\d/)) {
+  AssertionResult.setFailure(true)
+  AssertionResult.setFailureMessage('Expected 2xx for Create Deliverability Test but got ' + prev.getResponseCode())
+}</stringProp>
+          </JSR223Assertion>
+          <hashTree/>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Debug Create Deliverability Failure" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="script">def code = prev.getResponseCode()
+if (!(code ==~ /2\d\d/)) {
+  def responseBody = (prev.getResponseDataAsString() ?: '').take(4000)
+  def requestBody = (vars.get('deliverabilityCreateBody') ?: '').take(4000)
+  log.error("Create Deliverability Test failed code=${code} responseBody=${responseBody}")
+  System.out.println("JMETER_ERROR createDeliverability code=${code} request=${requestBody}")
+  System.out.println("JMETER_ERROR createDeliverability response=${responseBody}")
+}</stringProp>
+          </JSR223PostProcessor>
+          <hashTree/>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Extract deliverabilityTestId" enabled="true">
+            <stringProp name="JSONPostProcessor.referenceNames">deliverabilityTestId</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.id</stringProp>
+            <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+            <stringProp name="JSONPostProcessor.defaultValues"></stringProp>
+            <boolProp name="JSONPostProcessor.compute_concat">false</boolProp>
+          </JSONPostProcessor>
+          <hashTree/>
+          <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Validate deliverabilityTestId" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="script">def id = vars.get('deliverabilityTestId')
+if (id == null || id.trim().isEmpty()) {
+  throw new IllegalStateException('Could not extract deliverabilityTestId from create response body')
+}
+log.info("Created deliverability test id=${id}")
+System.out.println("JMETER_SETUP deliverabilityTestId=${id}")</stringProp>
+          </JSR223PostProcessor>
+          <hashTree/>
+        </hashTree>
+
+        <!-- Phase 3: start the deliverability test run -->
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="3) Start Deliverability Test" enabled="true">
+          <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="HTTP Arguments" enabled="true">
+            <collectionProp name="Arguments.arguments"/>
+          </elementProp>
+          <stringProp name="HTTPSampler.path">${apiBasePath}${deliverabilityPathBase}/${deliverabilityTestId}/start</stringProp>
+          <stringProp name="HTTPSampler.method">POST</stringProp>
+          <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+          <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+          <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+          <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+          <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+        </HTTPSamplerProxy>
+        <hashTree>
+          <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Assert 2xx" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="script">if (!(prev.getResponseCode() ==~ /2\d\d/)) {
+  AssertionResult.setFailure(true)
+  AssertionResult.setFailureMessage('Expected 2xx for Start Deliverability Test but got ' + prev.getResponseCode())
+}</stringProp>
+          </JSR223Assertion>
+          <hashTree/>
+        </hashTree>
+
+        <!-- Phase 4: optional simulated SMS sending (or external SUT mode) -->
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="4) sendMode=SIMULATOR -> Create Simulation Job" enabled="true">
+          <stringProp name="IfController.condition">${__groovy((vars.get('sendMode') ?: 'SIMULATOR').toUpperCase() == 'SIMULATOR',)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Create Deliverability SMS Simulation Job" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="HTTP Arguments" enabled="true">
+              <collectionProp name="Arguments.arguments">
+                <elementProp name="" elementType="HTTPArgument">
+                  <boolProp name="HTTPArgument.always_encode">false</boolProp>
+                  <stringProp name="Argument.value">{
+  "senderPhoneId": "${simulationPhoneId}",
+  "sms": {
+    "bodyTemplate": "MailSlurp JMeter deliverability simulation send {{sendIndex}} attempt {{attempt}} to {{targetLabel}}"
+  },
+  "delayMs": ${simulationDelayMs},
+  "batchSize": ${simulationBatchSize},
+  "sendsPerTarget": ${simulationSendsPerTarget}
+}</stringProp>
+                  <stringProp name="Argument.metadata">=</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
+            <stringProp name="HTTPSampler.path">${apiBasePath}${deliverabilityPathBase}/${deliverabilityTestId}/simulation-jobs</stringProp>
+            <stringProp name="HTTPSampler.method">POST</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.postBodyRaw">true</boolProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Assert 2xx" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="script">if (!(prev.getResponseCode() ==~ /2\d\d/)) {
+  AssertionResult.setFailure(true)
+  AssertionResult.setFailureMessage('Expected 2xx for Create Deliverability SMS Simulation Job but got ' + prev.getResponseCode())
+}</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+            <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="Extract simulationJobId" enabled="true">
+              <stringProp name="JSONPostProcessor.referenceNames">simulationJobId</stringProp>
+              <stringProp name="JSONPostProcessor.jsonPathExprs">$.id</stringProp>
+              <stringProp name="JSONPostProcessor.match_numbers">1</stringProp>
+              <stringProp name="JSONPostProcessor.defaultValues"></stringProp>
+              <boolProp name="JSONPostProcessor.compute_concat">false</boolProp>
+            </JSONPostProcessor>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Validate simulationJobId" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="script">def id = vars.get('simulationJobId')
+if (id == null || id.trim().isEmpty()) {
+  throw new IllegalStateException('Could not extract simulationJobId from create simulation job response body')
+}
+log.info("Created deliverability simulation job id=${id}")
+System.out.println("JMETER_SETUP simulationJobId=${id}")</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+          </hashTree>
+        </hashTree>
+
+        <IfController guiclass="IfControllerPanel" testclass="IfController" testname="4b) sendMode=EXTERNAL -> Skip Simulation Call" enabled="true">
+          <stringProp name="IfController.condition">${__groovy((vars.get('sendMode') ?: 'SIMULATOR').toUpperCase() == 'EXTERNAL',)}</stringProp>
+          <boolProp name="IfController.evaluateAll">false</boolProp>
+          <boolProp name="IfController.useExpression">true</boolProp>
+        </IfController>
+        <hashTree>
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Log External Sender Instruction" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="script">def msg = \"sendMode=EXTERNAL: simulation job skipped. Trigger your own system under test to send SMS now. testId=${vars.get('deliverabilityTestId')} simulationPhoneId=${vars.get('simulationPhoneId')}\"\nlog.info(msg)\nSystem.out.println(\"JMETER_SETUP \" + msg)\nSampleResult.setResponseMessage(msg)</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
+        </hashTree>
+
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Initialize Polling State" enabled="true">
+          <stringProp name="scriptLanguage">groovy</stringProp>
+          <stringProp name="script">long now = System.currentTimeMillis()
+vars.put('pollStartEpochMillis', now.toString())
+if (vars.get('pollTimeoutMillis') == null || vars.get('pollTimeoutMillis').trim().isEmpty()) {
+  vars.put('pollTimeoutMillis', '1200000')
+}
+if (vars.get('pollIntervalMillis') == null || vars.get('pollIntervalMillis').trim().isEmpty()) {
+  vars.put('pollIntervalMillis', '15000')
+}
+vars.put('deliverabilityTestStatus', 'PENDING')
+vars.put('deliverabilityTestProgress', '0')
+vars.put('deliverabilityTestDone', 'false')
+vars.put('deliverabilityTestFailed', 'false')
+vars.put('deliverabilityTimedOut', 'false')
+vars.put('deliverabilityFailureReason', '')
+vars.put('deliverabilityMatchedEntities', '0')
+vars.put('deliverabilityTotalEntities', '0')
+vars.put('simulationJobId', vars.get('simulationJobId') ?: '')</stringProp>
+        </JSR223Sampler>
+        <hashTree/>
+
+        <!-- Phase 5: poll status/progress until success, failure, or timeout -->
+        <WhileController guiclass="WhileControllerGui" testclass="WhileController" testname="5) Poll Deliverability Status" enabled="true">
+          <stringProp name="WhileController.condition">${__groovy((vars.get('deliverabilityTestDone') != 'true') &amp;&amp; (vars.get('deliverabilityTestFailed') != 'true') &amp;&amp; ((System.currentTimeMillis() - Long.parseLong(vars.get('pollStartEpochMillis'))) &lt; Long.parseLong(vars.get('pollTimeoutMillis'))),)}</stringProp>
+        </WhileController>
+        <hashTree>
+          <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Get Deliverability Test Status" enabled="true">
+            <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="HTTP Arguments" enabled="true">
+              <collectionProp name="Arguments.arguments"/>
+            </elementProp>
+            <stringProp name="HTTPSampler.path">${apiBasePath}${deliverabilityPathBase}/${deliverabilityTestId}/status</stringProp>
+            <stringProp name="HTTPSampler.method">GET</stringProp>
+            <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
+            <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+            <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
+            <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
+            <boolProp name="HTTPSampler.postBodyRaw">false</boolProp>
+          </HTTPSamplerProxy>
+          <hashTree>
+            <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="Assert 2xx" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="script">if (!(prev.getResponseCode() ==~ /2\d\d/)) {
+  AssertionResult.setFailure(true)
+  AssertionResult.setFailureMessage('Expected 2xx while polling status but got ' + prev.getResponseCode())
+}</stringProp>
+            </JSR223Assertion>
+            <hashTree/>
+            <JSR223PostProcessor guiclass="TestBeanGUI" testclass="JSR223PostProcessor" testname="Parse Status + Progress" enabled="true">
+              <stringProp name="scriptLanguage">groovy</stringProp>
+              <stringProp name="script">import groovy.json.JsonSlurper
+
+def rawBody = prev.getResponseDataAsString()
+def body = rawBody == null ? '' : rawBody.trim()
+if (!(body.startsWith('{') || body.startsWith('['))) {
+  vars.put('deliverabilityTestFailed', 'true')
+  vars.put('deliverabilityFailureReason', "Non-JSON polling response: code=${prev.getResponseCode()} body=${body.take(200)}")
+  return
+}
+
+def json
+try {
+  json = new JsonSlurper().parseText(body)
+} catch (Exception ex) {
+  vars.put('deliverabilityTestFailed', 'true')
+  vars.put('deliverabilityFailureReason', "Unable to parse polling response: ${ex.message}")
+  return
+}
+def testNode = json?.test ?: json
+
+def status = (testNode?.status ?: testNode?.state ?: '').toString()
+def progressValue = testNode?.completionPercentage
+if (progressValue == null) progressValue = testNode?.progressPercent
+if (progressValue == null) progressValue = testNode?.progress
+if (progressValue == null) progressValue = 0
+
+def matched = testNode?.matchedEntities
+if (matched == null) matched = 0
+def total = testNode?.totalEntities
+if (total == null) total = 0
+
+def timedOut = (testNode?.timedOut ?: false).toString()
+def failureReason = (testNode?.failureReason ?: '').toString()
+
+def normalized = status.toUpperCase()
+def doneStates = ['COMPLETE','COMPLETED','SUCCESS','SUCCEEDED','FINISHED','PASS','PASSED']
+def failStates = ['FAILED','ERROR','CANCELLED','TIMEOUT','TIMED_OUT']
+
+vars.put('deliverabilityTestStatus', status)
+vars.put('deliverabilityTestProgress', progressValue.toString())
+vars.put('deliverabilityMatchedEntities', matched.toString())
+vars.put('deliverabilityTotalEntities', total.toString())
+vars.put('deliverabilityTimedOut', timedOut)
+vars.put('deliverabilityFailureReason', failureReason)
+vars.put('deliverabilityTestDone', doneStates.contains(normalized).toString())
+vars.put('deliverabilityTestFailed', failStates.contains(normalized).toString())</stringProp>
+            </JSR223PostProcessor>
+            <hashTree/>
+          </hashTree>
+
+          <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Log Poll Update" enabled="true">
+            <stringProp name="scriptLanguage">groovy</stringProp>
+            <stringProp name="script">def elapsed = System.currentTimeMillis() - Long.parseLong(vars.get('pollStartEpochMillis'))
+def msg = "status=${vars.get('deliverabilityTestStatus')} progress=${vars.get('deliverabilityTestProgress')} matched=${vars.get('deliverabilityMatchedEntities')}/${vars.get('deliverabilityTotalEntities')} elapsedMs=${elapsed}"
+log.info("Deliverability poll update: ${msg}")
+System.out.println("JMETER_PROGRESS ${msg}")
+SampleResult.setResponseMessage(msg)</stringProp>
+          </JSR223Sampler>
+          <hashTree/>
+
+          <TestAction guiclass="TestActionGui" testclass="TestAction" testname="Pause 15s Between Polls" enabled="true">
+            <intProp name="ActionProcessor.action">1</intProp>
+            <intProp name="ActionProcessor.target">0</intProp>
+            <stringProp name="ActionProcessor.duration">${pollIntervalMillis}</stringProp>
+          </TestAction>
+          <hashTree/>
+        </hashTree>
+
+        <!-- Phase 6: terminal pass/fail result for CI and report outputs -->
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="6) Final Result" enabled="true">
+          <stringProp name="scriptLanguage">groovy</stringProp>
+          <stringProp name="script">def status = vars.get('deliverabilityTestStatus')
+def runType = vars.get('runType')
+def sendMode = vars.get('sendMode')
+def progress = vars.get('deliverabilityTestProgress')
+def timeout = vars.get('pollTimeoutMillis')
+def matched = vars.get('deliverabilityMatchedEntities')
+def total = vars.get('deliverabilityTotalEntities')
+def timedOut = vars.get('deliverabilityTimedOut')
+def failureReason = vars.get('deliverabilityFailureReason')
+def simulationPhoneId = vars.get('simulationPhoneId')
+def targetPhoneId = vars.get('targetPhoneId')
+
+def summary = "runType=${runType} sendMode=${sendMode} status=${status} progress=${progress} matched=${matched}/${total} simulationPhoneId=${simulationPhoneId} targetPhoneId=${targetPhoneId} timedOut=${timedOut} failureReason=${failureReason} timeoutMs=${timeout}"
+
+if (vars.get('deliverabilityTestFailed') == 'true') {
+  SampleResult.setSuccessful(false)
+  SampleResult.setResponseCode('500')
+  SampleResult.setResponseMessage('Deliverability test failed: ' + summary)
+} else if (vars.get('deliverabilityTestDone') != 'true') {
+  SampleResult.setSuccessful(false)
+  SampleResult.setResponseCode('504')
+  SampleResult.setResponseMessage('Deliverability test timed out: ' + summary)
+} else {
+  SampleResult.setSuccessful(true)
+  SampleResult.setResponseCode('200')
+  SampleResult.setResponseMessage('Deliverability test succeeded: ' + summary)
+}
+log.info('Final deliverability summary: ' + summary)
+System.out.println("JMETER_FINAL ${summary}")</stringProp>
+        </JSR223Sampler>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>

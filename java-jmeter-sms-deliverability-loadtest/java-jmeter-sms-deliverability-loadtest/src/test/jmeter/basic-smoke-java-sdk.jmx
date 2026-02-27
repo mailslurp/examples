@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  MailSlurp SMS deliverability test using a JMeter Java Request sampler.
+
+  Flow implemented by com.example.jmeter.MailSlurpDeliverabilityJavaSampler:
+  1) List phone numbers and choose simulator sender from first result.
+  2) runType=ALL: selector type ALL + exclude simulator sender id.
+  3) runType=SINGLE: selector type EXPLICIT with second phone id + exclude simulator sender id.
+  4) Create and start deliverability test.
+  5) sendMode=SIMULATOR: create simulation job to send SMS automatically.
+     sendMode=EXTERNAL: skip simulator; trigger your own system to send SMS.
+  6) Poll status every pollIntervalMillis until success/failure or pollTimeoutMillis.
+
+  Note: We exclude the simulator sender phone from targets to avoid telecom loopback/self-send
+  edge cases that can otherwise distort results.
+-->
+<jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
+  <hashTree>
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="MailSlurp SMS Deliverability + Simulation (Java SDK)" enabled="true">
+      <stringProp name="TestPlan.comments">Java Request sampler approach. Uses mailslurp-client-java 17.1.0 for phone discovery and ApiClient calls for deliverability endpoints. Use sendMode=EXTERNAL to skip simulator and trigger your own SMS sender.</stringProp>
+      <boolProp name="TestPlan.functional_mode">false</boolProp>
+      <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
+      <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
+        <collectionProp name="Arguments.arguments">
+          <elementProp name="apiProtocol" elementType="Argument">
+            <stringProp name="Argument.name">apiProtocol</stringProp>
+            <stringProp name="Argument.value">${__P(apiProtocol,https)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="apiHost" elementType="Argument">
+            <stringProp name="Argument.name">apiHost</stringProp>
+            <stringProp name="Argument.value">${__P(apiHost,api.mailslurp.com)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="apiPort" elementType="Argument">
+            <stringProp name="Argument.name">apiPort</stringProp>
+            <stringProp name="Argument.value">${__P(apiPort,443)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="apiBasePath" elementType="Argument">
+            <stringProp name="Argument.name">apiBasePath</stringProp>
+            <stringProp name="Argument.value">${__P(apiBasePath,)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="apiKey" elementType="Argument">
+            <stringProp name="Argument.name">apiKey</stringProp>
+            <stringProp name="Argument.value">${__P(apiKey,${__env(API_KEY,)})}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="runType" elementType="Argument">
+            <stringProp name="Argument.name">runType</stringProp>
+            <stringProp name="Argument.value">${__P(runType,ALL)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="sendMode" elementType="Argument">
+            <stringProp name="Argument.name">sendMode</stringProp>
+            <stringProp name="Argument.value">${__P(sendMode,SIMULATOR)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="phoneListPageSize" elementType="Argument">
+            <stringProp name="Argument.name">phoneListPageSize</stringProp>
+            <stringProp name="Argument.value">${__P(phoneListPageSize,20)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="deliverabilityScope" elementType="Argument">
+            <stringProp name="Argument.name">deliverabilityScope</stringProp>
+            <stringProp name="Argument.value">${__P(deliverabilityScope,PHONE)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="testMaxDurationSeconds" elementType="Argument">
+            <stringProp name="Argument.name">testMaxDurationSeconds</stringProp>
+            <stringProp name="Argument.value">${__P(testMaxDurationSeconds,1200)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="expectedMinCount" elementType="Argument">
+            <stringProp name="Argument.name">expectedMinCount</stringProp>
+            <stringProp name="Argument.value">${__P(expectedMinCount,1)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="simulationDelayMs" elementType="Argument">
+            <stringProp name="Argument.name">simulationDelayMs</stringProp>
+            <stringProp name="Argument.value">${__P(simulationDelayMs,250)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="simulationBatchSize" elementType="Argument">
+            <stringProp name="Argument.name">simulationBatchSize</stringProp>
+            <stringProp name="Argument.value">${__P(simulationBatchSize,10)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="simulationSendsPerTarget" elementType="Argument">
+            <stringProp name="Argument.name">simulationSendsPerTarget</stringProp>
+            <stringProp name="Argument.value">${__P(simulationSendsPerTarget,1)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="pollIntervalMillis" elementType="Argument">
+            <stringProp name="Argument.name">pollIntervalMillis</stringProp>
+            <stringProp name="Argument.value">${__P(pollIntervalMillis,15000)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="pollTimeoutMillis" elementType="Argument">
+            <stringProp name="Argument.name">pollTimeoutMillis</stringProp>
+            <stringProp name="Argument.value">${__P(pollTimeoutMillis,1200000)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+        </collectionProp>
+      </elementProp>
+      <stringProp name="TestPlan.user_define_classpath"></stringProp>
+    </TestPlan>
+    <hashTree>
+      <!-- ThreadGroup intentionally single-threaded: this is a reference flow for customer teams -->
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Deliverability Scenario (Java SDK)" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">stopthread</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">${__P(loops,1)}</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">${__P(threads,1)}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${__P(rampUpSeconds,1)}</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+      </ThreadGroup>
+      <hashTree>
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Preflight: Validate Inputs" enabled="true">
+          <stringProp name="scriptLanguage">groovy</stringProp>
+          <stringProp name="script">import java.util.Locale
+
+def apiKey = (vars.get('apiKey') ?: '').trim()
+if (!apiKey) {
+  throw new IllegalStateException('Missing API key. Set API_KEY env var or -JapiKey=...')
+}
+
+def runType = (vars.get('runType') ?: 'ALL').trim().toUpperCase(Locale.ROOT)
+if (!(runType in ['ALL', 'SINGLE'])) {
+  throw new IllegalStateException("Invalid runType='${runType}'. Allowed values: ALL or SINGLE")
+}
+vars.put('runType', runType)
+
+def sendMode = (vars.get('sendMode') ?: 'SIMULATOR').trim().toUpperCase(Locale.ROOT)
+if (!(sendMode in ['SIMULATOR', 'EXTERNAL'])) {
+  throw new IllegalStateException("Invalid sendMode='${sendMode}'. Allowed values: SIMULATOR or EXTERNAL")
+}
+vars.put('sendMode', sendMode)
+
+System.out.println("JMETER_JAVA_SETUP preflight runType=${runType} sendMode=${sendMode} apiHost=${vars.get('apiHost')}")</stringProp>
+        </JSR223Sampler>
+        <hashTree/>
+
+        <!-- Conventional Java Request sampler: delegates end-to-end flow to reusable Java class -->
+        <JavaSampler guiclass="JavaTestSamplerGui" testclass="JavaSampler" testname="Run Deliverability Workflow (Java SDK)" enabled="true">
+          <elementProp name="arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="Parameters" enabled="true">
+            <collectionProp name="Arguments.arguments">
+              <elementProp name="apiProtocol" elementType="Argument">
+                <stringProp name="Argument.name">apiProtocol</stringProp>
+                <stringProp name="Argument.value">${apiProtocol}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="apiHost" elementType="Argument">
+                <stringProp name="Argument.name">apiHost</stringProp>
+                <stringProp name="Argument.value">${apiHost}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="apiPort" elementType="Argument">
+                <stringProp name="Argument.name">apiPort</stringProp>
+                <stringProp name="Argument.value">${apiPort}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="apiBasePath" elementType="Argument">
+                <stringProp name="Argument.name">apiBasePath</stringProp>
+                <stringProp name="Argument.value">${apiBasePath}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="apiKey" elementType="Argument">
+                <stringProp name="Argument.name">apiKey</stringProp>
+                <stringProp name="Argument.value">${apiKey}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="runType" elementType="Argument">
+                <stringProp name="Argument.name">runType</stringProp>
+                <stringProp name="Argument.value">${runType}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="sendMode" elementType="Argument">
+                <stringProp name="Argument.name">sendMode</stringProp>
+                <stringProp name="Argument.value">${sendMode}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="phoneListPageSize" elementType="Argument">
+                <stringProp name="Argument.name">phoneListPageSize</stringProp>
+                <stringProp name="Argument.value">${phoneListPageSize}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="deliverabilityScope" elementType="Argument">
+                <stringProp name="Argument.name">deliverabilityScope</stringProp>
+                <stringProp name="Argument.value">${deliverabilityScope}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="testMaxDurationSeconds" elementType="Argument">
+                <stringProp name="Argument.name">testMaxDurationSeconds</stringProp>
+                <stringProp name="Argument.value">${testMaxDurationSeconds}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="expectedMinCount" elementType="Argument">
+                <stringProp name="Argument.name">expectedMinCount</stringProp>
+                <stringProp name="Argument.value">${expectedMinCount}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="simulationDelayMs" elementType="Argument">
+                <stringProp name="Argument.name">simulationDelayMs</stringProp>
+                <stringProp name="Argument.value">${simulationDelayMs}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="simulationBatchSize" elementType="Argument">
+                <stringProp name="Argument.name">simulationBatchSize</stringProp>
+                <stringProp name="Argument.value">${simulationBatchSize}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="simulationSendsPerTarget" elementType="Argument">
+                <stringProp name="Argument.name">simulationSendsPerTarget</stringProp>
+                <stringProp name="Argument.value">${simulationSendsPerTarget}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="pollIntervalMillis" elementType="Argument">
+                <stringProp name="Argument.name">pollIntervalMillis</stringProp>
+                <stringProp name="Argument.value">${pollIntervalMillis}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+              <elementProp name="pollTimeoutMillis" elementType="Argument">
+                <stringProp name="Argument.name">pollTimeoutMillis</stringProp>
+                <stringProp name="Argument.value">${pollTimeoutMillis}</stringProp>
+                <stringProp name="Argument.metadata">=</stringProp>
+              </elementProp>
+            </collectionProp>
+          </elementProp>
+          <stringProp name="classname">com.example.jmeter.MailSlurpDeliverabilityJavaSampler</stringProp>
+        </JavaSampler>
+        <hashTree/>
+
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Final Summary (Java SDK)" enabled="true">
+          <stringProp name="scriptLanguage">groovy</stringProp>
+          <stringProp name="script">def summary = "runType=${vars.get('runType')} sendMode=${vars.get('sendMode')} status=${vars.get('deliverabilityTestStatus')} progress=${vars.get('deliverabilityTestProgress')} matched=${vars.get('deliverabilityMatchedEntities')}/${vars.get('deliverabilityTotalEntities')} simulationPhoneId=${vars.get('simulationPhoneId')} targetPhoneId=${vars.get('targetPhoneId')}"
+System.out.println("JMETER_JAVA_FINAL ${summary}")
+SampleResult.setResponseMessage(summary)</stringProp>
+        </JSR223Sampler>
+        <hashTree/>
+      </hashTree>
+    </hashTree>
+  </hashTree>
+</jmeterTestPlan>
