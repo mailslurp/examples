@@ -48,6 +48,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [javascript-cypress-mailslurp-plugin](./javascript-cypress-mailslurp-plugin)
 - [javascript-cypress-newsletter-signup](./javascript-cypress-newsletter-signup)
 - [javascript-cypress-sms-testing](./javascript-cypress-sms-testing)
+- [javascript-device-render](./javascript-device-render)
 - [javascript-email-screenshot](./javascript-email-screenshot)
 - [javascript-jest-puppeteer](./javascript-jest-puppeteer)
 - [javascript-react-email](./javascript-react-email)
