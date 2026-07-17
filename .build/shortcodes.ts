@@ -415,6 +415,14 @@ async function getFileTree(path: string): Promise<string> {
         },
         {
             paths: await files(
+                "/JavaScript-InboxPlacement-Test/*.test.js"
+            ),
+            commentStart: "//<gen>",
+            commentEnd: "//</gen>",
+            highlight: "javascript",
+        },
+        {
+            paths: await files(
                 "/javascript-cypress-js/**/*.js",
                 "/javascript-cypress-mailslurp-plugin/cypress/support/e2e.js"
             ),

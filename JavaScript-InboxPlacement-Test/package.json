@@ -1,0 +1,22 @@
+{
+  "name": "javascript-inbox-placement-test",
+  "version": "1.0.0",
+  "description": "MailSlurp JavaScript inbox placement and domain monitor examples",
+  "main": "inbox-placement.test.js",
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [
+    "mailslurp",
+    "email",
+    "inbox-placement",
+    "deliverability",
+    "domain-monitor"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "mailslurp-client": "^17.4.0"
+  }
+}
