@@ -8,6 +8,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 
 ## Projects
 
+- [JavaScript-InboxPlacement-Test](./JavaScript-InboxPlacement-Test)
 - [android-mailslurp-examples](./android-mailslurp-examples)
 - [bruno-api-client](./bruno-api-client)
 - [bun-js-send-email](./bun-js-send-email)
@@ -29,6 +30,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [golang-email-test](./golang-email-test)
 - [golang-imap-examples](./golang-imap-examples)
 - [golang-smtp-client-test](./golang-smtp-client-test)
+- [http-accelq-email-otp-test](./http-accelq-email-otp-test)
 - [hurl](./hurl)
 - [imap-smtp-examples](./imap-smtp-examples)
 - [insomnia-test](./insomnia-test)
@@ -36,6 +38,8 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [java-gradle-junit5](./java-gradle-junit5)
 - [java-jakarta-mail](./java-jakarta-mail)
 - [java-jmeter-loadtest](./java-jmeter-loadtest)
+- [java-jmeter-sms-deliverability-loadtest](./java-jmeter-sms-deliverability-loadtest)
+- [java-maven-junit-email-otp-match-test](./java-maven-junit-email-otp-match-test)
 - [java-maven-junit4](./java-maven-junit4)
 - [java-maven-selenium](./java-maven-selenium)
 - [java-serenity-jbehave](./java-serenity-jbehave)
@@ -49,7 +53,6 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [javascript-cypress-newsletter-signup](./javascript-cypress-newsletter-signup)
 - [javascript-cypress-sms-testing](./javascript-cypress-sms-testing)
 - [javascript-device-render](./javascript-device-render)
-- [JavaScript-InboxPlacement-Test](./JavaScript-InboxPlacement-Test)
 - [javascript-email-screenshot](./javascript-email-screenshot)
 - [javascript-jest-puppeteer](./javascript-jest-puppeteer)
 - [javascript-react-email](./javascript-react-email)
@@ -57,6 +60,9 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [javascript-webdriver-io](./javascript-webdriver-io)
 - [k6-email-load-test](./k6-email-load-test)
 - [kotlin-email-test-example](./kotlin-email-test-example)
+- [mulesoft-anypoint-java-selenium-test](./mulesoft-anypoint-java-selenium-test)
+- [mulesoft-anypoint-munit-otp-test](./mulesoft-anypoint-munit-otp-test)
+- [n8n-email-otp-test](./n8n-email-otp-test)
 - [next-auth-example](./next-auth-example)
 - [nim-unittests](./nim-unittests)
 - [nodejs-nodemailer-smtp-example](./nodejs-nodemailer-smtp-example)

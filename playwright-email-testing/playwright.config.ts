@@ -20,7 +20,8 @@ const config: PlaywrightTestConfig = {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        video: 'on'
+        video: 'on',
+        headless: false
       },
     }
    ]

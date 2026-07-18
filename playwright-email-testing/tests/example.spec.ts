@@ -1,6 +1,6 @@
 //<gen>playwright_email_testing_full
 import { test, expect, Page } from '@playwright/test';
-import MailSlurp from "mailslurp-client";
+import MailSlurp, {EmailControllerApi} from "mailslurp-client";
 
 test.describe('test email login with playwright', () => {
   test('can login and verify email address with mailslurp', async ({ page }) => {
@@ -23,6 +23,7 @@ test.describe('test email login with playwright', () => {
 
     // wait for verification code
     const email = await mailslurp.waitForLatestEmail(id)
+
 
     // extract the confirmation code (so we can confirm the user)
     const code = /([0-9]{6})$/.exec(email.body)[1];
