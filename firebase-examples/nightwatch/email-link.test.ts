@@ -1,5 +1,5 @@
 import { NightwatchAPI, NightwatchTests } from "nightwatch";
-import MailSlurp from "mailslurp-client";
+import { MailSlurp } from "mailslurp-client";
 const appUrl = "http://localhost:5173";
 const apiKey = process.env.MAILSLURP_API_KEY;
 if (!apiKey) {

@@ -1,5 +1,5 @@
 import {expect, test} from '@playwright/test';
-import MailSlurp, {GetPhoneNumbersPhoneCountryEnum} from "mailslurp-client";
+import {MailSlurp, GetPhoneNumbersPhoneCountryEnum} from "mailslurp-client";
 const formSelector = "[class^='Form__formSection']"
 test.describe('test sms login with playwright', () => {
   test('can login and verify sms with mailslurp', async ({ page, browser }) => {

@@ -17,6 +17,6 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "mailslurp-client": "^17.4.0"
+    "mailslurp-client": "17.6.0"
   }
 }

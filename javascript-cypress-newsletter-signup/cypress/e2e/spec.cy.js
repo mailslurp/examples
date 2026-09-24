@@ -9,7 +9,7 @@ describe('can sign up for newsletter', () => {
     // Create a MailSlurp client with the API key
     cy.then(() => {
       cy.log('Create MailSlurp client with API KEY')
-      const MailSlurp = require('mailslurp-client').default
+      const MailSlurp = require('mailslurp-client').MailSlurp
       ms = new MailSlurp({ apiKey: Cypress.env('MAILSLURP_API_KEY') })
     })
     //</gen>

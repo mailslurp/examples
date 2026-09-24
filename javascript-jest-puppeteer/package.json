@@ -15,6 +15,6 @@
     "puppeteer": "^10.4.0"
   },
   "dependencies": {
-    "mailslurp-client": "^15.0.1"
+    "mailslurp-client": "17.6.0"
   }
 }

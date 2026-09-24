@@ -6,7 +6,7 @@
     "fmt": "prettier --write ."
   },
   "dependencies": {
-    "mailslurp-client": "^15.0.1",
+    "mailslurp-client": "17.6.0",
     "prettier": "^2.4.1",
     "testcafe": "^1.16.1"
   },

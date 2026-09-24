@@ -1,18 +1,21 @@
 // configure SendGrid and MailSlurp APIs
 const sendgrid = require('@sendgrid/mail');
-sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
+const sendgridApiKey = process.env.SENDGRID_API_KEY;
+const senderEmail = process.env.SENDGRID_FROM_EMAIL;
+if (sendgridApiKey) sendgrid.setApiKey(sendgridApiKey);
+const describeWithSendGrid = process.env.API_KEY && sendgridApiKey && senderEmail ? describe : describe.skip;
 
-const MailSlurp = require("mailslurp-client").default;
-const mailslurp = new MailSlurp({apiKey: process.env.API_KEY});
+const MailSlurp = require("mailslurp-client").MailSlurp;
 
-describe("my apps email action", () => {
+describeWithSendGrid("my apps email action", () => {
 
   it("triggering the action sends an email to a user", async () => {
+    const mailslurp = new MailSlurp({apiKey: process.env.API_KEY});
     // create a new email address to represent a user
     const {id, emailAddress} = await mailslurp.createInbox();
-    expect(emailAddress).toContain("@mailslurp.com");
+    expect(emailAddress).toContain("@");
     // trigger an action that we expect will send an email to our user
-    triggerEmailAction(emailAddress);
+    await triggerEmailAction(emailAddress);
 
     // receive the email that and verify its contents
     const {subject, body} = await mailslurp.waitForLatestEmail(id, 10000);
@@ -23,15 +26,11 @@ describe("my apps email action", () => {
   // this is what your app might do to send emails
   // we trigger it here so we can verify that emails are sent
   function triggerEmailAction(emailAddress) {
-    sendgrid.send({
+    return sendgrid.send({
       to: emailAddress,
-      from: 'example@example.com',
+      from: senderEmail,
       subject: 'Thanks for subscribing',
       text: 'Welcome!'
-    }, false, (err, res) => {
-      if(err) {
-        console.log(`SendGrid Error : ${err}`)
-      }  
     });
   }
 

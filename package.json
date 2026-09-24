@@ -7,13 +7,14 @@
   "type": "module",
   "scripts": {
     "shortcodes": "node --import tsx .build/shortcodes.ts",
-    "readme": "node --import tsx .build/readme.ts"
+    "readme": "node --import tsx .build/readme.ts",
+    "test:client": "node .build/test-mailslurp-client.mjs"
   },
   "devDependencies": {
     "@swc-node/register": "^1.6.8",
     "@types/debug": "^4.1.7",
     "@types/mustache": "^4.2.1",
-    "mailslurp-client": "^15.18.2",
+    "mailslurp-client": "17.6.0",
     "mustache": "^4.2.0",
     "tsx": "^4.19.2"
   }

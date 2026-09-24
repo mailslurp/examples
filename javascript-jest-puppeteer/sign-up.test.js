@@ -1,5 +1,6 @@
 const assert = require('assert');
-const MailSlurp = require('mailslurp-client').default;
+jest.setTimeout(60_000);
+const MailSlurp = require('mailslurp-client').MailSlurp;
 const mailslurp = new MailSlurp({ apiKey: process.env.API_KEY });
 
 describe('sign-up process', () => {
@@ -20,7 +21,7 @@ describe('sign-up process', () => {
 
   it('can sign-up with a new email address', async () => {
     // create a new email address for the test run
-    inbox = await mailslurp.createInbox();
+    inbox = await mailslurp.createInboxWithOptions({expiresIn: 300_000});
 
     // fill out the new user form with generating email address
     await expect(page).toFillForm('[data-test="sign-up-body-section"]', {
@@ -51,6 +52,7 @@ describe('sign-up process', () => {
   });
 
   it('can log in with confirmed account', async () => {
+    await page.waitForSelector('[data-test="sign-in-sign-in-button"]');
     await expect(page).toMatch('Sign in to your account')
     // fill out username (email) and password
     await expect(page).toFillForm('#root', {

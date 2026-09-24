@@ -12,6 +12,6 @@
   "license": "ISC",
   "devDependencies": {
     "cypress": "^14.5.4",
-    "mailslurp-client": "^16.0.0"
+    "mailslurp-client": "17.6.0"
   }
 }

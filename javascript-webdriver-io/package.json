@@ -9,7 +9,7 @@
     "@wdio/selenium-standalone-service": "^7.14.1",
     "@wdio/spec-reporter": "^7.14.1",
     "geckodriver": "^2.0.4",
-    "mailslurp-client": "^15.0.1",
+    "mailslurp-client": "17.6.0",
     "wdio-geckodriver-service": "^2.0.3"
   },
   "devDependencies": {

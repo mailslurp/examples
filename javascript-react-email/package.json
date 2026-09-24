@@ -14,7 +14,7 @@
     "@react-email/html": "^0.0.4",
     "@react-email/render": "^0.0.7",
     "@react-email/text": "^0.0.5",
-    "mailslurp-client": "^15.17.2",
+    "mailslurp-client": "17.6.0",
     "nodemailer": "^6.9.5",
     "react-email": "^1.9.5"
   },

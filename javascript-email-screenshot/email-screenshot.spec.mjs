@@ -7,7 +7,7 @@ import Jimp from "jimp";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 test('can take screenshot of an email', async () => {
     //<gen>email_screenshot_setup
-    const MailSlurp = await import('mailslurp-client').then(m => m.default)
+    const { MailSlurp } = await import('mailslurp-client')
     const mailslurp = new MailSlurp({apiKey: process.env.API_KEY})
     //</gen>
     //<gen>email_screenshot_create_email

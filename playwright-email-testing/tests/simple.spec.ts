@@ -20,14 +20,15 @@ import {MailSlurp} from 'mailslurp-client';
 const ms = new MailSlurp({apiKey: process.env.API_KEY});
 test.beforeEach(async ({}, testInfo) => {
     // create a fresh inbox for each test
-    const {id, emailAddress} = await ms.createInbox();
+    const {id, emailAddress} = await ms.createInboxWithOptions({expiresIn: 300_000});
     testInfo.inbox = {id, emailAddress};
 });
 //</gen>
 
 test.describe('email magic links test', () => {
+  test('can sign up, confirm the magic link, and load the dashboard', async ({page}, {inbox}) => {
     //<gen>playwright_simple_signup_magic_link
-    test('sign up with email', async ({page}, {inbox}) => {
+    await test.step('sign up with email', async () => {
         // use email address to sign up
         await page.goto(Pages.magicLinkSignUp);
         await page.fill('#emailAddress', inbox.emailAddress);
@@ -35,7 +36,7 @@ test.describe('email magic links test', () => {
     });
     //</gen>
     //<gen>playwright_simple_signup_magic_receive_email
-    test('receive confirmation link and click', async ({page}, {inbox}) => {
+    await test.step('receive confirmation link and click', async () => {
         // wait for confirmation email
         const {id, subject} = await ms.waitForLatestEmail(inbox.id, TIMEOUT)
         expect(subject).toMatch(/confirm your email/);
@@ -44,15 +45,16 @@ test.describe('email magic links test', () => {
         await page.goto(links[0]);
     });
     //</gen>
-    test('can load dashboard', async ({page}) => {
+    await test.step('can load dashboard', async () => {
         await page.waitForSelector('[data-el="dashboard-success"]')
     })
+  })
 })
 
 test.describe('email magic links test short', () => {
     //<gen>playwright_simple_signup_magic_link_short
     test('can receive confirmation link', async ({page}) => {
-        const inbox = await ms.createInbox();
+        const inbox = await ms.createInboxWithOptions({expiresIn: 300_000});
         // use new email address to sign up
         await page.goto(Pages.magicLinkSignUp);
         await page.fill('#emailAddress', inbox.emailAddress);

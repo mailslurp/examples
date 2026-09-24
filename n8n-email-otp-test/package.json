@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "n8n": "^1.21.0",
-    "mailslurp-client": "^16.0.0",
+    "mailslurp-client": "17.6.0",
     "puppeteer": "^21.11.0"
   },
   "devDependencies": {}

@@ -5,7 +5,7 @@ import {MailSlurp} from "mailslurp-client";
 const API_KEY= process.env.API_KEY;
 //</gen>
 
-function generateRandomCode(length) {
+function generateRandomCode(length = 6) {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
     for (let i = 0; i < length; i++) {
@@ -36,6 +36,7 @@ test('can send an email using react email and extract the expected code', async 
     }, {
         host: access.secureSmtpServerHost,
         port: access.secureSmtpServerPort,
+        secure: true,
         user: access.secureSmtpUsername,
         pass: access.secureSmtpPassword
     })

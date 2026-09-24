@@ -6,7 +6,7 @@ if (!API_KEY) {
     throw new Error("Must provide API_KEY for MailSlurp prestart.js")
 }
 // create mailslurp instance
-const Mailslurp = require('mailslurp-client').default;
+const Mailslurp = require('mailslurp-client').MailSlurp;
 const fs = require("fs");
 const mailslurp = new Mailslurp({ apiKey: API_KEY })
 

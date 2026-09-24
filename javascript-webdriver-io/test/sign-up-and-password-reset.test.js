@@ -1,6 +1,6 @@
 const log = require('debug')('ms-wdio')
 const assert = require('assert');
-const MailSlurp = require('mailslurp-client').default;
+const MailSlurp = require('mailslurp-client').MailSlurp;
 const apiKey = process.env.API_KEY;
 const mailslurp = new MailSlurp({ apiKey });
 

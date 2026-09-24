@@ -11,6 +11,6 @@
     "@playwright/test": "^1.24.2"
   },
   "dependencies": {
-    "mailslurp-client": "^15.13.1"
+    "mailslurp-client": "17.6.0"
   }
 }

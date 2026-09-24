@@ -7,7 +7,7 @@ import { MailSlurp } from "mailslurp-client";
 const apiKey = process.env.MAILSLURP_API_KEY || process.env.API_KEY;
 
 // Device render methods live on mailslurp.devicePreviewsController.
-const mailslurp = new MailSlurp({ apiKey });
+const mailslurp = apiKey ? new MailSlurp({ apiKey }) : undefined;
 //</gen>
 
 function downloadedByteLength(downloaded) {

@@ -6,7 +6,7 @@
     "@codeceptjs/mailslurp-helper": "^1.4.3",
     "@codeceptjs/ui": "^1.2.4",
     "codeceptjs": "^3.7.3",
-    "mailslurp-client": "^15.0.1",
+    "mailslurp-client": "17.6.0",
     "playwright": "^1.52.0"
   },
   "devDependencies": {
