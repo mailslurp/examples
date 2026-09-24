@@ -19,3 +19,7 @@ Brief instructions for coding agents in this repo.
 ## Notes
 - MailSlurp dependency is pinned to `com.mailslurp:mailslurp-client-java:17.1.0`.
 - JMeter test plan: `java-jmeter-sms-deliverability-loadtest/src/test/jmeter/basic-smoke.jmx`.
+## CircleCI Browser Prohibition
+
+- NEVER access, open, inspect, navigate to, or control CircleCI through any browser surface, including the in-app browser, Chrome, Edge, Playwright, or computer-use browser automation.
+- Use a purpose-built CircleCI connector, CLI, or API only. If those are unavailable or insufficient, stop and report the blocker; never fall back to a browser.

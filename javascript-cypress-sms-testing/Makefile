@@ -1,11 +1,13 @@
--include ../.env
+.PHONY: test dev typecheck
 
-node_modules:
-	npm install
+node_modules: package.json package-lock.json
+	npm ci
 
 dev: node_modules
-	CYPRESS_MAILSLURP_API_KEY=$(API_KEY) DEBUG='ms*' npm run dev
+	npm run dev
 
 test: node_modules
-	CYPRESS_MAILSLURP_API_KEY=$(API_KEY) DEBUG='ms*' npm run test
+	npm test
 
+typecheck: node_modules
+	npm run typecheck

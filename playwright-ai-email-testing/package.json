@@ -1,0 +1,1 @@
+{"name":"playwright-ai-email-testing","version":"1.0.0","private":true,"type":"module","scripts":{"test":"playwright test","typecheck":"tsc --noEmit"},"devDependencies":{"@playwright/test":"1.62.1","@types/node":"^22.0.0","typescript":"^5.9.0"}}

@@ -1,17 +1,20 @@
 {
-  "name": "javascript-cypress-mailslurp-plugin",
+  "name": "javascript-cypress-sms-testing",
   "version": "1.0.0",
-  "description": "Example cypress-mailslurp plugin usage",
+  "description": "Example SMS verification with the cypress-mailslurp plugin",
   "scripts": {
-    "test": "cypress run",
-    "dev": "cypress open"
+    "test": "cypress run --browser chrome",
+    "dev": "cypress open",
+    "typecheck": "tsc --noEmit"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "cypress": "^14.5.4",
-    "cypress-mailslurp": "^1.11.0",
-    "typescript": "^5.9.2"
+    "cypress": "^16.1.0",
+    "cypress-mailslurp": "^2.0.0",
+    "typescript": "^5.9.2",
+    "dotenv": "^18.0.3",
+    "mailslurp-client": "^17.6.0"
   },
   "devDependencies": {
     "debug": "^4.3.4"

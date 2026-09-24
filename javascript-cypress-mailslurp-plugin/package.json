@@ -3,14 +3,16 @@
   "version": "1.0.0",
   "description": "Example cypress-mailslurp plugin usage",
   "scripts": {
-    "test": "cypress run --headed",
-    "dev": "cypress open"
+    "test": "cypress run --browser chrome",
+    "dev": "cypress open",
+    "typecheck": "tsc --noEmit"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "cypress": "^14.5.4",
-    "cypress-mailslurp": "^1.11.0",
-    "typescript": "^5.9.2"
+    "cypress": "^16.1.0",
+    "cypress-mailslurp": "^2.0.0",
+    "typescript": "^5.9.2",
+    "dotenv": "^18.0.3"
   }
 }

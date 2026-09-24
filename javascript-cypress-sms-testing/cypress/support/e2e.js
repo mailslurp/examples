@@ -15,7 +15,7 @@
 
 // Import commands.js using ES2015 syntax:
 //<gen>add_cypress_commands
-// add to cypress/support/custom.js
+// add to cypress/support/e2e.js
 import './commands'
 import "cypress-mailslurp";
 //</gen>

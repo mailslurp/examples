@@ -523,6 +523,7 @@ async function getFileTree(path: string): Promise<string> {
             paths: await files("/playwright-sms-testing/tests/*.spec.ts",
                 "/javascript-cypress-mailslurp-plugin/cypress/e2e/*.ts",
                 "/playwright-email-testing/tests/*.ts",
+                "/playwright-ai-email-testing/tests/*.ts",
             ),
             commentStart: "//<gen>",
             commentEnd: "//</gen>",

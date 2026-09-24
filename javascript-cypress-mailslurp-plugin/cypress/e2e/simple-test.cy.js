@@ -1,7 +1,5 @@
 /// <reference types="cypress-mailslurp" />
 
-import { MatchOptionFieldEnum, MatchOptionShouldEnum } from "mailslurp-client";
-
 describe("single pass", function () {
     it("can sign up and receive", function () {
         const yourApplication = "https://playground.mailslurp.com"
@@ -20,6 +18,13 @@ describe("single pass", function () {
                 cy.get(submitButton).click();
                 // store inbox for later
                 cy.wrap(inbox.id).as('inboxId')
+            })
+        cy.mailslurp()
+            .then({ timeout: 60_000 }, function (mailslurp) {
+                return mailslurp.waitForLatestEmail(this.inboxId, 60_000, true)
+            })
+            .then(email => {
+                expect(email.body).to.match(/verification code is [0-9]{6}/)
             })
         //</gen>
     });

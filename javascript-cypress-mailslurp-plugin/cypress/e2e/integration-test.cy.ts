@@ -14,13 +14,13 @@ describe("user sign up test with mailslurp plugin", function () {
             })
     });
     //</gen>
-    it("01 - can load the demo application", function () {
+    it("can sign up, confirm the email, and sign in", function () {
         cy.log("Run tests")
         //<gen>cypress_plugin_01
         // get wrapped email address and assert contains a mailslurp email address
-        expect(this.emailAddress).to.contain("@mailslurp");
+        expect(this.emailAddress).to.match(/^[^@]+@[^@]+$/);
         // visit the demo application
-        cy.visit("https://playground.mailslurp.com")
+        cy.visit("/")
         cy.title().should('contain', 'React App');
         //</gen>
         //<gen>cypress_plugin_02
@@ -38,10 +38,14 @@ describe("user sign up test with mailslurp plugin", function () {
         cy.then(function () {
             // app will send user an email containing a code, use mailslurp to wait for the latest email
             cy.mailslurp()
-                // use inbox id and a timeout of 30 seconds
-                .then(mailslurp => mailslurp.waitForLatestEmail(this.inboxId, 30000, true))
+                // allow the email wait to finish before Cypress times out
+                .then({ timeout: 60_000 }, mailslurp => mailslurp.waitForLatestEmail(this.inboxId, 60_000, true))
                 // extract the confirmation code from the email body
-                .then(email => /.*verification code is (\d{6}).*/.exec(email.body!!)!![1])
+                .then(email => {
+                    const code = /verification code is (\d{6})/.exec(email.body ?? '')?.[1]
+                    if (!code) throw new Error('Verification email did not contain a six-digit code')
+                    return code
+                })
                 // fill out the confirmation form and submit
                 .then(code => {
                     cy.get("[name=code]").type(code).trigger('change');

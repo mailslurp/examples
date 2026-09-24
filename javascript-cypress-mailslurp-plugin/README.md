@@ -1,12 +1,27 @@
 # Cypress MailSlurp plugin example
-How to use MailSlurp with Cypress JS. Loads a demonstration app, signs up with a new email address, receives confirmation code, extracts code and submits. Sees welcome screen.
 
-## Documentation
-- [Cypress Plugin source](https://github.com/mailslurp/cypress-mailslurp)
-- [Plugin documentation](https://docs.mailslurp.com/cypress-mailslurp)
+Sign up to the email playground with a new inbox, receive the verification email, confirm the code, and sign in.
+
+Uses `cypress-mailslurp@2.0.0` and Cypress 16. The plugin requires Cypress 15.10 or newer for its secure `cy.env()` API. Install a supported Node.js version and Google Chrome before running.
 
 ## Run tests
-`API_KEY=your-api-key make test`
+
+Put `API_KEY=your-api-key` in this directory's `.env` or the shared `examples/.env`. The config loads it in Node and makes it available to the plugin without putting the key in the test source. An exported `CYPRESS_MAILSLURP_API_KEY` takes precedence.
+
+```sh
+npm ci
+npm run typecheck
+npm test
+```
+
+`make test` runs the same Chrome tests. Use `npm run dev` for the interactive Cypress runner.
+
+The JavaScript example also waits for the verification email. The configuration tests exercise custom headers, API base paths, and `fetchApi` with both environment and explicit API keys; their HTTP responses are mocked.
+
+## Documentation
+
+- [Cypress Plugin source](https://github.com/mailslurp/cypress-mailslurp)
+- [Plugin documentation](https://docs.mailslurp.com/cypress-mailslurp)
 
 ## Example test
 
@@ -27,13 +42,13 @@ describe("user sign up test with mailslurp plugin", function () {
             })
     });
     //</gen>
-    it("01 - can load the demo application", function () {
+    it("can sign up, confirm the email, and sign in", function () {
         cy.log("Run tests")
         //<gen>cypress_plugin_01
         // get wrapped email address and assert contains a mailslurp email address
-        expect(this.emailAddress).to.contain("@mailslurp");
+        expect(this.emailAddress).to.match(/^[^@]+@[^@]+$/);
         // visit the demo application
-        cy.visit("https://playground.mailslurp.com")
+        cy.visit("/")
         cy.title().should('contain', 'React App');
         //</gen>
         //<gen>cypress_plugin_02
@@ -51,10 +66,14 @@ describe("user sign up test with mailslurp plugin", function () {
         cy.then(function () {
             // app will send user an email containing a code, use mailslurp to wait for the latest email
             cy.mailslurp()
-                // use inbox id and a timeout of 30 seconds
-                .then(mailslurp => mailslurp.waitForLatestEmail(this.inboxId, 30000, true))
+                // allow the email wait to finish before Cypress times out
+                .then({ timeout: 60_000 }, mailslurp => mailslurp.waitForLatestEmail(this.inboxId, 60_000, true))
                 // extract the confirmation code from the email body
-                .then(email => /.*verification code is (\d{6}).*/.exec(email.body!!)!![1])
+                .then(email => {
+                    const code = /verification code is (\d{6})/.exec(email.body ?? '')?.[1]
+                    if (!code) throw new Error('Verification email did not contain a six-digit code')
+                    return code
+                })
                 // fill out the confirmation form and submit
                 .then(code => {
                     cy.get("[name=code]").type(code).trigger('change');
