@@ -11,5 +11,10 @@
   },
   "devDependencies": {
     "chai": "^5.2.0"
+  },
+  "overrides": {
+    "@codeceptjs/mailslurp-helper": {
+      "mailslurp-client": "$mailslurp-client"
+    }
   }
 }

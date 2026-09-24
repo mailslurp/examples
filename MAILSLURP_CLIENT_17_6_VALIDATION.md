@@ -10,6 +10,10 @@ No package was published.
 - Pinned all 23 npm manifests that directly depend on `mailslurp-client` to
   `17.6.0`; refreshed the 21 existing npm lockfiles and the Bun lockfile.
   The n8n example did not have a lockfile.
+- Overrode the Codecept helper's nested SDK dependency to use the direct
+  `17.6.0` dependency; its published metadata still declares `^6.7.4`, but the
+  lockfile and installed helper resolve to `17.6.0`. The smoke check also
+  verifies nested SDK versions in npm lockfiles.
 - Switched examples to the portable named `MailSlurp` export. Native Node ESM
   exposes the CommonJS package's default export as an object, so constructing
   the screenshot example's dynamically imported default fails.

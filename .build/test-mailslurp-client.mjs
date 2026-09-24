@@ -19,6 +19,16 @@ for (const directory of directories) {
   if (!version) continue;
   assert.ok([expectedVersion, `^${expectedVersion}`, `~${expectedVersion}`].includes(version), manifestPath);
 
+  const lockPath = join(directory, 'package-lock.json');
+  if (existsSync(lockPath)) {
+    const lock = JSON.parse(readFileSync(lockPath, 'utf8'));
+    for (const [packagePath, entry] of Object.entries(lock.packages ?? {})) {
+      if (packagePath.endsWith('node_modules/mailslurp-client')) {
+        assert.equal(entry.version, expectedVersion, `${lockPath}: ${packagePath}`);
+      }
+    }
+  }
+
   const require = createRequire(manifestPath);
   const installed = require('mailslurp-client/package.json');
   assert.equal(installed.version, expectedVersion, manifestPath);
