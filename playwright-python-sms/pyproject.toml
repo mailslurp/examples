@@ -1,0 +1,10 @@
+[project]
+name = "playwright-python-sms"
+version = "0.1.0"
+description = "Test SMS signup and verification with Playwright and the MailSlurp Python SDK"
+requires-python = ">=3.10"
+dependencies = [
+    "mailslurp-client==17.5.0",
+    "pytest>=8,<10",
+    "pytest-playwright==0.10.0",
+]

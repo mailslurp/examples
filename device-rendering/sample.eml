@@ -1,0 +1,18 @@
+From: Example Sender <sender@example.test>
+To: Example Recipient <recipient@example.test>
+Subject: MailSlurp device rendering example
+Date: Mon, 19 Oct 2026 12:00:00 +0000
+Message-ID: <device-rendering-example@example.test>
+MIME-Version: 1.0
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8"><title>Device rendering example</title></head>
+  <body style="font-family: Arial, sans-serif; padding: 24px; color: #222222;">
+    <h1>Hello from MailSlurp</h1>
+    <p>This email was uploaded as an EML file and rendered in an email client.</p>
+    <a href="https://www.mailslurp.com" style="color: #4255ff;">Visit MailSlurp</a>
+  </body>
+</html>

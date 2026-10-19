@@ -27,6 +27,7 @@ jobs:
         directory:
           - 'javascript-cypress-js'
           - 'javascript-cypress-mailslurp-plugin'
+          - 'python-device-render'
     steps:
     - uses: actions/checkout@v2
     - name: Set up environment
