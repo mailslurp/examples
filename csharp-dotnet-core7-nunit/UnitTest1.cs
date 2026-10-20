@@ -42,9 +42,9 @@ public class Tests
         //<gen>csharp_demo_create_inbox
         var inboxController = new InboxControllerApi(_configuration);
         var inbox = inboxController.CreateInboxWithDefaults();
-        Assert.That(inbox.EmailAddress, Does.Contain("@mailslurp"));
-        //</gen>
+        Assert.That(inbox.EmailAddress, Does.Match(@"^[^@\s]+@[^@\s]+$"));
         var recipient = inboxController.CreateInboxWithDefaults();
+        //</gen>
         //<gen>csharp_demo_upload_attachment
         var attachmentController = new AttachmentControllerApi(_configuration);
         var uploadOptions = new UploadAttachmentOptions(

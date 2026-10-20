@@ -1,0 +1,7 @@
+{
+  "name": "javascript-documentation-workflows",
+  "private": true,
+  "type": "module",
+  "scripts": { "email": "node run-email.js" },
+  "dependencies": { "mailslurp-client": "17.6.0" }
+}

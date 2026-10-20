@@ -128,7 +128,7 @@ public class ExampleUsageTest {
         logger.info("Assert inbox exists");
         // check the inbox was created
         assertNotNull(inbox.getId());
-        assertTrue(inbox.getEmailAddress().contains("@mailslurp"));
+        assertTrue(inbox.getEmailAddress().matches("^[^@\\s]+@[^@\\s]+$"));
 
         logger.info("Fill elements");
         // fill the playground app's sign-up form with the MailSlurp

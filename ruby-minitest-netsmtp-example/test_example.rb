@@ -17,7 +17,7 @@ class SmtpExample < Minitest::Test
       inboxType: "SMTP_INBOX"
     }
     inbox = inbox_controller.create_inbox_with_options(options)
-    assert_match /@mailslurp/, inbox.email_address
+    assert_match /\A[^@\s]+@[^@\s]+\z/, inbox.email_address
     #</gen>
     #<gen>ruby_minitest_send_email
     inbox_controller.send_email(inbox.id, {

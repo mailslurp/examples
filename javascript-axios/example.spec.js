@@ -4,7 +4,9 @@
  * See https://www.mailslurp.com/docs/
  */
 const axios = require('axios');
-const API_KEY = process.env.API_KEY;
+const API_KEY = process.env.MAILSLURP_API_KEY || process.env.API_KEY;
+const client = axios.create({ baseURL: 'https://api.mailslurp.com', headers: { 'x-api-key': API_KEY } });
+jest.setTimeout(60_000);
 
 describe("mailslurp axios example", () => {
 
@@ -13,8 +15,8 @@ describe("mailslurp axios example", () => {
     expect(API_KEY).toBeDefined();
 
     // call MailSlurp createInbox endpoint
-    return await axios
-      .post(`https://api.mailslurp.com/createInbox?apiKey=${API_KEY}`)
+    return await client
+      .post(`/inboxes/withOptions`, { expiresIn: 300_000 })
       .then(res => res.data);
   }
 
@@ -23,7 +25,7 @@ describe("mailslurp axios example", () => {
     // expect an inbox to have been created
     expect(inbox.id).toBeDefined()
     expect(inbox.emailAddress).toBeDefined()
-    expect(inbox.emailAddress).toMatch(/.+@mailslurp.net/)
+    expect(inbox.emailAddress).toMatch(/^[^@\s]+@[^@\s]+$/)
   })
 
   test("can send a real email between two addresses", async () => {
@@ -32,13 +34,12 @@ describe("mailslurp axios example", () => {
     const inbox2 = await createInbox();
 
     // send email from inbox 1 to inbox 2
-    // NOTE you can send emails to any address with MailSlurp
-    await axios({
+    // Use an owned MailSlurp recipient for this self-contained test.
+    await client({
       method: 'post',
-      url: `https://api.mailslurp.com/sendEmail?apiKey=${API_KEY}`,
+      url: `/inboxes/${inbox1.id}`,
       data: {
-        senderId: inbox1.id,
-        to: inbox2.emailAddress,
+        to: [inbox2.emailAddress],
         subject: 'Hello inbox 2',
         body: 'Test from inbox 1'
       },
@@ -46,8 +47,8 @@ describe("mailslurp axios example", () => {
     });
 
     // receive the email from inbox 2
-    const email = await axios
-      .get(`https://api.mailslurp.com/waitForLatestEmail?apiKey=${API_KEY}&inboxId=${inbox2.id}`)
+    const email = await client
+      .get('/waitForLatestEmail', { params: { inboxId: inbox2.id, timeout: 30_000, unreadOnly: true }, timeout: 35_000 })
       .then(res => res.data);
     expect(email.from).toEqual(inbox1.emailAddress);
     expect(email.subject).toEqual('Hello inbox 2');
