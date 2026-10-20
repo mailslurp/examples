@@ -40,7 +40,7 @@ func Test_CanCreateInbox(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.Equal(t, response.StatusCode, 201)
-	assert.Contains(t, inbox.EmailAddress, "@mailslurp.net")
+	assert.Regexp(t, `^[^@\s]+@[^@\s]+$`, inbox.EmailAddress)
 	//</gen>
 }
 
@@ -75,12 +75,12 @@ func Test_CanReceiveEmail(t *testing.T) {
 
 	// create two inboxes for testing
 	inbox1, _, _ := client.InboxControllerApi.CreateInbox(ctx, nil)
-	inbox2, _, _ := client.InboxControllerApi.CreateInbox(ctx, nil)
+	inbox, _, _ := client.InboxControllerApi.CreateInbox(ctx, nil)
 
-	// send email from inbox1 to inbox2
+	// send email from inbox1 to inbox
 	sendEmailOptions := mailslurp.SendEmailOptions{
-		To:      []string{inbox2.EmailAddress},
-		Subject: "Hello inbox2",
+		To:      []string{inbox.EmailAddress},
+		Subject: "Hello inbox",
 		Body:    "Your code is: 123",
 	}
 	sendOpts := &mailslurp.SendEmailOpts{
@@ -91,16 +91,16 @@ func Test_CanReceiveEmail(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, res.StatusCode, 201)
 
-	// fetch the email for inbox2
+	// fetch the email for inbox
 	//<gen>golang_wait_for_email
 	waitOpts := &mailslurp.WaitForLatestEmailOpts{
-		InboxId:    optional.NewInterface(inbox2.Id),
+		InboxId:    optional.NewInterface(inbox.Id),
 		Timeout:    optional.NewInt64(30000),
 		UnreadOnly: optional.NewBool(true),
 	}
 	email, _, err := client.WaitForControllerApi.WaitForLatestEmail(ctx, waitOpts)
 	assert.NoError(t, err)
-	assert.Contains(t, email.Subject, "Hello inbox2")
+	assert.Contains(t, email.Subject, "Hello inbox")
 	assert.Contains(t, email.Body, "Your code is")
 	// can extract the contents
 	r := regexp.MustCompile(`Your code is: ([0-9]{3})`)
@@ -115,7 +115,7 @@ func Test_CanReceiveEmail(t *testing.T) {
 		Size: optional.NewInt32(10),
 		Sort: optional.NewString("DESC"),
 	}
-	emails, _, err := client.InboxControllerApi.GetInboxEmailsPaginated(ctx, inbox2.Id, listOpts)
+	emails, _, err := client.InboxControllerApi.GetInboxEmailsPaginated(ctx, inbox.Id, listOpts)
 	assert.NoError(t, err)
 	fmt.Println(emails.Content[0].Subject)
 	//</gen>

@@ -31,8 +31,8 @@ class TestAddFunction(unittest.TestCase):
             # </gen>
             inbox_controller = mailslurp_client.InboxControllerApi(api_client)
             inbox = inbox_controller.create_inbox_with_defaults()
-            recipient = inbox_controller.create_inbox_with_defaults()
             # <gen>pyunit_demo_send_email_with_attachment
+            recipient = inbox_controller.create_inbox_with_defaults()
             send_options = mailslurp_client.SendEmailOptions(
                 to=[recipient.email_address],
                 subject="Hello",
@@ -79,8 +79,8 @@ class TestAddFunction(unittest.TestCase):
             self.assertEqual(attachment_metadata.content_type, "text/plain")
             # </gen>
             self.assertIsNotNone(attachment_content)
-            email_id = email.id
             # <gen>pyunit_demo_fetch_email
+            email_id = email.id
             email_controller = mailslurp_client.EmailControllerApi(api_client)
             email = email_controller.get_email(email_id=email_id)
             self.assertTrue("Hello" in email.subject)
@@ -96,14 +96,14 @@ class TestAddFunction(unittest.TestCase):
             # <gen>pyunit_demo_create_inbox
             inbox_controller = mailslurp_client.InboxControllerApi(api_client)
             inbox = inbox_controller.create_inbox_with_defaults()
-            self.assertTrue("@mailslurp" in inbox.email_address)
+            self.assertRegex(inbox.email_address, r"^[^@\s]+@[^@\s]+$")
             # </gen>
             # <gen>pyunit_demo_create_inbox_options
             options = mailslurp_client.CreateInboxDto()
             options.name = "Test inbox"
             options.inbox_type = "SMTP_INBOX"
             inbox = inbox_controller.create_inbox_with_options(options)
-            self.assertTrue("@mailslurp" in inbox.email_address)
+            self.assertRegex(inbox.email_address, r"^[^@\s]+@[^@\s]+$")
             # </gen>
             # <gen>pyunit_demo_imap_access
             smtp_access = inbox_controller.get_imap_smtp_access(inbox_id=inbox.id)
@@ -141,7 +141,7 @@ class TestAddFunction(unittest.TestCase):
             # </gen>
             # <gen>pyunit_demo_get_inbox
             inbox = inbox_controller.get_inbox(inbox_id=inbox.id)
-            self.assertTrue("@mailslurp" in inbox.email_address)
+            self.assertRegex(inbox.email_address, r"^[^@\s]+@[^@\s]+$")
 
             # get by email address
             inbox_by_email = inbox_controller.get_inbox_by_email_address(

@@ -24,6 +24,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename)
 const execAsync = util.promisify(exec);
 const log = debug("scripts/shortcodes");
+const outputDir = process.env.SHORTCODES_OUT || join(__dirname, "../shortcodes");
 
 function minIndent(inp: string) {
     const match = inp.match(/^[ \t]*(?=\S)/gm);
@@ -105,7 +106,7 @@ async function getFileTree(path: string): Promise<string> {
 }
 
 (async () => {
-    await fs.promises.mkdir(join(__dirname, "../shortcodes"), {
+    await fs.promises.mkdir(outputDir, {
         recursive: true,
     });
     const fileTrees: {
@@ -424,6 +425,7 @@ async function getFileTree(path: string): Promise<string> {
         {
             paths: await files(
                 "/javascript-cypress-js/**/*.js",
+                "/javascript-documentation-workflows/*.js",
                 "/javascript-cypress-mailslurp-plugin/cypress/support/e2e.js"
             ),
             commentStart: "//<gen>",
@@ -564,14 +566,14 @@ async function getFileTree(path: string): Promise<string> {
         const body = await getFileContent(fullFile.path)
         blockMap[fullFile.highlight + "_" + fullFile.id] = {body, highlight: fullFile.highlight}
     }
-    for (const fileTree of fileTrees) {
+    for (const fileTree of process.env.SHORTCODES_SKIP_TREES ? [] : fileTrees) {
         log('Run tree ' + fileTree.id)
         const body = await getFileTree(fileTree.path)
         blockMap["tree_" + fileTree.id] = {body, highlight: 'text'}
     }
 
     for (const [key, value] of Object.entries(blockMap)) {
-        const f = join(__dirname, "..", "shortcodes", `gen_${key}.html`);
+        const f = join(outputDir, `gen_${key}.html`);
         log(`Replace key in template ${f}`);
         await fs.promises.writeFile(
             f,

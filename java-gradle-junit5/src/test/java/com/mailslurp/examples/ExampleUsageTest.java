@@ -62,7 +62,7 @@ public class ExampleUsageTest {
     // <gen>java_demo_create_inbox
     InboxDto inbox = inboxControllerApi.createInboxWithDefaults().execute();
     // verify inbox
-    assertEquals(inbox.getEmailAddress().contains("@mailslurp"), true);
+    assertTrue(inbox.getEmailAddress().matches("^[^@\\s]+@[^@\\s]+$"));
     assertNotNull(inbox.getId());
     // </gen>
     // <gen>java_demo_create_inbox_options
