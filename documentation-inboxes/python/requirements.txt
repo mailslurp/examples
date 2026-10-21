@@ -1,0 +1,1 @@
+mailslurp-client==17.5.0

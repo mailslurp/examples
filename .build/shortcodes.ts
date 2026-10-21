@@ -544,6 +544,21 @@ async function getFileTree(path: string): Promise<string> {
             highlight: "go",
         },
     ];
+    // Maintained inbox documentation recipes; language prefixes are added below.
+    for (const [source, highlight, commentStart, commentEnd] of [
+        ['javascript/workflows.js', 'javascript', '//<gen>', '//</gen>'],
+        ['python/workflows.py', 'python', '# <gen>', '# </gen>'],
+        ['go/workflows.go', 'go', '//<gen>', '//</gen>'],
+        ['java/InboxWorkflows.java', 'java', '//<gen>', '//</gen>'],
+        ['csharp/InboxWorkflows.cs', 'csharp', '//<gen>', '//</gen>'],
+        ['php/workflows.php', 'php', '//<gen>', '//</gen>'],
+        ['ruby/workflows.rb', 'ruby', '# <gen>', '# </gen>'],
+    ]) {
+        useCases.push({
+            paths: await files(`/documentation-inboxes/${source}`),
+            commentStart, commentEnd, highlight,
+        });
+    }
     const blockMap: { [key: string]: { body: string; highlight: string } } = {};
     for (const useCase of useCases) {
         for (const filePath of useCase.paths) {

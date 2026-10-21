@@ -1,0 +1,9 @@
+{
+  "name": "mailslurp-examples/documentation-inboxes",
+  "description": "Reusable inbox API and read-only IMAP recipes for MailSlurp documentation",
+  "require": {
+    "php": "^8.2",
+    "ext-imap": "*",
+    "mailslurp/mailslurp-client-php": "17.5.0"
+  }
+}

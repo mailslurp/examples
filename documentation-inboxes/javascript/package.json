@@ -1,0 +1,9 @@
+{
+  "name": "mailslurp-documentation-inboxes",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "mailslurp-client": "17.6.0",
+    "imapflow": "1.0.195"
+  }
+}

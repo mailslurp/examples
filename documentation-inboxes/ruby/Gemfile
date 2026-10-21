@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+
+gem 'mailslurp_client', '17.5.0'
+gem 'typhoeus', '~> 1.0', '>= 1.0.1'
+gem 'json', '~> 2.1', '>= 2.1.0'
+gem 'net-imap', '~> 0.6.8'
