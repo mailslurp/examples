@@ -85,6 +85,7 @@ export async function renderEmail(mailslurp) {
   });
   console.log("Render run", runId, waited.run.status);
   if (waited.timedOut) throw new Error(`Render ${runId} is still running; poll this run ID again`);
+  if (waited.run.status === 'FAILED') throw new Error(`Render ${runId} failed`);
   const results = await mailslurp.devicePreviewsController.getDevicePreviewRunResults({ runId });
   if (!results.screenshots.length) throw new Error(`Render ${runId} returned no screenshots`);
   console.log(results);

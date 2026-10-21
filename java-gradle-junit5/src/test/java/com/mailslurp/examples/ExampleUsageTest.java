@@ -116,7 +116,7 @@ public class ExampleUsageTest {
             .to(singletonList(inbox.getEmailAddress()))
             .subject("Test")
             .body("Hello");
-    inboxControllerApi.sendEmail(inbox.getId(), sendEmailOptions);
+    inboxControllerApi.sendEmail(inbox.getId(), sendEmailOptions).execute();
     // </gen>
 
     // <gen>java_demo_upload_attachment
@@ -138,7 +138,7 @@ public class ExampleUsageTest {
             .subject("Test email")
             .body("Hello with attachment")
             .attachments(attachmentIds);
-    inboxControllerApi.sendEmail(inbox2.getId(), sendOptions);
+    inboxControllerApi.sendEmail(inbox2.getId(), sendOptions).execute();
     // </gen>
     WaitForControllerApi waitForControllerApi = new WaitForControllerApi(defaultClient);
     Email email =
@@ -176,7 +176,7 @@ public class ExampleUsageTest {
             .to(singletonList(inbox2.getEmailAddress()))
             .subject("Hello inbox2")
             .body("Your code is: 123");
-    inboxControllerApi.sendEmail(inbox1.getId(), sendEmailOptions);
+    inboxControllerApi.sendEmail(inbox1.getId(), sendEmailOptions).execute();
 
     // <gen>java_demo_wait_for_email
     WaitForControllerApi waitForControllerApi = new WaitForControllerApi(defaultClient);

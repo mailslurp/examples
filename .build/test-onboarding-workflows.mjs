@@ -2,21 +2,21 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { emailOtp, sendEmail, testPhone, createWebhook, renderEmail } from '../javascript-documentation-workflows/workflows.js';
 
-function fakeClient({ waitError = false, timedOut = false, screenshots = [{}] } = {}) {
+function fakeClient({ waitError = false, timedOut = false, screenshots = [{}], receiveOverride = {}, status } = {}) {
   const calls = [];
   let message;
   return {
     calls,
     createInboxWithOptions: async (options) => { calls.push(['inbox', options]); return { id: 'owned-inbox', emailAddress: 'qa@valid-sandbox.test' }; },
     sendEmail: async (id, value) => { assert.equal(id, 'owned-inbox'); assert.deepEqual(value.to, ['qa@valid-sandbox.test']); message = value; },
-    waitForLatestEmail: async (id, timeout, unread) => { assert.equal(timeout, 30_000); assert.equal(unread, true); if (waitError) throw Error('timeout'); return message; },
+    waitForLatestEmail: async (id, timeout, unread) => { assert.equal(timeout, 30_000); assert.equal(unread, true); if (waitError) throw Error('timeout'); return { ...message, ...receiveOverride }; },
     deleteInbox: async (id) => { calls.push(['deleted', id]); },
     phoneController: { getPhoneNumber: async (input) => { calls.push(['phone', input]); return { phoneNumber: '+15555550100' }; } },
     waitController: { waitForLatestSms: async (input) => { assert.equal(input.waitForSingleSmsOptions.timeout, 30_000); return { body: 'A test SMS' }; } },
     webhookController: { createWebhook: async (input) => { calls.push(['webhook', input]); assert.equal(input.createWebhookOptions.eventName, 'NEW_EMAIL'); return { id: 'owned-webhook' }; } },
     devicePreviewsController: {
       createDevicePreviewRun: async () => ({ run: { runId: 'owned-render' } }),
-      waitForDevicePreviewRun: async (input) => { assert.equal(input.timeoutMillis, 30_000); return { timedOut, run: { status: timedOut ? 'RUNNING' : 'COMPLETE' } }; },
+      waitForDevicePreviewRun: async (input) => { assert.equal(input.timeoutMillis, 30_000); return { timedOut, run: { status: status ?? (timedOut ? 'CAPTURING' : 'COMPLETE') } }; },
       getDevicePreviewRunResults: async () => { calls.push(['results']); return { screenshots }; },
     },
   };
@@ -38,3 +38,19 @@ test('webhook registers the documented NEW_EMAIL payload', async () => { const c
 test('render timeout cannot pass as success', async () => { const client = fakeClient({ timedOut: true }); await assert.rejects(renderEmail(client), /owned-render.*still running/); assert.equal(client.calls.length, 0); });
 test('render with no screenshots cannot pass as success', async () => { await assert.rejects(renderEmail(fakeClient({ screenshots: [] })), /no screenshots/); });
 test('completed render retrieves actual result metadata', async () => { const client = fakeClient(); await renderEmail(client); assert.deepEqual(client.calls, [['results']]); });
+
+test('OTP mismatch fails and still cleans its own inbox', async () => {
+  const client = fakeClient({ receiveOverride: { body: 'Your code is 000000' } });
+  await assert.rejects(emailOtp(client), /OTP did not match/);
+  assert.deepEqual(client.calls.at(-1), ['deleted', 'owned-inbox']);
+});
+test('unexpected received email fails and still cleans its own inbox', async () => {
+  const client = fakeClient({ receiveOverride: { subject: 'Unrelated email' } });
+  await assert.rejects(sendEmail(client), /message did not match/);
+  assert.deepEqual(client.calls.at(-1), ['deleted', 'owned-inbox']);
+});
+test('failed render with an old screenshot cannot pass as success', async () => {
+  const client = fakeClient({ status: 'FAILED' });
+  await assert.rejects(renderEmail(client), /owned-render failed/);
+  assert.equal(client.calls.length, 0);
+});
