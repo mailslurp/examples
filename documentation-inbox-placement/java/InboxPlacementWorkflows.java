@@ -29,7 +29,8 @@ public final class InboxPlacementWorkflows {
 
     //<gen>placement_docs_create_test
     public static InboxPlacementTestRunDto createTest(ApiClient client, String senderDomain, String fromEmail) throws ApiException {
-        // A test gives you seed addresses at Gmail, Outlook, Yahoo and other providers.
+        // A test gives you seed addresses at Gmail, Outlook, Yahoo and other providers, and a
+        // tracking token that the campaign you send must include.
         return new ApiInboxPlacementTestControllerApi(client).createInboxPlacementTest(new CreateInboxPlacementTestOptions()
             .requestedSegment(CreateInboxPlacementTestOptions.RequestedSegmentEnum.ALL_INBOXES)
             .senderDomain(senderDomain)
@@ -40,14 +41,17 @@ public final class InboxPlacementWorkflows {
     //</gen>
 
     //<gen>placement_docs_send_to_seeds
-    public static void sendToSeeds(ApiClient client, UUID senderInboxId, List<String> seedAddresses) throws ApiException {
-        // Send your real campaign to the seed addresses. In production, send through your own ESP
-        // from the domain you are testing; a MailSlurp inbox is used here to keep the example short.
+    public static void sendToSeeds(ApiClient client, UUID senderInboxId, InboxPlacementTestRunDto test) throws ApiException {
+        // Send your real campaign to every seed address with the test's tracking token in the subject.
+        // In production, send through your own ESP from the domain you are testing; a MailSlurp inbox
+        // is used here to keep the example short.
         new InboxControllerApi(client).sendEmail(senderInboxId, new SendEmailOptions()
-            .to(seedAddresses)
-            .subject("Spring sale: 20% off everything")
+            .to(test.getSeedAddresses())
+            .subject("Spring sale: 20% off everything " + test.getTrackingToken())
             .body("<h1>Spring sale</h1><p>20% off everything this week.</p>")
             .isHTML(true)).execute();
+        // Confirm only after the send succeeded, so MailSlurp starts watching the seed inboxes.
+        new ApiInboxPlacementTestControllerApi(client).confirmInboxPlacementTestSent(test.getId()).execute();
     }
     //</gen>
 

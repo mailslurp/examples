@@ -30,21 +30,28 @@ export async function createTest(placement, senderDomain, fromEmail) {
       addressFormat: CreateInboxPlacementTestOptionsAddressFormatEnum.COMMA,
     },
   });
-  return { testId: run.id, seedAddresses: run.seedAddresses };
+  // Keep the tracking token: the campaign you send must include it.
+  return { testId: run.id, trackingToken: run.trackingToken, seedAddresses: run.seedAddresses };
 }
 //</gen>
 
-/** @param {MailSlurp} mailslurp @param {string} senderInboxId @param {string[]} seedAddresses */
+/**
+ * @param {MailSlurp} mailslurp @param {ApiInboxPlacementTestControllerApi} placement
+ * @param {string} senderInboxId @param {{ testId: string, trackingToken: string, seedAddresses: string[] }} test
+ */
 //<gen>placement_docs_send_to_seeds
-export async function sendToSeeds(mailslurp, senderInboxId, seedAddresses) {
-  // Send your real campaign to the seed addresses. In production, send through your own ESP
-  // from the domain you are testing; a MailSlurp inbox is used here to keep the example short.
+export async function sendToSeeds(mailslurp, placement, senderInboxId, test) {
+  // Send your real campaign to every seed address with the test's tracking token in the subject.
+  // In production, send through your own ESP from the domain you are testing; a MailSlurp inbox
+  // is used here to keep the example short.
   await mailslurp.sendEmail(senderInboxId, {
-    to: seedAddresses,
-    subject: 'Spring sale: 20% off everything',
+    to: test.seedAddresses,
+    subject: `Spring sale: 20% off everything ${test.trackingToken}`,
     body: '<h1>Spring sale</h1><p>20% off everything this week.</p>',
     isHTML: true,
   });
+  // Confirm only after the send succeeded, so MailSlurp starts watching the seed inboxes.
+  await placement.confirmInboxPlacementTestSent({ id: test.testId });
 }
 //</gen>
 

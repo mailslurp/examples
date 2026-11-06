@@ -42,10 +42,11 @@ public static class PlacementSetup
 public static class InboxPlacementWorkflows
 {
     //<gen>placement_docs_create_test
-    public static async Task<(string TestId, List<string> SeedAddresses)> CreateTest(
+    public static async Task<(string TestId, string TrackingToken, List<string> SeedAddresses)> CreateTest(
         HttpClient http, string senderDomain, string fromEmail)
     {
-        // A test gives you seed addresses at Gmail, Outlook, Yahoo and other providers.
+        // A test gives you seed addresses at Gmail, Outlook, Yahoo and other providers, and a
+        // tracking token that the campaign you send must include.
         var response = await http.PostAsJsonAsync("/inbox-placement-tests", new
         {
             requestedSegment = "ALL_INBOXES",
@@ -57,20 +58,25 @@ public static class InboxPlacementWorkflows
         response.EnsureSuccessStatusCode();
         var run = await response.Content.ReadFromJsonAsync<JsonElement>();
         var seeds = run.GetProperty("seedAddresses").EnumerateArray().Select(seed => seed.GetString()).ToList();
-        return (run.GetProperty("id").GetString(), seeds);
+        return (run.GetProperty("id").GetString(), run.GetProperty("trackingToken").GetString(), seeds);
     }
     //</gen>
 
     //<gen>placement_docs_send_to_seeds
-    public static void SendToSeeds(Configuration configuration, Guid senderInboxId, List<string> seedAddresses)
+    public static async Task SendToSeeds(Configuration configuration, HttpClient http, Guid senderInboxId,
+        string testId, string trackingToken, List<string> seedAddresses)
     {
-        // Send your real campaign to the seed addresses. In production, send through your own ESP
-        // from the domain you are testing; a MailSlurp inbox is used here to keep the example short.
+        // Send your real campaign to every seed address with the test's tracking token in the subject.
+        // In production, send through your own ESP from the domain you are testing; a MailSlurp inbox
+        // is used here to keep the example short.
         new InboxControllerApi(configuration).SendEmail(senderInboxId, new SendEmailOptions(
             to: seedAddresses,
-            subject: "Spring sale: 20% off everything",
+            subject: $"Spring sale: 20% off everything {trackingToken}",
             body: "<h1>Spring sale</h1><p>20% off everything this week.</p>",
             isHTML: true));
+        // Confirm only after the send succeeded, so MailSlurp starts watching the seed inboxes.
+        var confirmed = await http.PostAsync($"/inbox-placement-tests/{testId}/confirm-sent", null);
+        confirmed.EnsureSuccessStatusCode();
     }
     //</gen>
 

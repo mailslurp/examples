@@ -28,23 +28,27 @@ def create_test(api_client, sender_domain, from_email):
             address_format="COMMA",
         )
     )
-    return run.id, run.seed_addresses
+    # Keep the tracking token: the campaign you send must include it.
+    return run.id, run.tracking_token, run.seed_addresses
 # </gen>
 
 
 # <gen>placement_docs_send_to_seeds
-def send_to_seeds(api_client, sender_inbox_id, seed_addresses):
-    # Send your real campaign to the seed addresses. In production, send through your own ESP
-    # from the domain you are testing; a MailSlurp inbox is used here to keep the example short.
+def send_to_seeds(api_client, sender_inbox_id, test_id, tracking_token, seed_addresses):
+    # Send your real campaign to every seed address with the test's tracking token in the subject.
+    # In production, send through your own ESP from the domain you are testing; a MailSlurp inbox
+    # is used here to keep the example short.
     mailslurp_client.InboxControllerApi(api_client).send_email(
         sender_inbox_id,
         mailslurp_client.SendEmailOptions(
             to=seed_addresses,
-            subject="Spring sale: 20% off everything",
+            subject=f"Spring sale: 20% off everything {tracking_token}",
             body="<h1>Spring sale</h1><p>20% off everything this week.</p>",
             is_html=True,
         ),
     )
+    # Confirm only after the send succeeded, so MailSlurp starts watching the seed inboxes.
+    mailslurp_client.ApiInboxPlacementTestControllerApi(api_client).confirm_inbox_placement_test_sent(test_id)
 # </gen>
 
 
