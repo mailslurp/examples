@@ -1,0 +1,9 @@
+**/node_modules/
+**/vendor/
+**/.venv/
+**/__pycache__/
+**/*.py[cod]
+**/*.class
+**/target/
+**/bin/
+**/obj/

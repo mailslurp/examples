@@ -1,0 +1,8 @@
+{
+  "name": "mailslurp-documentation-emails",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "mailslurp-client": "17.6.0"
+  }
+}

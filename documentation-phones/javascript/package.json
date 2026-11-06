@@ -1,0 +1,8 @@
+{
+  "name": "mailslurp-documentation-phones",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "mailslurp-client": "17.6.0"
+  }
+}
