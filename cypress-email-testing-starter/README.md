@@ -30,7 +30,7 @@ The free plan includes 100 temporary inboxes and 250 received emails a month, wh
 1. Change `baseUrl` in `cypress.config.ts` to your app.
 2. Add `import 'cypress-mailslurp'` to your support file.
 3. Create an inbox in `beforeEach`, and fill your form with its email address.
-4. Call `mailslurp.waitForLatestEmail(inboxId, 60_000, true)` inside `cy.mailslurp().then(...)`. Give that `.then` a longer timeout than the wait, as the example does.
+4. Call `mailslurp.waitForLatestEmail(inboxId, 60_000, false)` inside `cy.mailslurp().then(...)`. Give that `.then` a longer timeout than the wait, as the example does.
 
 ## More
 

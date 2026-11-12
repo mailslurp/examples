@@ -31,7 +31,7 @@ The free plan includes 100 temporary inboxes and 250 received emails a month, wh
 
 1. Change `baseURL` in `playwright.config.ts` to your app.
 2. Copy `tests/fixtures.ts` into your project and import `test` from it instead of `@playwright/test`.
-3. In your test, fill your sign-up form with `inbox.emailAddress`, then call `mailslurp.waitForLatestEmail(inbox.id, 60_000, true)`.
+3. In your test, fill your sign-up form with `inbox.emailAddress`, then call `mailslurp.waitForLatestEmail(inbox.id, 60_000, false)`. A new inbox per test means its latest email is the one the test requested; if tests share an inbox, use `waitForMatchingFirstEmail` with a `since` time and a subject match instead.
 4. Read what you need from the email:
    - for a link, use `mailslurp.emailController.getEmailLinks({ emailId, selector })`;
    - for a code, match it in `email.body`.

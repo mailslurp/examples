@@ -8,7 +8,7 @@ for (const user of ['ana', 'ben', 'chloe']) {
     await page.getByTestId('emailAddress').fill(inbox.emailAddress);
     await page.getByTestId('submit').click();
 
-    const email = await mailslurp.waitForLatestEmail(inbox.id, 60_000, true);
+    const email = await mailslurp.waitForLatestEmail(inbox.id, 60_000, false);
     expect(email.to).toContain(inbox.emailAddress);
 
     const { links } = await mailslurp.emailController.getEmailLinks({

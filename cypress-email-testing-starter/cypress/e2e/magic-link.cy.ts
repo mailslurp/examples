@@ -17,8 +17,9 @@ describe('magic link sign-in', () => {
     cy.get('[data-testid=submit]').click();
 
     cy.mailslurp()
-      // unreadOnly=true: ignore anything this inbox has already seen
-      .then({ timeout: 70_000 }, (mailslurp) => mailslurp.waitForLatestEmail(this.inboxId, 60_000, true))
+      // The inbox is new, so its latest email is the one this test requested.
+      // unreadOnly=false: still works if someone opens the email in the dashboard first.
+      .then({ timeout: 70_000 }, (mailslurp) => mailslurp.waitForLatestEmail(this.inboxId, 60_000, false))
       .then((email) => {
         expect(email.subject).to.match(/confirm your email/i);
         return cy

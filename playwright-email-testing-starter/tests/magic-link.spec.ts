@@ -8,8 +8,9 @@ test('signs in with the magic link sent to a fresh inbox', async ({ page, mailsl
   });
 
   const email = await test.step('wait for the email', async () => {
-    // unreadOnly=true: ignore anything this inbox has already seen
-    return mailslurp.waitForLatestEmail(inbox.id, 60_000, true);
+    // The inbox is new, so its latest email is the one this test requested.
+    // unreadOnly=false: still works if someone opens the email in the dashboard first.
+    return mailslurp.waitForLatestEmail(inbox.id, 60_000, false);
   });
 
   await test.step('check the email and open its link', async () => {
