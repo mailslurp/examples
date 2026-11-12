@@ -3,7 +3,7 @@
   "private": true,
   "description": "Cypress tests for sign-up confirmation emails and magic links using free MailSlurp test inboxes",
   "scripts": {
-    "test": "cypress run",
+    "test": "cypress run --browser chrome",
     "dev": "cypress open",
     "typecheck": "tsc --noEmit"
   },

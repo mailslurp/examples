@@ -1,0 +1,9 @@
+-include ../.env
+
+.PHONY: test
+
+node_modules:
+	npm install
+
+test: node_modules
+	MAILSLURP_API_KEY=$(or $(MAILSLURP_API_KEY),$(API_KEY)) npx cypress run --browser chrome

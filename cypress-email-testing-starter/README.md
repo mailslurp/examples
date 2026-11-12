@@ -20,7 +20,7 @@ The test runs against MailSlurp's public demo app, so it works before you point 
 ```bash
 npm install
 cp .env.example .env   # then paste your API key into .env
-npx cypress run
+npx cypress run --browser chrome
 ```
 
 The free plan includes 100 temporary inboxes and 250 received emails a month, which is enough to run these tests locally and in CI.
