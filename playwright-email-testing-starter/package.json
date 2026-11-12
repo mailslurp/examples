@@ -1,0 +1,15 @@
+{
+  "name": "playwright-email-testing-starter",
+  "private": true,
+  "description": "Playwright tests for sign-up confirmation emails and magic links using free MailSlurp test inboxes",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0",
+    "@types/node": "^24.19.2",
+    "dotenv": "^17.2.3",
+    "mailslurp-client": "17.6.0",
+    "typescript": "^5.9.3"
+  }
+}

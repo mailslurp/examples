@@ -1,0 +1,11 @@
+# Copy to .github/workflows/email-tests.yml and add MAILSLURP_API_KEY as a repository secret.
+name: Email tests
+on: [push, pull_request]
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cypress-io/github-action@v6
+        env:
+          MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}

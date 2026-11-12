@@ -1,0 +1,26 @@
+import { test, expect } from './fixtures';
+
+test('signs in with the magic link sent to a fresh inbox', async ({ page, mailslurp, inbox }) => {
+  await test.step('request a magic link', async () => {
+    await page.goto('magic-link');
+    await page.getByTestId('emailAddress').fill(inbox.emailAddress);
+    await page.getByTestId('submit').click();
+  });
+
+  const email = await test.step('wait for the email', async () => {
+    // unreadOnly=true: ignore anything this inbox has already seen
+    return mailslurp.waitForLatestEmail(inbox.id, 60_000, true);
+  });
+
+  await test.step('check the email and open its link', async () => {
+    expect(email.subject).toMatch(/confirm your email/i);
+    const { links } = await mailslurp.emailController.getEmailLinks({
+      emailId: email.id,
+      selector: '.confirm-btn',
+    });
+    expect(links).toHaveLength(1);
+    await page.goto(links[0]);
+  });
+
+  await expect(page.locator('[data-el="dashboard-success"]')).toBeVisible();
+});

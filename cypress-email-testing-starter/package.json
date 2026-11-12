@@ -1,0 +1,17 @@
+{
+  "name": "cypress-email-testing-starter",
+  "private": true,
+  "description": "Cypress tests for sign-up confirmation emails and magic links using free MailSlurp test inboxes",
+  "scripts": {
+    "test": "cypress run",
+    "dev": "cypress open",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "cypress": "16.3.0",
+    "cypress-mailslurp": "2.0.0",
+    "dotenv": "^17.2.3",
+    "typescript": "^5.9.3"
+  }
+}
