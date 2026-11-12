@@ -1,6 +1,6 @@
 import { test, expect } from './fixtures';
 
-test('signs in with the magic link sent to a fresh inbox', async ({ page, mailslurp, inbox }) => {
+test('signs in with the magic link sent to a fresh inbox', async ({ page, mailslurp, inbox, baseURL }) => {
   await test.step('request a magic link', async () => {
     await page.goto('magic-link');
     await page.getByTestId('emailAddress').fill(inbox.emailAddress);
@@ -19,7 +19,10 @@ test('signs in with the magic link sent to a fresh inbox', async ({ page, mailsl
       selector: '.confirm-btn',
     });
     expect(links).toHaveLength(1);
-    await page.goto(links[0]);
+    // Only follow a link that points back to the app under test.
+    const link = new URL(links[0]);
+    expect(link.origin).toBe(new URL(baseURL!).origin);
+    await page.goto(link.href);
   });
 
   await expect(page.locator('[data-el="dashboard-success"]')).toBeVisible();

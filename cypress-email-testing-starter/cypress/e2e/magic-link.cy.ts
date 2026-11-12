@@ -29,7 +29,10 @@ describe('magic link sign-in', () => {
       })
       .then(({ links }) => {
         expect(links).to.have.length(1);
-        cy.visit(links[0]);
+        // Only follow a link that points back to the app under test.
+        const link = new URL(links[0]);
+        expect(link.origin).to.eq(new URL(Cypress.config('baseUrl')!).origin);
+        cy.visit(link.href);
       });
 
     cy.get('[data-el="dashboard-success"]').should('be.visible');
