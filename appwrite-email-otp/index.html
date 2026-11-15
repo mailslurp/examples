@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Email code sign-in</title>
+<style>
+  :root { color-scheme: light; font: 18px/1.5 system-ui,sans-serif; color: #182522; background: #f5f8f6 }
+  main { margin: 12vh auto; padding: 2rem; max-width: 30rem; border: 1px solid #c7d7cf; background: white; border-radius: .8rem }
+  h1 { font-size: 1.85rem; line-height: 1.2 }
+  input,button { font: inherit; padding: .6rem; box-sizing: border-box }
+  input { display:block; margin: .5rem 0 1rem; width:100% }
+  button { background:#195640; color:white; border:0; border-radius:.3rem; cursor:pointer }
+</style>
+<main>
+  <h1>Email code sign-in</h1>
+  <form id="request" hidden>
+    <label>Email address <input name="email" type="email" autocomplete="email" required></label>
+    <button>Send code</button>
+  </form>
+  <form id="verify" hidden>
+    <label>Verification code <input name="code" autocomplete="one-time-code" inputmode="numeric" pattern="[0-9]{6}" required></label>
+    <button>Verify code</button>
+  </form>
+  <p role="status">Checking session...</p>
+  <output aria-label="Signed-in email"></output>
+  <button id="logout" hidden>Sign out</button>
+</main>
+<script type="module" src="/app.js"></script>
+</html>

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Appwrite phone sign-in</title></head>
+  <body>
+    <main>
+      <h1>Sign in with a phone number</h1>
+      <form id="request">
+        <label>Phone number <input name="phone" type="tel" autocomplete="tel" required></label>
+        <button>Send code</button>
+      </form>
+      <form id="verify" hidden>
+        <label>Verification code <input name="code" type="password" inputmode="numeric" autocomplete="one-time-code" required></label>
+        <button>Verify code</button>
+      </form>
+      <button id="logout" hidden>End test session</button>
+      <p role="status">Ready</p>
+    </main>
+    <script type="module" src="/src/app.ts"></script>
+  </body>
+</html>

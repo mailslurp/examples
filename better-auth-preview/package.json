@@ -1,0 +1,22 @@
+{
+  "name": "better-auth-preview",
+  "version": "1.0.0",
+  "description": "Verify which preview owns a Better Auth magic-link session.",
+  "scripts": {
+    "test": "playwright test preview.spec.js",
+    "start": "node server.js",
+    "test:hosted": "playwright test hosted.spec.js"
+  },
+  "type": "module",
+  "dependencies": {
+    "better-auth": "1.7.25",
+    "mailslurp-client": "17.6.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.1"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22.13.0"
+  }
+}
