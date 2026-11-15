@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Password recovery</title>
+<style>
+  :root { font: 17px/1.55 system-ui,sans-serif; color:#142331; background:#f4f7f6 }
+  main { box-sizing:border-box; max-width:30rem; margin:10vh auto; padding:2rem; background:white; border:1px solid #becfc6; border-radius:.8rem }
+  h1 { margin:0 0 1rem; font-size:1.8rem; line-height:1.15 }
+  input,button { font:inherit; border-radius:.3rem }
+  input { box-sizing:border-box; width:100%; display:block; margin:.3rem 0 1rem; padding:.55rem; border:1px solid #82938d }
+  button { color:white; background:#15543d; border:0; padding:.55rem .85rem; cursor:pointer }
+  nav { margin-top:1rem } a {color:#15543d} output {overflow-wrap:anywhere}
+</style>
+<main>
+<h1>Password recovery</h1>
+<p role="status">Loading account...</p>
+<form hidden>
+<label id="email-label">Email address<input type="email" name="email" required autocomplete="email"></label>
+<label id="password-label"><span>Password</span><input type="password" name="password" required autocomplete="current-password"></label>
+<button></button>
+</form>
+<output aria-label="Account email"></output>
+<button id="logout" hidden>Sign out</button>
+<nav hidden><a href="/?view=reset">Forgot password?</a> · <a href="/?view=signup">Create account</a> · <a href="/">Sign in</a></nav>
+</main>
+<script type="module" src="/app.js"></script>
+</html>
