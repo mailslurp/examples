@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs';
+if (existsSync('.env.local')) process.loadEnvFile('.env.local');
 import { MailSlurp } from 'mailslurp-client';
 import { startPreview } from './preview.js';
 import { previewMailer } from './mail.js';

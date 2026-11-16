@@ -6,7 +6,7 @@ This example starts two copies of a small Better Auth app, sends an email from e
 
 ## Run the example on two local hosts
 
-Use Node 22.13 or newer with built-in SQLite support. Set `MAILSLURP_API_KEY` in the runner's environment. The account needs permission to create and delete temporary inboxes, send mail, and read the messages it receives.
+Use Node 22.13 or newer with built-in SQLite support. Copy `.env.example` to `.env.local` and set `MAILSLURP_API_KEY`. Leave the other fields blank for the local test. The account needs permission to create and delete temporary inboxes, send mail, and read the messages it receives.
 
 ```sh
 npm ci
@@ -22,7 +22,7 @@ The [server](preview.js) sets Better Auth's `baseURL` to its own origin. Its sig
 
 The runner reads the email and selects the link whose path is `/api/auth/magic-link/verify`. Before consuming it, the runner checks both the origin and the callback. A link back to the main site already tells you which setting to inspect, even when that main site could complete a valid sign-in.
 
-After the click, the browser reaches `/account`. This route reads the browser's cookie with `auth.api.getSession()` on the server. After a reload, the issuing preview must return HTTP 200 and the exact test email. The other preview must return HTTP 401. The test repeats this in the other direction with a different inbox.
+After the click, the browser reaches `/account`. The home page displays the preview hostname and reads its account from this route. The route reads the browser's cookie with `auth.api.getSession()` on the server. After a reload, the issuing preview must return HTTP 200 and the exact test email. The other preview must return HTTP 401. The test repeats this in the other direction with a different inbox.
 
 ## Apply the check to Railway previews
 
@@ -50,3 +50,11 @@ npm run test:hosted
 ```
 
 The hosted runner uses the same [browser and session assertions](test/check-preview.js) as the local pair. It waits for a message received since the current request and leaves the two configured inboxes available for the next run. Reserve each inbox for one job at a time.
+
+## Recognize the wrong preview in the browser
+
+![The issuing preview shows its host and authenticated session](images/issuer.png)
+
+The address on the account screen is masked in this screenshot. The test compares it with the exact inbox used to request the link. Visiting the other preview in the same browser must return HTTP 401 and show its sign-in form. The screenshots are from the local pair. On Railway the generated HTTPS domains take the place of these two hostnames.
+
+![The second preview shows a different host and a signed-out browser](images/other.png)
