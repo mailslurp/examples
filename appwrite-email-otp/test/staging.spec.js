@@ -27,7 +27,7 @@ test('a code from the new inbox opens the expected Appwrite account', async ({ p
     if (process.env.EXAMPLE_SCREENSHOT) {
       await page.locator('main').screenshot({ path: process.env.EXAMPLE_SCREENSHOT, mask: [page.locator('output')], maskColor: '#c6d4cc' });
     }
-    await page.getByRole('button', { name:'Sign out' }).click();
+    await page.getByRole('button', { name:'Sign out', exact:true }).click();
     await expect(status).toHaveText('Signed out');
   } finally { await mail.deleteInbox(inbox.id); }
 });

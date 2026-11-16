@@ -24,6 +24,12 @@
   <p role="status">Checking session...</p>
   <output aria-label="Signed-in email"></output>
   <button id="logout" hidden>Sign out</button>
+  <section id="devices" hidden>
+    <h2>Devices</h2>
+    <p>Active sessions: <strong id="session-count"></strong></p>
+    <button id="sessions">Check active sessions</button>
+    <button id="revoke-others">Sign out other devices</button>
+  </section>
 </main>
 <script type="module" src="/app.js"></script>
 </html>

@@ -51,3 +51,9 @@ Name the app and the action that prompted the email, make the code easy to find,
 ![Appwrite email showing expiry and the requesting browser. Code and project name are masked.](images/delivered-message.png)
 
 If the first request fails before any email arrives, check the regional endpoint, registered hostname and Email OTP setting. If sign-in succeeds but the reload loses the account, inspect browser storage and the Appwrite session request on your staging origin. The test deletes its inbox. Appwrite retains the user record, so run it in a project where test users can be removed periodically. For the corresponding SMS journey, see [Appwrite phone sign-in](https://appwrite.io/docs/products/auth/phone-sms).
+
+## Sign a shared device out remotely
+
+Run `npm test -- --grep 'sign out other devices'` for the two-session check. It requests two independent codes for the same disposable email address and signs in from two isolated Playwright contexts. In the first browser the test lists sessions, requires two entries, and chooses **Sign out other devices**. After reload, the second browser must show **Signed out** and the first must still display the expected email and one remaining session. The app uses `account.deleteSessions({ current: false })` for remote sign-out and `deleteSession({ sessionId: 'current' })` for ordinary sign-out. Set `SCREENSHOT_DIR` to an output directory to capture the device count before and after, with the address masked.
+
+![Appwrite lists one active session after signing out the other device](images/remaining-device.png)

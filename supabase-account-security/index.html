@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Account settings</title>
+<style>
+*{box-sizing:border-box}body{font:16px/1.5 system-ui,sans-serif;margin:0;background:#f2f6f4;color:#18312b}main{margin:3rem auto;padding:0 1rem;max-width:38rem}section{background:white;border:1px solid #cbdad3;border-radius:12px;padding:24px;margin-bottom:1rem}h1,h2{line-height:1.2;margin:.1rem 0 1rem}label{display:block;margin:.6rem 0}input{display:block;padding:.55rem;width:100%;max-width:22rem}button{padding:.55rem .9rem;color:white;background:#155745;border:0;border-radius:5px;margin:.3rem .2rem .3rem 0;cursor:pointer}dt{font-weight:600}dd{margin:0 0 .55rem}output{overflow-wrap:anywhere}
+</style><main><h1>Account settings</h1>
+<section id="login" hidden><h2>Sign in</h2><label>Email address<input id="email" type="email"></label><label>Password<input id="password" type="password"></label><button id="signup">Create account</button><button id="signin">Sign in</button></section>
+<div id="settings" hidden><section id="summary"><h2>Your account</h2><dl><dt>Email on account</dt><dd><output id="address"></output></dd><dt>Email change</dt><dd id="pending"></dd><dt>Current assurance level</dt><dd id="level"></dd><dt>Available assurance level</dt><dd id="next"></dd></dl><button id="refresh">Refresh account</button><button id="signout">Sign out</button></section>
+<section><h2>Change email address</h2><label>New email address<input id="replacement" type="email"></label><button id="change">Request change</button></section>
+<section><h2>Authenticator app</h2><button id="enroll">Set up authenticator</button><div id="setup" hidden><p>Scan this code in your authenticator.</p><img id="qr" alt="Authenticator setup code" width="160" height="160"></div><label>Authenticator code<input id="otp" inputmode="numeric" autocomplete="one-time-code"></label><button id="verify">Verify authenticator</button></section></div>
+<p role="status" aria-live="polite"></p></main><script type="module" src="/app.js"></script></html>

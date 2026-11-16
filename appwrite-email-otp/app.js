@@ -6,6 +6,8 @@ const verify = document.querySelector('#verify');
 const status = document.querySelector('p[role=status]');
 const identity = document.querySelector('output');
 const logout = document.querySelector('#logout');
+const devices = document.querySelector('#devices');
+const sessionCount = document.querySelector('#session-count');
 let challengedUser;
 
 async function showAccount() {
@@ -14,14 +16,15 @@ async function showAccount() {
     if (challengedUser && user.$id !== challengedUser) throw new Error('Account mismatch');
     identity.textContent = user.email;
     status.textContent = 'Signed in';
-    logout.hidden = false;
+    devices.hidden = logout.hidden = false;
     request.hidden = verify.hidden = true;
   } catch (error) {
     if (error.code !== 401) throw error;
     identity.textContent = '';
     status.textContent = 'Signed out';
     request.hidden = false;
-    logout.hidden = verify.hidden = true;
+    devices.hidden = logout.hidden = verify.hidden = true;
+    sessionCount.textContent = '';
   }
 }
 request.onsubmit = async event => {
@@ -53,5 +56,19 @@ logout.onclick = async () => {
     challengedUser = undefined;
     await showAccount();
   } catch { status.textContent = 'Could not end session'; }
+};
+async function showSessions() {
+  const list = await account.listSessions();
+  sessionCount.textContent = String(list.sessions.length);
+}
+document.querySelector('#sessions').onclick = () => showSessions().catch(() => {
+  status.textContent = 'Could not list sessions';
+});
+document.querySelector('#revoke-others').onclick = async () => {
+  try {
+    await account.deleteSessions({ current: false });
+    await showAccount();
+    await showSessions();
+  } catch { status.textContent = 'Could not sign out other devices'; }
 };
 showAccount().catch(() => { status.textContent = 'Could not load account'; });
