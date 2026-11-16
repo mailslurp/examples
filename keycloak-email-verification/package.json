@@ -1,0 +1,12 @@
+{
+  "name": "keycloak-email-verification-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "playwright test" },
+  "devDependencies": {
+    "@playwright/test": "1.65.1",
+    "mailslurp-client": "17.6.0"
+  },
+  "engines": { "node": ">=22.13.0" }
+}
