@@ -27,6 +27,7 @@ fetch('/account').then(async response => {
   } else if (response.ok) {
     const account = await response.json();
     document.querySelector('output').textContent = account.email;
+    document.querySelector('h1').textContent = 'Your preview account';
     status.textContent = 'Signed in';
   } else throw new Error();
 }).catch(() => { status.textContent = 'Could not read session'; });
