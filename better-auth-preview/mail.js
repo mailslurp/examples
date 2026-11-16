@@ -1,8 +1,8 @@
-export function previewMailer(mail, senderId, recipient) {
+export function previewMailer(sendEmail, recipient) {
   return async ({ email, url }) => {
     if (email !== recipient) throw new Error('Use the assigned test inbox.');
     const href = url.replaceAll('&','&amp;').replaceAll('"','&quot;');
-    await mail.sendEmail(senderId, {
+    await sendEmail({
       to:[email], subject:'Sign in to your preview',
       isHTML:true, body:'<p><a href="' + href + '">Open this preview</a></p>'
     });

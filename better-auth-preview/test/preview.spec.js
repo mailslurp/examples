@@ -20,7 +20,7 @@ test('each delivered link stays on its preview and signs in only there', async (
       resources.push(() => mail.deleteInbox(inbox.id));
       const url = new URL(origin);
       resources.push(await startPreview({origin,host:url.hostname,port:Number(url.port),
-        secret:randomBytes(32).toString('hex'),sendLink:previewMailer(mail,sender.id,inbox.emailAddress)}));
+        secret:randomBytes(32).toString('hex'),sendLink:previewMailer(message => mail.sendEmail(sender.id, message), inbox.emailAddress)}));
     }
     for (const [i, origin] of origins.entries()) {
       const inbox = inboxes[i];

@@ -35,7 +35,7 @@ To start one instance manually, set these variables and run `npm start`. Use an 
 | `PREVIEW_ORIGIN` | Exact external origin with no trailing slash. Omit on Railway to use that preview's generated public domain. |
 | `PORT` | Listening port. The local default is 4180. |
 | `BETTER_AUTH_SECRET` | A separate cryptographically random secret of at least 32 characters for this instance. |
-| `MAILSLURP_API_KEY` | Server-side key for the test workspace. |
+| `MAILSLURP_SENDER_KEY` | An Agent Responder key scoped to this preview's sender inbox. The hosted app uses it to create and send the sign-in message. Keep the runner's workspace key on the runner. |
 | `SENDER_INBOX_ID` | ID of a MailSlurp inbox that can send email. |
 | `TEST_RECIPIENT` | Address of the one test inbox allowed to receive this preview's sign-in emails. |
 
