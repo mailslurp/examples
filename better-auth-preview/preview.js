@@ -14,7 +14,7 @@ main{box-sizing:border-box;max-width:32rem;margin:10vh auto;padding:2rem;backgro
 h1{margin:0 0 1rem}button,input{font:inherit;padding:.55rem .8rem;border-radius:5px}input{display:block;box-sizing:border-box;width:100%;margin:.4rem 0 1rem;border:1px solid #83988d}button{background:#235640;color:white;border:0}output{overflow-wrap:anywhere}
 </style>
 <main><h1>Preview sign-in</h1><p>Preview host: <strong id="host"></strong></p>
-<form hidden><label>Email <input type="email" required name="email"></label><button>Send link</button></form>
+<form hidden><label>Email <input type="email" required name="email" autocomplete="email"></label><button>Send link</button></form>
 <p role="status">Checking session...</p><output aria-label="Account email"></output></main>
 <script>
 const form = document.querySelector('form');
