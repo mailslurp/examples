@@ -26,7 +26,7 @@ After the click, the browser reaches `/account`. The home page displays the prev
 
 ## Apply the check to Railway previews
 
-The runnable test uses local hosts. For an existing Railway preview environment, [the server entry point](server.js) can derive the external HTTPS origin from `RAILWAY_PUBLIC_DOMAIN` and listen on Railway's `PORT`. Give each preview its own secret. Check that its public domain has been generated and belongs to that preview before requesting a link. Railway documents the setup for PR environments and the outbound mail options for each plan. [Railway environments](https://docs.railway.com/environments) · [Outbound networking](https://docs.railway.com/networking/outbound-networking)
+The default test starts local hosts. The hosted test also passed against two Railway PR builds. For an existing Railway preview environment, [the server entry point](server.js) can derive the external HTTPS origin from `RAILWAY_PUBLIC_DOMAIN` and listen on Railway's `PORT`. Give each preview its own secret. Check that its public domain has been generated and belongs to that preview before requesting a link. Railway documents the setup for PR environments and the outbound mail options for each plan. [Railway environments](https://docs.railway.com/environments) · [Outbound networking](https://docs.railway.com/networking/outbound-networking)
 
 To start one instance manually, set these variables and run `npm start`. Use an isolated MailSlurp testing workspace. The instance accepts mail delivery only for its configured recipient.
 
@@ -53,8 +53,8 @@ The hosted runner uses the same [browser and session assertions](test/check-prev
 
 ## Recognize the wrong preview in the browser
 
-![The issuing preview shows its host and authenticated session](images/issuer.png)
+![PR A on Railway shows its host and authenticated session](images/railway-issuer.png)
 
-The address on the account screen is masked in this screenshot. The test compares it with the exact inbox used to request the link. Visiting the other preview in the same browser must return HTTP 401 and show its sign-in form. The screenshots are from the local pair. On Railway the generated HTTPS domains take the place of these two hostnames.
+The address on the account screen is masked in this screenshot. The test compares it with the exact inbox used to request the link. Visiting the other preview in the same browser must return HTTP 401 and show its sign-in form. The screenshots are from real Railway environments serving the exact head commits of [PR A](https://github.com/kipling-mailslurp/examples/pull/1) and [PR B](https://github.com/kipling-mailslurp/examples/pull/2). These previews were deployed explicitly. For automatic creation and cleanup, enable Railway PR Environments on a connected repository.
 
-![The second preview shows a different host and a signed-out browser](images/other.png)
+![PR B on Railway shows its host and a signed-out browser](images/railway-other.png)
