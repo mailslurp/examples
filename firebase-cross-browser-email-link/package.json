@@ -1,0 +1,21 @@
+{
+  "name": "firebase-cross-browser-email-link",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "dev": "vite --host localhost --port 4193 --strictPort",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "firebase": "13.3.0"
+  },
+  "devDependencies": {
+    "vite": "7.3.8",
+    "@playwright/test": "1.65.1",
+    "mailslurp-client": "17.6.0"
+  }
+}

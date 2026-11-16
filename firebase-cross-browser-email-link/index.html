@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><title>Email link sign-in</title>
+<style>
+:root{font:18px/1.5 system-ui,sans-serif;color:#152c43;background:#f6f8fa}main{box-sizing:border-box;max-width:32rem;margin:9vh auto;padding:2rem;background:white;border:1px solid #cbd6e0;border-radius:12px}h1{font-size:1.8rem;line-height:1.2}input,button{font:inherit;padding:.5rem .8rem;border-radius:5px}input{display:block;box-sizing:border-box;width:100%;margin:.4rem 0 1rem;border:1px solid #8293a5}button{background:#174874;color:white;border:0}output{overflow-wrap:anywhere}
+</style></head><body><main>
+<h1>Email link sign-in</h1><p role="status">Checking session...</p>
+<form hidden><label>Email address<input required name="email" type="email" autocomplete="email"></label><button>Send sign-in link</button></form>
+<output aria-label="Account email"></output><button id="leave" hidden>Sign out</button>
+</main><script type="module" src="/app.js"></script></body></html>
