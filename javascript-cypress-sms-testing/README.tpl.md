@@ -4,6 +4,12 @@ Sign up to the SMS playground with an existing US phone number, receive the veri
 
 Uses `cypress-mailslurp@2.0.0` and Cypress 16. The plugin requires Cypress 15.10 or newer for its secure `cy.env()` API. Install a supported Node.js version and Google Chrome before running.
 
+## How can I receive an SMS verification code in a Cypress test?
+
+Give the application a MailSlurp number reserved for the test. Record the time just before submitting the signup form and wait for a new message addressed to that number. Enter the code from the message and assert that the browser reaches the signed-in page. The [Cypress spec](cypress/e2e/integration-test.cy.ts) shows these steps against the SMS playground.
+
+When testing your own sender, [Twilio test credentials](https://www.twilio.com/docs/iam/test-credentials) simulate the messaging request. The [Firebase Authentication emulator](https://firebase.google.com/docs/emulator-suite/connect_auth#emulated_phonesms_authentication) prints the verification code locally. To exercise both paths in the same application, the [Playwright two-factor example](../playwright-sms-2fa-real-number/) includes a local simulated suite and a separate test for a configured sender and receiving number.
+
 ## Run tests
 
 Put `API_KEY=your-api-key` in this directory's `.env` or the shared `examples/.env`. The config loads it in Node and makes it available to the plugin without putting the key in the test source. An exported `CYPRESS_MAILSLURP_API_KEY` takes precedence.
