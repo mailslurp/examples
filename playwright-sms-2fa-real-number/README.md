@@ -33,7 +33,7 @@ Expect four passing tests. They start the app with the in-memory sender, read th
 You need:
 
 - a MailSlurp account with an SMS-capable phone number to receive the code ([create one](https://app.mailslurp.com/mobile/phone-numbers/) in the dashboard or with the API), its ID and an API key;
-- a way for the app to send: live Twilio credentials and an SMS-capable Twilio number, or a second MailSlurp number.
+- a way for the app to send: live Twilio credentials and an SMS-capable Twilio number, or a second MailSlurp number that is allowed to send to the receiving number (see below).
 
 Copy `.env.example` to `.env`, fill in the settings for your sender, load them into your shell and run:
 
@@ -47,6 +47,8 @@ npm run test:sms
 | `MAILSLURP_API_KEY`, `MAILSLURP_PHONE_ID` | Test | The number that receives the code. The config looks up its E.164 number and gives it to the demo account. |
 | `SMS_PROVIDER=twilio`, `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM` | App | Send with Twilio's Messaging API. Use live credentials; test credentials send nothing, so the test times out. |
 | `SMS_PROVIDER=mailslurp`, `MAILSLURP_SENDER_PHONE_ID` | App | Send from a second MailSlurp number with the same API key. |
+
+By default, a MailSlurp number can only send to numbers that have texted it first, and both numbers here belong to you, so neither has. To send the code from a MailSlurp number, ask MailSlurp support to allow sending to your receiving test number. Twilio, or the SMS provider your application already uses, needs no such step and also tests your real sending route.
 
 The test records the time before it asks for a code, waits up to 60 seconds for a new message on the MailSlurp number that contains "Demo App sign-in code", extracts the six-digit code, enters it and checks the account page. It adds the measured delivery time to the test report.
 

@@ -1,7 +1,8 @@
 // SMS senders for the demo app. The app only calls send({ to, body }).
 // memory: keeps messages in this process, like an emulator. Nothing reaches a phone.
 // twilio: Twilio Messaging API. Test credentials return a queued message but deliver nothing.
-// mailslurp: sends from a MailSlurp number, so one account can run the whole real flow.
+// mailslurp: sends from a second MailSlurp number. By default MailSlurp numbers only send to numbers
+//   that texted them first, so support must allow sending to the receiving test number.
 
 function required(env, name) {
   const value = env[name]?.trim();
