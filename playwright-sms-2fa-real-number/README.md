@@ -77,12 +77,35 @@ await expectSignedIn(page);
 
 ## In CI
 
-Run `npm test` on every pull request. Run `npm run test:sms` deliberately, for example nightly or before a release, with the credentials in CI secrets. Give each concurrent job its own receiving number, or serialize jobs that share one; in GitHub Actions:
+Run `npm test` on every pull request. This repository does that with [a GitHub Actions workflow](../.github/workflows/playwright-sms-2fa-real-number.yml) that needs no secrets.
+
+Run `npm run test:sms` deliberately, for example nightly or before a release, with the credentials in CI secrets. Give each concurrent job its own receiving number, or serialize jobs that share one. A GitHub Actions job for the real-number test, started by hand or on a schedule:
 
 ```yaml
-concurrency:
-  group: sms-2fa-real-number
-  cancel-in-progress: false
+  real-sms:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: sms-2fa-real-number
+      cancel-in-progress: false
+    defaults:
+      run:
+        working-directory: playwright-sms-2fa-real-number
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:sms
+        env:
+          MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
+          MAILSLURP_PHONE_ID: ${{ vars.MAILSLURP_PHONE_ID }}
+          SMS_PROVIDER: twilio
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_FROM: ${{ vars.TWILIO_FROM }}
 ```
 
 Retries are off because a retry sends another SMS, and the earlier one can arrive during it.

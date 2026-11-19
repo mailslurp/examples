@@ -1,0 +1,34 @@
+# Runs the simulated SMS two-factor suite for playwright-sms-2fa-real-number.
+# It needs no secrets: the app keeps sent codes in memory. The real-number test
+# (npm run test:sms) is run deliberately with MailSlurp and SMS provider secrets.
+name: playwright-sms-2fa-real-number
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "playwright-sms-2fa-real-number/**"
+      - ".github/workflows/playwright-sms-2fa-real-number.yml"
+  pull_request:
+    paths:
+      - "playwright-sms-2fa-real-number/**"
+      - ".github/workflows/playwright-sms-2fa-real-number.yml"
+  workflow_dispatch:
+
+jobs:
+  simulated-sms:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: playwright-sms-2fa-real-number
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: playwright-sms-2fa-real-number/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
