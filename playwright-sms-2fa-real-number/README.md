@@ -1,8 +1,8 @@
 # Test SMS two-factor login in Playwright with a real phone number
 
-A small sign-in app with SMS two-factor authentication, and Playwright tests that sign in twice: once with a simulated SMS and once with a code delivered to a real phone number.
+Playwright tests for SMS one-time codes, in two layers: fast tests of a small sign-in app with a simulated SMS sender, and one test that signs up to [MailSlurp's SMS playground](https://playground-sms.mailslurp.com) with a real phone number and enters the code it receives by text.
 
-The app asks for an email and password, sends a six-digit code by SMS, and signs the browser in when the code is entered. The tests check the parts users care about: the code arrives, the right code signs them in, a wrong code doesn't, and a code can't be used twice.
+The local app asks for an email and password, sends a six-digit code, and signs the browser in when the code is entered. Its tests check the parts users care about: the right code signs them in, a wrong code doesn't, and a code can't be used twice. The playground test checks the part a simulator can't: that a real text arrives and its code works.
 
 ## Why test with a real number
 
@@ -14,7 +14,7 @@ Most SMS providers give you a way to test without sending anything, and those ar
 
 Before a release, you also want one test where the provider sends a real SMS, a real number receives it, and the test signs in with that code. That catches a wrong sender ID, an unsupported route, a template that drops the code, and codes that arrive after they expire.
 
-This example does both. The local suite uses an in-memory sender, like an emulator, so it runs anywhere in about a second. The real-number test sends through your SMS provider and reads the text from a [MailSlurp phone number](https://www.mailslurp.com/docs/txt-sms/) with the API, so it needs no physical phone or shared device.
+This example does both. The local suite uses an in-memory sender, like an emulator, so it runs anywhere in about a second. The real-number test uses the SMS playground, a demo app run by MailSlurp whose sign-up texts a verification code through AWS. The test reads that text from a [MailSlurp phone number](https://www.mailslurp.com/docs/txt-sms/) with the API, so it needs no physical phone, shared device or SMS provider account of your own. To test your own app, point the same steps at your sign-up page and SMS provider.
 
 ## Run the local suite
 
@@ -30,56 +30,45 @@ Expect four passing tests. They start the app with the in-memory sender, read th
 
 ## Run the real SMS test
 
-You need:
-
-- a MailSlurp account with an SMS-capable phone number to receive the code ([create one](https://app.mailslurp.com/mobile/phone-numbers/) in the dashboard or with the API), its ID and an API key;
-- a way for the app to send: live Twilio credentials and an SMS-capable Twilio number, or a second MailSlurp number that is allowed to send to the receiving number (see below).
-
-Copy `.env.example` to `.env`, fill in the settings for your sender, load them into your shell and run:
+You need a MailSlurp account with a US phone number ([create one](https://app.mailslurp.com/mobile/phone-numbers/) in the dashboard) and an API key. Copy `.env.example` to `.env`, set `MAILSLURP_API_KEY`, load it into your shell and run:
 
 ```sh
 set -a; . ./.env; set +a
 npm run test:sms
 ```
 
-| Setting | Used by | Purpose |
-| --- | --- | --- |
-| `MAILSLURP_API_KEY`, `MAILSLURP_PHONE_ID` | Test | The number that receives the code. The config looks up its E.164 number and gives it to the demo account. |
-| `SMS_PROVIDER=twilio`, `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM` | App | Send with Twilio's Messaging API. Use live credentials; test credentials send nothing, so the test times out. |
-| `SMS_PROVIDER=mailslurp`, `MAILSLURP_SENDER_PHONE_ID` | App | Send from a second MailSlurp number with the same API key. |
+The test uses the first US number in the account, or the number in `MAILSLURP_PHONE_ID`. It signs up to the playground with that number, waits up to 60 seconds for a new text containing "demo-sms verification code", enters the six-digit code, signs in and checks the greeting. It adds the measured delivery time to the test report.
 
-By default, a MailSlurp number can only send to numbers that have texted it first, and both numbers here belong to you, so neither has. To send the code from a MailSlurp number, ask MailSlurp support to allow sending to your receiving test number. Twilio, or the SMS provider your application already uses, needs no such step and also tests your real sending route.
+The playground's username is the phone number, so each number can only have one account. The test therefore deletes the playground user at the end, using the session it just signed in with, and the number can sign up again on the next run. If an earlier run stopped before that step, the test signs in with the same password first and deletes the leftover user. A number with an unconfirmed sign-up can't be cleaned up this way; use another number.
 
-The test records the time before it asks for a code, waits up to 60 seconds for a new message on the MailSlurp number that contains "Demo App sign-in code", extracts the six-digit code, enters it and checks the account page. It adds the measured delivery time to the test report.
-
-Each run sends one SMS, which your provider may charge for. In the US, sending application traffic from a Twilio long code requires A2P 10DLC registration; if your messages are filtered, check your provider's registration status before blaming the test.
+Each run sends one real SMS.
 
 ## How the test reads the code
 
 ```ts
 const since = new Date();
-await submitPassword(page);
+await signUp(page, phone.phoneNumber);
 
 const [sms] = await mailslurp.waitController.waitForSms({
   waitForSmsConditions: {
-    phoneNumberId,
+    phoneNumberId: phone.id,
     since,
     count: 1,
     timeout: 60_000,
-    matches: [{ field: SmsMatchOptionFieldEnum.BODY, should: SmsMatchOptionShouldEnum.CONTAIN, value: codeMarker }],
+    matches: [{ field: SmsMatchOptionFieldEnum.BODY, should: SmsMatchOptionShouldEnum.CONTAIN, value: "demo-sms verification code" }],
   },
 });
-await submitCode(page, extractCode(sms.body));
-await expectSignedIn(page);
+await confirmAndSignIn(page, phone.phoneNumber, extractCode(sms.body));
+await deleteSignedInUser(page);
 ```
 
-`since` ignores codes from earlier runs, and matching the app's wording ignores unrelated texts. `extractCode` fails unless the message holds exactly one six-digit code. The [wait-for methods](https://www.mailslurp.com/docs/wait-for/) poll on the server, so the test needs no sleep or retry loop.
+`since` ignores codes from earlier runs, and matching the playground's wording ignores unrelated texts. `extractCode` fails unless the message holds exactly one six-digit code. The [wait-for methods](https://www.mailslurp.com/docs/wait-for/) wait on the server, so the test needs no sleep or retry loop.
 
 ## In CI
 
 Run `npm test` on every pull request. This repository does that with [a GitHub Actions workflow](../.github/workflows/playwright-sms-2fa-real-number.yml) that needs no secrets.
 
-Run `npm run test:sms` deliberately, for example nightly or before a release, with the credentials in CI secrets. Give each concurrent job its own receiving number, or serialize jobs that share one. A GitHub Actions job for the real-number test, started by hand or on a schedule:
+Run `npm run test:sms` deliberately, for example nightly or before a release, with the API key in CI secrets. Give each concurrent job its own number, or serialize jobs that share one, as the `concurrency` group below does. A GitHub Actions job for the real-number test, started by hand or on a schedule:
 
 ```yaml
   real-sms:
@@ -102,10 +91,6 @@ Run `npm run test:sms` deliberately, for example nightly or before a release, wi
         env:
           MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
           MAILSLURP_PHONE_ID: ${{ vars.MAILSLURP_PHONE_ID }}
-          SMS_PROVIDER: twilio
-          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
-          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
-          TWILIO_FROM: ${{ vars.TWILIO_FROM }}
 ```
 
 Retries are off because a retry sends another SMS, and the earlier one can arrive during it.
@@ -114,17 +99,18 @@ Retries are off because a retry sends another SMS, and the earlier one can arriv
 
 | Where it stops | What to check |
 | --- | --- |
-| `Set MAILSLURP_API_KEY and MAILSLURP_PHONE_ID` | The settings aren't loaded into the shell that runs Playwright. |
-| "The code could not be sent" page | The app's server log names the provider error: credentials, sender number, or a route the provider doesn't support. |
-| No code within 60 seconds | Check the message in your provider's logs, then the number's inbox in the MailSlurp dashboard. Test credentials, an unregistered US sender or an unsupported country route are the usual causes. |
-| "Not a Demo App sign-in code" | Another message matched. Use a number dedicated to this test. |
+| "This test needs a US phone number" | The API key's account has no US number. Add one, or set `MAILSLURP_PHONE_ID`. |
+| "has an unconfirmed playground account" | An earlier run signed up but never confirmed. Use another number. |
+| No code within 60 seconds | Open the number's messages in the MailSlurp dashboard. If nothing arrived, retry later or with another number. |
+| "Not a playground code" | Another message matched. Use a number dedicated to this test. |
 
 ## Files
 
-- [app/server.mjs](app/server.mjs): the sign-in app, with code expiry, attempt limits and single use.
-- [app/sms.mjs](app/sms.mjs): the in-memory, Twilio and MailSlurp senders.
+- [app/server.mjs](app/server.mjs): the local sign-in app, with code expiry, attempt limits and single use.
+- [app/sms.mjs](app/sms.mjs): the in-memory sender.
 - [tests/local.spec.ts](tests/local.spec.ts): the simulated suite.
-- [tests/real-sms.spec.ts](tests/real-sms.spec.ts): the real-number test.
-- [tests/flow.ts](tests/flow.ts): shared steps and the code parser.
+- [tests/playground-sms.spec.ts](tests/playground-sms.spec.ts): the real-number test.
+- [tests/playground.ts](tests/playground.ts): playground steps, the code parser and user cleanup.
+- [tests/flow.ts](tests/flow.ts): local app steps and its code parser.
 
 For a longer walkthrough, see [Test SMS OTP and MFA with Playwright](https://www.mailslurp.com/guides/test-sms-otp-mfa-using-playwright/).
