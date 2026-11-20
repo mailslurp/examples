@@ -3,6 +3,7 @@
 import { expect, test, type APIRequestContext } from "@playwright/test";
 import { expectSignedIn, extractCode, submitCode, submitPassword } from "./flow";
 
+//<gen>sms_otp_playwright_simulated
 async function lastSimulatedCode(request: APIRequestContext): Promise<string> {
   const outbox: { body: string }[] = await (await request.get("/__simulated/sms")).json();
   return extractCode(outbox.at(-1)!.body);
@@ -13,7 +14,9 @@ test("signs in with the code from the simulated SMS", async ({ page, request }) 
   await submitCode(page, await lastSimulatedCode(request));
   await expectSignedIn(page);
 });
+//</gen>
 
+//<gen>sms_otp_playwright_negative
 test("rejects an incorrect code", async ({ page, request }) => {
   await submitPassword(page);
   const code = await lastSimulatedCode(request);
@@ -40,6 +43,7 @@ test("does not accept a code twice", async ({ page, request, context }) => {
   expect(replay.status()).toBe(303);
   expect(replay.headers().location).toBe("/");
 });
+//</gen>
 
 test("parses only the app's six-digit code", () => {
   expect(extractCode("Your Demo App sign-in code is 042913. It expires in 5 minutes.")).toBe("042913");

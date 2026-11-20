@@ -1,12 +1,15 @@
 // The same sign-in, but the app sends a real SMS through its provider and the test reads it
 // from a MailSlurp phone number. Run with: npm run test:sms (see README for the settings).
+//<gen>sms_otp_playwright_real_setup
 import { expect, test } from "@playwright/test";
 import { MailSlurp, SmsMatchOptionFieldEnum, SmsMatchOptionShouldEnum } from "mailslurp-client";
 import { codeMarker, expectSignedIn, extractCode, submitCode, submitPassword } from "./flow";
 
 const apiKey = process.env.MAILSLURP_API_KEY ?? "";
 const phoneNumberId = process.env.MAILSLURP_PHONE_ID ?? "";
+//</gen>
 
+//<gen>sms_otp_playwright_real_number
 test("signs in with the code delivered to a real phone number", async ({ page }, testInfo) => {
   const mailslurp = new MailSlurp({ apiKey });
   // Count only messages that arrive after this test asks for a code.
@@ -30,3 +33,4 @@ test("signs in with the code delivered to a real phone number", async ({ page },
   await submitCode(page, extractCode(sms.body));
   await expectSignedIn(page);
 });
+//</gen>

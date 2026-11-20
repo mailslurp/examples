@@ -13,6 +13,7 @@ async function mailslurpNumber(): Promise<string> {
   return (await response.json()).phoneNumber;
 }
 
+//<gen>sms_otp_playwright_config
 export default defineConfig({
   testDir: "./tests",
   fullyParallel: false,
@@ -33,3 +34,4 @@ export default defineConfig({
       : { SMS_PROVIDER: "memory" },
   },
 });
+//</gen>
