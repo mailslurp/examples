@@ -41,7 +41,7 @@ The test uses the first US number in the account, or the number in `MAILSLURP_PH
 
 The playground's username is the phone number, so each number can only have one account. The test therefore deletes the playground user at the end, using the session it just signed in with, and the number can sign up again on the next run. If an earlier run stopped before that step, the test signs in with the same password first and deletes the leftover user. A number with an unconfirmed sign-up can't be cleaned up this way; use another number.
 
-Each run sends one real SMS.
+Each run sends one real SMS. The playground is a shared demo, so run this by hand to see the flow work. For scheduled checks, point the test at your own sign-up page: change the `sms` project's `baseURL` in `playwright.config.ts` and the sign-up steps in `tests/playground.ts` to match your app.
 
 ## How the test reads the code
 
@@ -68,7 +68,7 @@ await deleteSignedInUser(page);
 
 Run `npm test` on every pull request. This repository does that with [a GitHub Actions workflow](../.github/workflows/playwright-sms-2fa-real-number.yml) that needs no secrets.
 
-Run `npm run test:sms` deliberately, for example nightly or before a release, with the API key in CI secrets. Give each concurrent job its own number, or serialize jobs that share one, as the `concurrency` group below does. A GitHub Actions job for the real-number test, started by hand or on a schedule:
+Once the test signs up to your own app, run `npm run test:sms` deliberately, for example nightly or before a release, with the API key in CI secrets. Don't schedule runs against the playground. Give each concurrent job its own number, or serialize jobs that share one, as the `concurrency` group below does. A GitHub Actions job for the real-number test, started by hand or on a schedule:
 
 ```yaml
   real-sms:
