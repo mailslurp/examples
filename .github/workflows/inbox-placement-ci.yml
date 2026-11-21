@@ -1,0 +1,73 @@
+# inbox-placement-ci: the unit job checks the classification and gate with recorded results and
+# needs no secrets. The placement job runs a real inbox placement test, so it uses one test from
+# your MailSlurp allowance and sends one email per seed. Here it runs only when started by hand.
+name: inbox-placement-ci
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "inbox-placement-ci/**"
+      - ".github/workflows/inbox-placement-ci.yml"
+  pull_request:
+    paths:
+      - "inbox-placement-ci/**"
+      - ".github/workflows/inbox-placement-ci.yml"
+  workflow_dispatch:
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: inbox-placement-ci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: inbox-placement-ci/package-lock.json
+      - run: npm ci
+      - run: npm test
+
+  placement:
+    if: github.event_name == 'workflow_dispatch'
+    needs: unit
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: inbox-placement
+      cancel-in-progress: false
+    defaults:
+      run:
+        working-directory: inbox-placement-ci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: inbox-placement-ci/package-lock.json
+      - run: npm ci
+      - name: Run inbox placement test
+        run: npm run placement
+        env:
+          MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          FROM_EMAIL: ${{ vars.FROM_EMAIL }}
+          FROM_NAME: ${{ vars.FROM_NAME }}
+          PLACEMENT_GATE_PROVIDERS: ${{ vars.PLACEMENT_GATE_PROVIDERS }}
+          PLACEMENT_FAIL_ON_MISSING: ${{ vars.PLACEMENT_FAIL_ON_MISSING }}
+          PLACEMENT_REPORT_FILE: placement-report.json
+      - name: Keep the placement report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: placement-report
+          path: inbox-placement-ci/placement-report.json
+          if-no-files-found: ignore

@@ -49,6 +49,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [http-accelq-email-otp-test](./http-accelq-email-otp-test)
 - [hurl](./hurl)
 - [imap-smtp-examples](./imap-smtp-examples)
+- [inbox-placement-ci](./inbox-placement-ci)
 - [insomnia-test](./insomnia-test)
 - [ios-swift-mailslurp-examples](./ios-swift-mailslurp-examples)
 - [java-gradle-junit5](./java-gradle-junit5)
