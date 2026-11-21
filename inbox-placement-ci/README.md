@@ -78,41 +78,43 @@ Poll the run with `getInboxPlacementTest` every 15 seconds until it finishes or 
 
 ## Reading the results
 
-Here is the output of a real run of this example. The script masks seed addresses; the sender address is masked here as well.
+Here is the output of a real run of this example. The script masks seed addresses; the sender's domain is masked here as well.
 
 ```text
-Created inbox placement test 42b41faf-a7b6-4787-b2be-3efdb4a44d7e with 13 seeds and token mip-15be81e02a14
-Sent "Your weekly product update mip-15be81e02a14" from ***@mailslurp.world to 13 seeds
-  PARTIAL_COMPLETE: 11/13 seeds reported
-  COMPLETE: 13/13 seeds reported
-Seeds finished reporting after 33s
+Created inbox placement test 973e719b-efaf-4a2f-b64a-2d5cb1636bb4 with 13 seeds and token mip-81aad7cb2581
+Sent "Your weekly product update mip-81aad7cb2581" from ***@postmark.[test domain] to 13 seeds
+  PARTIAL_COMPLETE: 12/13 seeds reported
+  ... (the same line every 15 seconds, 38 times in all)
+Stopped waiting after 602s; seeds without a result count as missing
 
 Provider          Seeds  Inbox  Tab  Spam  Missing  Other  Gated
 ----------------  -----  -----  ---  ----  -------  -----  -----
 Gmail Consumer    2      0      0    2     0        0      yes
 Gmail Workspace   5      0      3    2     0        0      yes
-Microsoft 365     5      0      0    5     0        0      yes
+Microsoft 365     5      4      0    0     1        0      yes
 Outlook Personal  1      0      0    1     0        0      yes
 
-  Gmail Consumer     da***@gm***.com        spam (SPAM), 8.5s
-  Gmail Consumer     ja***@gm***.com        spam (SPAM), 17.5s
-  Gmail Workspace    ol***@se***.com        spam (SPAM), 4.5s
-  Gmail Workspace    ay***@pi***.com        spam (SPAM), 12.5s
-  Gmail Workspace    de***@pi***.com        tab (UPDATES, INBOX), 19.5s
-  Gmail Workspace    et***@se***.com        tab (UPDATES, INBOX), 24.5s
-  Gmail Workspace    lu***@se***.com        tab (UPDATES, INBOX), 27.5s
-  Microsoft 365      ta***@ma***.click      spam (SPAM, junkemail), 27.5s
-  Microsoft 365      cl***@te***.io         spam (SPAM, junkemail), 41.5s
-  Microsoft 365      el***@ma***.click      spam (SPAM, junkemail), 42.5s
-  Microsoft 365      ni***@ma***.click      spam (SPAM, junkemail), 50.5s
-  Microsoft 365      ow***@te***.io         spam (SPAM, junkemail), 53.5s
-  Outlook Personal   de***@ou***.com        spam (SPAM, junkemail), 15.5s
+  Gmail Consumer     da***@gm***.com        spam (SPAM), 6.2s
+  Gmail Consumer     ja***@gm***.com        spam (SPAM), 13.2s
+  Gmail Workspace    ol***@se***.com        spam (SPAM), 2.2s
+  Gmail Workspace    ay***@pi***.com        spam (SPAM), 10.2s
+  Gmail Workspace    de***@pi***.com        tab (UPDATES, INBOX), 15.2s
+  Gmail Workspace    et***@se***.com        tab (UPDATES, INBOX), 19.2s
+  Gmail Workspace    lu***@se***.com        tab (UPDATES, INBOX), 23.2s
+  Microsoft 365      ta***@ma***.click      inbox (FOCUSED, inbox), 13.2s
+  Microsoft 365      cl***@te***.io         inbox (FOCUSED, inbox), 21.2s
+  Microsoft 365      el***@ma***.click      missing (no result yet)
+  Microsoft 365      ni***@ma***.click      inbox (FOCUSED, inbox), 30.2s
+  Microsoft 365      ow***@te***.io         inbox (FOCUSED, inbox), 35.2s
+  Outlook Personal   de***@ou***.com        spam (SPAM, junkemail), 15.2s
 
-FAIL: 10 of 13 Gmail or Outlook seeds put the email in spam or junk.
-Full report (MailSlurp login): https://app.mailslurp.com/inbox-placement/42b41faf-a7b6-4787-b2be-3efdb4a44d7e
+FAIL: 5 of 13 Gmail or Outlook seeds put the email in spam or junk.
+Full report (MailSlurp login): https://app.mailslurp.com/inbox-placement/973e719b-efaf-4a2f-b64a-2d5cb1636bb4
 ```
 
-The script exited with code 1 because Gmail and Outlook seeds reported spam. That run sent the sample email through the SMTP login of a MailSlurp test inbox on a shared MailSlurp domain, not from a real sending domain through an ESP, and its report flagged DKIM, DMARC and SPF alignment warnings for that domain. Both Gmail Consumer seeds and two of the five Gmail Workspace seeds put it in spam, the other three Workspace seeds put it in the Updates tab, and every Outlook and Microsoft 365 seed put it in Junk. Your results will reflect your own domain, ESP and email.
+That run sent the sample email through Postmark's SMTP server from a subdomain of a low-volume test domain. The receiving checks passed SPF, DKIM and DMARC, each aligned with the From domain; the domain publishes a DMARC policy of `p=none`. Four Microsoft 365 seeds put the email in the Focused inbox and three Gmail Workspace seeds put it in the Updates tab. Both Gmail Consumer seeds, the other two Gmail Workspace seeds and the Outlook Personal seed put it in spam, so the script exited with code 1. One Microsoft 365 seed had not reported after 10 minutes and is listed as missing, not inbox.
+
+Passing authentication doesn't guarantee the inbox. Providers also weigh the sending domain's history and the content, and a test domain has little history. Your results will reflect your own domain, ESP and email.
 
 | Column | Meaning |
 | --- | --- |
