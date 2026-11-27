@@ -1,0 +1,22 @@
+{
+  "name": "email-rendering-ci",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Render an HTML email on real email clients and devices from CI, save the screenshots and fail the build on broken links or images",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "npm run typecheck && node --test 'test/**/*.test.ts'",
+    "render": "node src/run.ts"
+  },
+  "dependencies": {
+    "mailslurp-client": "17.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "typescript": "5.9.3"
+  }
+}

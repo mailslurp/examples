@@ -1,0 +1,4 @@
+node_modules/
+.env
+render-artifacts/
+render-report.json

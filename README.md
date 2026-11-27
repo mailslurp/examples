@@ -39,6 +39,7 @@ See developer page for [more guides and documentation](https://www.mailslurp.com
 - [documentation-phones](./documentation-phones)
 - [documentation-webhooks](./documentation-webhooks)
 - [elixir-phoenix-hound](./elixir-phoenix-hound)
+- [email-rendering-ci](./email-rendering-ci)
 - [firebase-cross-browser-email-link](./firebase-cross-browser-email-link)
 - [firebase-examples](./firebase-examples)
 - [flutter-email-test](./flutter-email-test)

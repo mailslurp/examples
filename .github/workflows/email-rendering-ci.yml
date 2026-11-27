@@ -1,0 +1,66 @@
+# email-rendering-ci: the unit job checks the target summary and the gate with recorded results and
+# needs no secrets. The render job renders the template on real email clients, so it uses one render
+# from your MailSlurp plan. Here it runs only when started by hand.
+name: email-rendering-ci
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "email-rendering-ci/**"
+      - ".github/workflows/email-rendering-ci.yml"
+  pull_request:
+    paths:
+      - "email-rendering-ci/**"
+      - ".github/workflows/email-rendering-ci.yml"
+  workflow_dispatch:
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: email-rendering-ci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: email-rendering-ci/package-lock.json
+      - run: npm ci
+      - run: npm test
+
+  render:
+    if: github.event_name == 'workflow_dispatch'
+    needs: unit
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: email-rendering-ci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: email-rendering-ci/package-lock.json
+      - run: npm ci
+      - name: Render the email on real clients
+        run: npm run render
+        env:
+          MAILSLURP_API_KEY: ${{ secrets.MAILSLURP_API_KEY }}
+          RENDER_TARGETS: ${{ vars.RENDER_TARGETS }}
+          RENDER_FAIL_ON_INCOMPLETE: ${{ vars.RENDER_FAIL_ON_INCOMPLETE }}
+          RENDER_REPORT_FILE: render-report.json
+      - name: Keep the screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: email-rendering
+          path: |
+            email-rendering-ci/render-artifacts/
+            email-rendering-ci/render-report.json
+          if-no-files-found: ignore
