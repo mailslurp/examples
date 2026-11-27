@@ -6,6 +6,18 @@ This repository contains examples of [MailSlurp](https://www.mailslurp.com) usag
 
 See developer page for [more guides and documentation](https://www.mailslurp.com/developers/). If you notice an issue in the examples please open an issue, pull request, or [contact support](https://www.mailslurp.com/support/).
 
+## Start here
+
+Use MailSlurp when your tests need real, private inboxes and phone numbers: each test gets its own address or number, waits for the message and reads the code, locally or in CI.
+
+| Task | Example | Guide |
+| --- | --- | --- |
+| Test sign-up, password reset and magic-link emails in Playwright | [playwright-email-testing](./playwright-email-testing) | [Playwright email testing](https://www.mailslurp.com/blog/playwright-email-testing/) |
+| Test email flows in Cypress | [cypress-email-testing-starter](./cypress-email-testing-starter) | [Cypress email testing](https://www.mailslurp.com/blog/cypress-email-testing/) |
+| Test SMS two-factor login with a real phone number | [playwright-sms-2fa-real-number](./playwright-sms-2fa-real-number) | [SMS OTP testing](https://www.mailslurp.com/guides/sms-otp-testing/) |
+| Render email templates on real email clients in CI | [email-rendering-ci](./email-rendering-ci) | [Device previews](https://www.mailslurp.com/docs/device-renders/) |
+| Fail a build when Gmail or Outlook put your email in spam | [inbox-placement-ci](./inbox-placement-ci) | [Inbox placement](https://www.mailslurp.com/docs/inbox-placement/) |
+
 ## Projects
 
 - [JavaScript-InboxPlacement-Test](./JavaScript-InboxPlacement-Test)
