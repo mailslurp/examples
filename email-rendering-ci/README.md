@@ -82,7 +82,8 @@ EMAIL_HTML_FILE=dist/emails/password-reset.html EMAIL_SUBJECT="Reset your passwo
 | `EMAIL_HTML_FILE` | no | The built HTML email to render. Defaults to the sample template. |
 | `EMAIL_SUBJECT` | no | Subject line shown with the render and used by the audit. |
 | `RENDER_TARGETS` | no | Comma-separated target IDs to render, such as `gmail_chromium_web,ios_mail_physical_device`. Defaults to every client your plan includes. |
-| `RENDER_TIMEOUT_SECONDS` | no | How long to wait for screenshots. Defaults to 600. |
+| `RENDER_TIMEOUT_SECONDS` | no | How long to wait for screenshots, including one retry. Defaults to 600. |
+| `RENDER_RETRY` | no | `false` skips rerunning clients that failed or timed out. Defaults to one rerun. |
 | `RENDER_SHARE_LINK` | no | `false` skips the share link. Defaults to creating one that expires after 30 days. |
 | `RENDER_AUDIT` | no | `false` skips Email Audit. |
 | `RENDER_FAIL_ON_INCOMPLETE` | no | `true` also fails the build when any client didn't render. Defaults to `false`. |
@@ -109,7 +110,7 @@ const { run } = await previews.createDevicePreviewRunFromHtmlImport({
 });
 ```
 
-Wait in rounds with `waitForDevicePreviewRun`, which holds on the server for up to 60 seconds each time, then read `getDevicePreviewRunResults`. Each target has a client, a platform, a light or dark colour scheme and a status: `READY` when its screenshot was captured, or `FAILED`, `TIMED_OUT` and similar when it wasn't. The screenshots have signed `accessUrl`s, so downloading them needs no API key.
+Wait in rounds with `waitForDevicePreviewRun`, which holds on the server for up to 60 seconds each time, then read `getDevicePreviewRunResults`. A client can occasionally miss its capture window, for example when the Gmail app is slow to show a new message, so the script reruns clients that failed or timed out once with `rerunDevicePreviewTargets` before reporting them. Each target has a client, a platform, a light or dark colour scheme and a status: `READY` when its screenshot was captured, or `FAILED`, `TIMED_OUT` and similar when it wasn't. The screenshots have signed `accessUrl`s, so downloading them needs no API key.
 
 Audit the same HTML:
 

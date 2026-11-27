@@ -51,10 +51,12 @@ async function main(): Promise<number> {
   console.log(`Started render ${run.runId} for ${path.basename(htmlFile)} on ${targets.length > 0 ? targets.join(', ') : 'all clients'}`);
 
   const startedWaiting = Date.now();
+  const deadline = startedWaiting + timeoutSeconds * 1000;
   const finished = await waitForRender(previews, run.runId, timeoutSeconds * 1000);
   console.log(`Render ${finished.status} after ${Math.round((Date.now() - startedWaiting) / 1000)}s`);
 
-  const results = await previews.getDevicePreviewRunResults({ runId: run.runId });
+  let results = await previews.getDevicePreviewRunResults({ runId: run.runId });
+  if (env.RENDER_RETRY !== 'false') results = await retryFailedTargets(previews, results, deadline);
   const files = await downloadScreenshots(results, path.join(outDir, run.runId));
   const rows = results.targets.map(target => toTargetRow(target, files.get(target.id) ?? null));
 
@@ -115,6 +117,36 @@ async function waitForRender(previews: DevicePreviewsControllerApi, runId: strin
     if (!waited.timedOut) break;
   }
   return run;
+}
+//</gen>
+
+const RETRYABLE = new Set(['FAILED', 'TIMED_OUT']);
+
+//<gen>rendering_ci_07_retry_failed
+// A client can miss its capture window, for example when the Gmail app is slow to show a new
+// message. Rerun those clients once, within the time left, before reporting them as not rendered.
+async function retryFailedTargets(previews: DevicePreviewsControllerApi, results: DevicePreviewRunResultsDto, deadline: number) {
+  const failed = results.targets.filter(target => RETRYABLE.has(target.status ?? ''));
+  if (failed.length === 0 || deadline - Date.now() < 30_000) return results;
+  const targetIds = failed.map(target => target.id);
+  const retriedAt = Date.now();
+  console.log(`Retrying ${targetIds.length} client(s) that didn't render`);
+  await previews.rerunDevicePreviewTargets({
+    runId: results.run.runId,
+    rerunDevicePreviewTargetsOptions: { targetIds, failedOnly: true },
+  });
+  let latest = results;
+  while (Date.now() < deadline) {
+    await new Promise(resolve => setTimeout(resolve, 10_000));
+    latest = await previews.getDevicePreviewRunResults({ runId: results.run.runId });
+    const retried = latest.targets.filter(target => targetIds.includes(target.id));
+    // Done when each retried client is READY or has failed again after the retry started.
+    const done = retried.filter(target => target.status === 'READY'
+      || (RETRYABLE.has(target.status ?? '') && new Date(target.updatedAt).getTime() > retriedAt));
+    console.log(`  retry: ${done.length} of ${targetIds.length} finished`);
+    if (done.length === targetIds.length) break;
+  }
+  return latest;
 }
 //</gen>
 
